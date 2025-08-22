@@ -69,8 +69,7 @@ export default () => {
         gender.current.value,
         goalWeight.current.value
       );
-      navigate;
-      ("/login");
+      navigate("/login");
     } catch (error) {
       console.log("you? : ", error);
     }
