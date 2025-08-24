@@ -1,0 +1,81 @@
+.Header * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .Header ul {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tp_menu li,
+  .tp_btn_menu li {
+    padding: 5px 0;
+  }
+}
+
+.Logo {
+  width: 80px;
+  height: 80px;
+}
+
+.hli {
+  list-style: none;
+}
+
+.Header {
+  display: flex;
+}
+
+.hul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+}
+
+.Header ul li a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.Header ul li a:hover {
+  transition: color 0.1s ease;
+  color: grey;
+}
+
+.tp_menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tp_menu li {
+  margin: 0 20px;
+}
+
+.tp_btn_menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tp_btn_menu li {
+  margin: 0 10px;
+}
+
+.hbtn {
+  width: 80px;
+  height: 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}

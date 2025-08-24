@@ -1,0 +1,42 @@
+.Register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.Register input {
+  width: 400px;
+  height: 40px;
+  margin: 5px 0;
+}
+
+.Register .chk {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.rbtn {
+  width: 400px;
+  height: 40px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.Register .chk_btn {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.Register .chk_text {
+  visibility: hidden;
+  width: 0px;
+  height: 0px;
+  margin: 0;
+  padding: 0;
+}

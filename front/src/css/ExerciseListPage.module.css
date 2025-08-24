@@ -1,0 +1,104 @@
+.appContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.bannerImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.metAndControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.metExplanation {
+  color: #888; 
+  font-size: 0.9rem; 
+}
+
+.metHighlight {
+  color: #50AC58; 
+  font-weight: bold;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.searchInput, .sortSelect {
+  padding: 10px 12px;
+  border: 1px solid #ddd; 
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none; 
+  transition: border-color 0.2s ease-in-out; 
+}
+
+.searchInput:focus, .sortSelect:focus {
+  border-color: #50AC58; 
+}
+
+.searchInput::placeholder {
+  color: #aaaaaa;
+}
+
+.dataGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.dataCardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.dataCard {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.dataCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px #C4EEAE;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.cardInfo {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.cardInfoLabel {
+  color: #50AC58; 
+  font-weight: bold;
+}
+
+.cardSubInfo {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.loading, .noDataMessage {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: #666;
+}
