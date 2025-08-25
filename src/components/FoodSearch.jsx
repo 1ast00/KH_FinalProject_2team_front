@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getSearchResult } from "../service/authApi";
+import Pagination from "./Pagination";
 
 export default () => {
 
@@ -13,6 +14,11 @@ export default () => {
     //searchTxt의 결과값을 상태값으로 저장할 변수를 하나 만듬: foodData
     const [foodData, setFoodData] = useState([]);
 
+    //Pagination
+    const [currentPage,setCurrentPage] = useState(1);
+    const PAGE_SIZE =5;
+    const [searchPerformed,setSearchPerformed] = useState(false);
+
     useEffect(() => {
 
         if(!searchTxt) return;
@@ -21,9 +27,8 @@ export default () => {
 
         {/* 2. searchTxt값을 api를 받는 controller에 연결해서 넘겨줌*/}
         const fetchApiData = async() => {
-        const responseData = await getSearchResult(searchTxt);
-        // {/* response가 왔는지 확인하는 콘솔창*/}
-        // console.log("responseData in FoodSearch.jsx: ",responseData);
+        const responseData = await getSearchResult(searchTxt, currentPage);
+
         {/* 3. response값을 foodData에 넣어줌*/}
         setFoodData(responseData);
         // {/* foodData를 확인하는 콘솔창: 의미없음. 다음 렌더링 사이클이 되어야만 업데이트 됨. setState는 비동기임*/}
@@ -35,8 +40,7 @@ export default () => {
 
         fetchApiData(searchTxt);
         
-
-    },[searchTxt])
+    },[searchTxt, currentPage])
 
 
     const handleSearch = () => {
@@ -45,6 +49,9 @@ export default () => {
         //따라서 렌더링 후 실행되는 useEffect를 이용해 다시금 렌더링 해보는 방법을 고안
         setSearchTxt(query);
         console.log("handleSearch()안 searchTxt: "+ searchTxt);
+
+        setCurrentPage(1);
+        setSearchPerformed(true);
     }
 
     const parseNutrients = (nutrientStr) => {
@@ -104,6 +111,13 @@ export default () => {
                         )
                     })
                 }
+                                <Pagination
+                                    currentPage={currentPage}
+                                    dataLength={foodData?.data?.length}
+                                    pageSize={PAGE_SIZE}
+                                    onPageChange={setCurrentPage}
+                                    searchPerformed={searchPerformed}
+                                />
             </div>
         </div>
     );
