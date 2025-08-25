@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import MainPage from "./pages/MainPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import FoodSearch from "./components/FoodSearch";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/food/search" element={<FoodSearch/>}/>
           {/* 비공개 라우트 */}
           <Route />
           {/* 404방지 */}
