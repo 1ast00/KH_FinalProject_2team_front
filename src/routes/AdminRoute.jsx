@@ -6,4 +6,8 @@ export default function AdminRoute() {
   const user = getUserData();
   if (user && user.role === "ROLE_ADMIN") return <Outlet />;
   return <Navigate to="/home" replace />;
+import RoleRoute from "./RoleRoute";
+
+export default function AdminRoute(props) {
+  return <RoleRoute {...props} requiredRoles={["ROLE_ADMIN"]} />;
 }

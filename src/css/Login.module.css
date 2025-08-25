@@ -1,16 +1,23 @@
+
 @media (max-width: 768px) {
   .linkshr {
     width: 200px;
   }
 }
 
+
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   margin: 100px auto;
   width: 100%;
+
+  margin: 100px;
+
 }
 
 .title {
@@ -45,7 +52,10 @@
 .linkshr {
   margin-top: 20px;
   width: 500px;
+
   box-sizing: border-box;
+
+
 }
 
 .lbtn {
@@ -55,6 +65,7 @@
   text-decoration: underline;
   cursor: pointer;
   font-size: 16px;
+
 }
 
 .fbtn {
@@ -83,3 +94,6 @@
   font-size: 16px;
   margin-left: 30px;
 }
+
+}
+

@@ -111,3 +111,13 @@ export const resetPW = async (userid, password) => {
   });
   return response.data;
 };
+// HACCP 인증 api에서 데이터를 받아오는 함수
+export const getSearchResult = async (searchTxt) => {
+    const response = await authApi.get('/food/search', {
+        params: {
+            searchTxt
+        }
+    });
+    console.log("response.data in authApi: ",response.data);
+    return response.data;
+}
