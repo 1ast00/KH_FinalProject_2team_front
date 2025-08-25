@@ -1,12 +1,20 @@
 // src/App.jsx
 import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomePage from "./pages/MainPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
+import RegisterSuccess from "./pages/RegisterSuccess";
 
 //  추가
 import AdminLayout from "./layout/AdminLayout";
@@ -41,6 +49,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="RegisterSuccess" element={<RegisterSuccess />} />
 
           {/* 관리자 라우트 */}
           <Route element={<AdminRoute />}>
