@@ -36,7 +36,7 @@ export default () => {
             </Link>
           </li>
           <li className={header.hli}>
-            <Link>
+            <Link to="/food/search">
               <p>식품</p>
             </Link>
           </li>

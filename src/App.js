@@ -7,10 +7,18 @@ import HomePage from "./pages/MainPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
+import FoodSearch from "./components/FoodSearch";
 
-//  추가
+//  관리자 레이아웃
 import AdminLayout from "./layout/AdminLayout";
 import { isAuthenticated, getUserData } from "./util/authUtil";
+
+//  관리자 페이지들
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminMembersPage from "./pages/admin/AdminMembersPage";
+import AdminPostsPage from "./pages/admin/AdminPostsPage";
+import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
+import AdminReportsPage from "./pages/admin/AdminReportsPage";
 
 //  관리자 권한 가드
 function AdminRoute() {
@@ -42,9 +50,16 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          {/* 관리자 라우트 */}
+          {/*  관리자 라우트: 자식 라우트 추가 */}
           <Route element={<AdminRoute />}>
-            <Route path="/admin/*" element={<AdminLayout />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="members" element={<AdminMembersPage />} />
+              <Route path="posts" element={<AdminPostsPage />} />        {/* 식단 게시판 */}
+              <Route path="reviews" element={<AdminReviewsPage />} />
+              <Route path="reports" element={<AdminReportsPage />} />
+            </Route>
           </Route>
 
           {/* 404방지 */}
