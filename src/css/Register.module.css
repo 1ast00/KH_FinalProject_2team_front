@@ -9,7 +9,6 @@
   width: 400px;
   height: 40px;
   margin: 5px 0;
-  font-size: 1em;
 }
 
 .Register .chk {
@@ -35,6 +34,9 @@
 }
 
 .Register .chk_text {
-  width: 400px;
-  border: 1px solid black;
+  visibility: hidden;
+  width: 0px;
+  height: 0px;
+  margin: 0;
+  padding: 0;
 }

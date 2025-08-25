@@ -10,7 +10,7 @@ export default () => {
     try {
       await apiLogout();
       clearUserData();
-      window.location.reload(); // 로그아웃 시 페이지 새로고침
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -26,17 +26,17 @@ export default () => {
         </li>
         <div className={header.tp_menu}>
           <li className={header.hli}>
-            <Link>
+            <Link to="/healthdailylog"> {/* 0825 sss_log */}
               <p>건강일지</p>
             </Link>
           </li>
           <li className={header.hli}>
-            <Link to="/exercise">
+            <Link>
               <p>추천운동</p>
             </Link>
           </li>
           <li className={header.hli}>
-            <Link to="/food/search">
+            <Link>
               <p>식품</p>
             </Link>
           </li>
