@@ -84,3 +84,30 @@ export const apiLogout = async () => {
   const response = await authApi.post("/auth/logout");
   clearToken();
 };
+
+//아이디 찾기
+export const findID = async (mname, nickname) => {
+  const response = await authApi.post("/auth/findID", {
+    mname,
+    nickname,
+  });
+  return response.data;
+};
+
+//암호 찾기
+export const findPW = async (userid, mname) => {
+  const response = await authApi.post("/auth/findPW", {
+    userid,
+    mname,
+  });
+  return response.data;
+};
+
+//암호 재설정
+export const resetPW = async (userid, password) => {
+  const response = await authApi.post("/auth/resetPW", {
+    userid,
+    password,
+  });
+  return response.data;
+};

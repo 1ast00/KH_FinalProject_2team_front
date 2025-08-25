@@ -19,6 +19,11 @@ import RegisterSuccess from "./pages/RegisterSuccess";
 //  추가
 import AdminLayout from "./layout/AdminLayout";
 import { isAuthenticated, getUserData } from "./util/authUtil";
+import PrivateRoute from "./components/PrivateRoute";
+import MyPage from "./pages/MyPage";
+import FindIDPage from "./pages/FindIDPage";
+import FindPWPage from "./pages/FindPWPage";
+import ResetPWPage from "./pages/ResetPWPage";
 
 //  관리자 권한 가드
 function AdminRoute() {
@@ -49,7 +54,14 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="RegisterSuccess" element={<RegisterSuccess />} />
+          <Route path="/RegisterSuccess" element={<RegisterSuccess />} />
+          <Route path="/find-id" element={<FindIDPage />} />
+          <Route path="/find-pw" element={<FindPWPage />} />
+          <Route path="/reset-password" element={<ResetPWPage />} />
+          {/* 비공개 라우트 */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/mypage" element={<MyPage />} />
+          </Route>
 
           {/* 관리자 라우트 */}
           <Route element={<AdminRoute />}>
