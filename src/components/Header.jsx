@@ -26,7 +26,7 @@ export default () => {
         </li>
         <div className={header.tp_menu}>
           <li className={header.hli}>
-            <Link>
+            <Link to="/healthdailylog">
               <p>건강일지</p>
             </Link>
           </li>
