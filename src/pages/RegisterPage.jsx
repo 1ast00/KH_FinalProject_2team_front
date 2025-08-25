@@ -15,6 +15,11 @@ export default () => {
   const goalWeight = useRef(null);
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
+  const [isTextVisible, setIsTextVisible] = useState(false);
+
+  const toggleTextVisibility = () => {
+    setIsTextVisible((prevState) => !prevState);
+  };
 
   //회원가입
   const handleRegister = async () => {
@@ -69,11 +74,12 @@ export default () => {
         gender.current.value,
         goalWeight.current.value
       );
-      navigate("/login");
+      navigate("/RegisterSuccess");
     } catch (error) {
       console.log("you? : ", error);
     }
   };
+
   return (
     <div className={register.Register}>
       <div>
@@ -156,8 +162,28 @@ export default () => {
           />
           회원가입 약관에 동의합니다.
         </label>
-        <button className={register.chk_btn}>▼</button>
-        <p className={register.chk_text}>어쩌고 저쩌고 정보에 동의하십니까?</p>
+        <button onClick={toggleTextVisibility} className={register.chk_btn}>
+          ▼
+        </button>
+        {isTextVisible && (
+          <p className={register.chk_text}>
+            [회원가입 약관] <br />
+            1. 개인정보 수집 및 이용에 대한 안내 <br />
+            - 수집하는 개인정보 항목: 이름, 별명, 이메일, 비밀번호, 키, 체중,
+            성별, 목표체중 <br />
+            - 개인정보 수집 및 이용 목적: 회원 관리, 서비스 제공 및 개선, 마케팅
+            및 광고에 활용 <br />
+            - 개인정보 보유 및 이용 기간: 회원 탈퇴 시까지 또는 관계 법령에 따른
+            보관 기간까지 <br />
+            2. 회원의 권리와 의무 <br />- 회원은 언제든지 개인정보 열람, 정정,
+            삭제 요청을 할 수 있습니다. <br />- 회원은 개인정보 보호를 위해
+            비밀번호를 안전하게 관리해야 합니다. <br />
+            3. 기타 <br />
+            - 본 약관은 관련 법령에 따라 변경될 수 있으며, 변경 시 사전
+            공지합니다.
+            <br />- 문의 사항이 있을 경우 고객센터로 연락해주시기 바랍니다.
+          </p>
+        )}
         <br />
         <button onClick={handleRegister} className={register.rbtn}>
           회원가입
