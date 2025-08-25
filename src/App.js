@@ -11,39 +11,23 @@ import {
 } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import HomePage from "./pages/MainPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import RegisterSuccess from "./pages/RegisterSuccess";
 
 //  추가
-import AdminLayout from "./layout/AdminLayout";
 import { isAuthenticated, getUserData } from "./util/authUtil";
 import PrivateRoute from "./components/PrivateRoute";
 import MyPage from "./pages/MyPage";
 import FindIDPage from "./pages/FindIDPage";
 import FindPWPage from "./pages/FindPWPage";
 import ResetPWPage from "./pages/ResetPWPage";
-=======
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
-import FoodSearch from "./components/FoodSearch";
-
-import MainPage from "./pages/MainPage";
 import FoodSearch from "./components/FoodSearch";
 
 // 추천 운동
 import ExerciseListPage from "./pages/ExerciseListPage";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
-
-//  관리자 레이아웃
-import AdminLayout from "./layout/AdminLayout";
-import { isAuthenticated, getUserData } from "./util/authUtil";
 
 //  관리자 페이지들
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -51,7 +35,7 @@ import AdminMembersPage from "./pages/admin/AdminMembersPage";
 import AdminPostsPage from "./pages/admin/AdminPostsPage";
 import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
-
+import AdminLayout from "./layout/AdminLayout"
 
 //  관리자 권한 가드
 function AdminRoute() {
