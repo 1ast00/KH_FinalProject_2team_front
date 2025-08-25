@@ -1,5 +1,31 @@
 // src/App.jsx
 import "./App.css";
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import HomePage from "./pages/MainPage";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import MainPage from "./pages/MainPage";
+import RegisterSuccess from "./pages/RegisterSuccess";
+
+//  추가
+import AdminLayout from "./layout/AdminLayout";
+import { isAuthenticated, getUserData } from "./util/authUtil";
+import PrivateRoute from "./components/PrivateRoute";
+import MyPage from "./pages/MyPage";
+import FindIDPage from "./pages/FindIDPage";
+import FindPWPage from "./pages/FindPWPage";
+import ResetPWPage from "./pages/ResetPWPage";
+=======
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -25,6 +51,7 @@ import AdminMembersPage from "./pages/admin/AdminMembersPage";
 import AdminPostsPage from "./pages/admin/AdminPostsPage";
 import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
+
 
 //  관리자 권한 가드
 function AdminRoute() {
@@ -56,6 +83,22 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+
+          <Route path="/RegisterSuccess" element={<RegisterSuccess />} />
+          <Route path="/find-id" element={<FindIDPage />} />
+          <Route path="/find-pw" element={<FindPWPage />} />
+          <Route path="/reset-password" element={<ResetPWPage />} />
+          {/* 비공개 라우트 */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/mypage" element={<MyPage />} />
+          </Route>
+
+          {/* 관리자 라우트 */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin/*" element={<AdminLayout />} />
+          </Route>
+
+
           <Route path="/food/search" element={<FoodSearch/>}/>
 
           {/*  관리자 라우트: 자식 라우트 추가 */}
@@ -78,6 +121,7 @@ function App() {
           {/* 비공개 라우트 */}
           
           <Route />
+
 
           {/* 404방지 */}
           <Route path="*" element={<h2>404</h2>} />
