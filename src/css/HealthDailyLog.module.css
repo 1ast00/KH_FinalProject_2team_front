@@ -1,0 +1,72 @@
+.page { max-width: 1200px; margin: 0 auto; padding: 0 12px 40px; }
+
+/* 히어로 */
+.heroWrap { position: relative; margin: 16px 0 12px; }
+.hero { position: relative; height: 180px; border-radius: 8px; overflow: hidden; cursor: pointer; }
+.hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.heroOverlay {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: rgba(0,0,0,0); color: rgba(255,255,255,0);
+  font-size: 28px; font-weight: 700; letter-spacing: .02em;
+  transition: background .25s ease, color .25s ease;
+}
+.hero:hover .heroOverlay { background: rgba(0,0,0,.45); color: rgba(255,255,255,.95); }
+.heroSmall { height: 140px; }
+
+/* 날짜 필터 (오른쪽 상단) */
+.dateFilter { position: absolute; right: 8px; top: 8px; }
+.dateInput { border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px; }
+
+/* 2분할 */
+.split { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.split.open { grid-template-columns: 1fr 380px; }
+
+/* 좌측 리스트 */
+.leftPane { min-height: 200px; }
+.grid { display: grid; gap: 12px; }
+.card {
+  background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.cardDate { font-weight: 700; margin-bottom: 8px; }
+.row { margin: 4px 0; display:flex; gap:8px; align-items: baseline; }
+.label { color:#666; min-width: 50px; font-size: 13px; }
+.foodWrap { margin-top: 6px; }
+.food {
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+  overflow-wrap: anywhere; /* 긴 단어 줄바꿈 */
+  margin: 4px 0 0;
+}
+.cardActions { display:flex; justify-content: flex-end; gap:8px; margin-top: 10px; }
+.linkBtn { background:none; border:none; color:#3a75ff; cursor:pointer; padding:0; }
+
+/* 우측 폼 + 애니메이션 */
+.rightPane { position: relative; }
+.formWrap {
+  position: sticky; top: 12px; height: calc(100vh - 160px);
+  border-left: 1px dashed #eee; padding-left: 16px;
+}
+.form {
+  background:#fff; border:1px solid #eee; border-radius:10px; padding:14px;
+  transform: translateX(12px); opacity: 0; animation: slideIn .28s ease forwards;
+}
+@keyframes slideIn { to { transform: translateX(0); opacity: 1; } }
+
+.formRow { position: relative; margin-bottom:10px; }
+.input, .inputRight {
+  width: 100%; border:1px solid #ddd; border-radius:8px; padding:10px 12px; outline:none;
+}
+.inputRight { padding-right: 36px; }
+.unit { position:absolute; right:10px; top:50%; transform: translateY(-50%); color:#888; }
+.plusBtn {
+  margin-left: 8px; border:1px solid #ddd; background:#fff; border-radius:8px;
+  padding: 0 10px; height: 38px; cursor: pointer;
+}
+.foodInputBlock { display:flex; flex-direction:column; gap:6px; flex:1; }
+
+.formActions { display:flex; justify-content: space-between; gap:10px; margin-top: 16px; }
+.outlineBtn { border:1px solid #ddd; background:#fff; border-radius:8px; padding:10px 14px; cursor:pointer; }
+.primaryBtn { border:0; background:#2f7cf6; color:#fff; border-radius:8px; padding:10px 14px; cursor:pointer; }
+
+.loading { text-align:center; color:#666; padding:12px 0; }
+.sentinel { height: 1px; }
