@@ -4,11 +4,14 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "rea
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-import HomePage from "./pages/MainPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import FoodSearch from "./components/FoodSearch";
+
+// 추천 운동
+import ExerciseListPage from "./pages/ExerciseListPage";
+import ExerciseDetailPage from "./pages/ExerciseDetailPage";
 
 //  관리자 레이아웃
 import AdminLayout from "./layout/AdminLayout";
@@ -40,13 +43,6 @@ function ChromeFrame({ children }) {
     </>
   );
 }
-
-import MainPage from "./pages/MainPage";
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
-import ExerciseListPage from "./pages/ExerciseListPage";
-import ExerciseDetailPage from "./pages/ExerciseDetailPage";
-
 
 function App() {
   return (
