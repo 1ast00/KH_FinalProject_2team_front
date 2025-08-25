@@ -32,6 +32,8 @@ import Footer from "./components/Footer";
 
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import FoodSearch from "./components/FoodSearch";
+
 import MainPage from "./pages/MainPage";
 import FoodSearch from "./components/FoodSearch";
 
@@ -71,6 +73,7 @@ function ChromeFrame({ children }) {
   );
 }
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -96,6 +99,7 @@ function App() {
           </Route>
 
 
+          <Route path="/food/search" element={<FoodSearch/>}/>
 
           {/*  관리자 라우트: 자식 라우트 추가 */}
           <Route element={<AdminRoute />}>
@@ -113,6 +117,7 @@ function App() {
           {/* 추천 운동 페이지 라우트 */}
           <Route path="/exercise" element={<ExerciseListPage />} />
           <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
+
           {/* 비공개 라우트 */}
           
           <Route />
