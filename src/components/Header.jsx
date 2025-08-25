@@ -67,6 +67,11 @@ export default () => {
             ) : (
               <>
                 <li className={header.hli}>
+                  <Link to="/mypage">
+                    <button className={header.hbtn}>마이페이지</button>
+                  </Link>
+                </li>
+                <li className={header.hli}>
                   <button onClick={handleLogout} className={header.hbtn}>
                     로그아웃
                   </button>

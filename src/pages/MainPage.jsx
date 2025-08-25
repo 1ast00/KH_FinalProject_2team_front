@@ -39,34 +39,38 @@ export default () => {
             <div className={styles.section}>
               <img src="/img/main_icon_3.png"alt="main todoList icon" className={styles.sectionIcon}/>
               <h3 className={styles.sectionTitle}>TodoList</h3>
+                
             </div>
 
             {/* 추천 메뉴 */}
             <div className={styles.section}>
               <img src="/img/main_icon_4.png" alt="main recipe icon" className={styles.sectionIcon}/>
               <h3 className={styles.sectionTitle}>추천 메뉴</h3>
-
             </div>
           </div>
         ) : (
           <div className={styles.nonAuthenticatedContent}>
-            {/* 해당 이미지 클릭 시 로그인 페이지로 이동 */}
+            {/* 해당 이미지 클릭 시 회원가입 페이지로 이동 */}
             <Link to="/register" className={styles.introLink}>
               <img src="/img/main_3(non-member).png" alt="소개 이미지" className={styles.introImage}/>
             </Link>
 
             <div className={styles.featuresGrid}>
-              <div className={styles.featureCard}>
-                <h3 className={styles.featureTitle}>건강 일지</h3>
-                <p className={styles.featureText}>현재 <span className={styles.writeMember}>{}</span>명의 회원이 건강 일지를 작성하고 있습니다.</p>
-              </div>
-              <div className={styles.featureCard}>
-                <h3 className={styles.featureTitle}>추천 운동</h3>
-                <p className={styles.featureText}>인기 운동 지금 참여하세요.</p>
-              </div>
+              <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className={styles.featureCard}>
+                  <h3 className={styles.featureTitle}>건강 일지</h3>
+                  <p className={styles.featureText}>현재 <span className={styles.writeMember}>{}</span>명의 회원이 건강 일지를 작성하고 있습니다.</p>
+                </div>
+              </Link>
+              <Link to="/exercise" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className={styles.featureCard}>
+                  <h3 className={styles.featureTitle}>추천 운동</h3>
+                  <p className={styles.featureText}>다양한 운동의 칼로리를 확인해 보세요.</p>
+                </div>
+              </Link>
               <div className={styles.featureCard}>
                 <h3 className={styles.featureTitle}>식품</h3>
-                <p className={styles.featureText}>음식의 영양 성분을 지금 확인하세요.</p>
+                <p className={styles.featureText}>음식의 영양 성분을 확인해 보세요.</p>
               </div>
               <div className={styles.featureCard}>
                 <h3 className={styles.featureTitle}>다이어트 간단 플랜</h3>
