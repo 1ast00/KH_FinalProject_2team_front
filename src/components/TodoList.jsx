@@ -1,36 +1,66 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTodoStore } from '../store/todoStore';
-// ⚠️ 주의: selector에서 객체/배열을 만들면 렌더마다 참조가 달라져 무한 리렌더 위험
-// 가장 안전한 방법: 필요한 값을 "각각" 구독하세요.
+import TodoItem from './TodoItem';
+import { getTodosByDate } from '../service/todoApi';
+import { getUserData } from "../service/authApi";
+import { isAuthenticated } from "../util/authUtil";
 
-export default function TodoList() {
-  // ✅ 각 값 개별 구독 패턴 (권장)
-  const todos = useTodoStore((s) => s.todos);
-  const toggle = useTodoStore((s) => s.toggle);
-  const remove = useTodoStore((s) => s.remove);
+export default function TodoList({ selectedDate }) {
   const clearDone = useTodoStore((s) => s.clearDone);
+  const [filteredTodos, setFilteredTodos] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
 
-  // 파생 값은 상태에 저장하지 말고 selector로 계산하세요.
-  const remaining = useTodoStore((s) => s.todos.filter((t) => !t.done).length);
+  // 회원 정보 불러오는 api
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (isAuthenticated()) {
+        const user = await getUserData(); // 서버에 다시 요청
+        setCurrentUser(user);
+        console.log(user);
+      }
+    };
+    fetchUserData();
+  }, []); 
+
+  // list 항목 불러옴
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        if (!currentUser) {
+          console.log("!currentUser");
+          return
+        }; // 사용자가 없으면 요청하지 않음
+
+        // 백엔드 API를 호출하여 선택된 날짜의 할 일만 가져옴
+        console.log("selectedDate: ", selectedDate);
+        const response = await getTodosByDate(selectedDate);
+        console.log("TodoList.jsx response: ", response);
+        // setFilteredTodos(response.data.map(d => ({
+        //   id: d.tno,
+        //   title: d.tcontent,
+        //   done: d.tcheck,
+        //   date: d.tdate
+        // })));
+        console.log("fetchTodos");
+      } catch (error) {
+        console.error("Error fetching todos:", error);
+        setFilteredTodos([]); // 에러 발생 시 빈 배열로 설정
+      }
+    };
+    fetchTodos();
+  }, [selectedDate, currentUser]); // 변경될 때마다 이 훅이 실행됨
 
   return (
     <div style={{ display: 'grid', gap: 8 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <strong>남은 일: {remaining}</strong>
         <button onClick={clearDone} style={{ marginLeft: 'auto' }}>
-          완료 비우기
+          완료 항목 삭제
         </button>
       </div>
 
-      <ul style={{ paddingLeft: 16 }}>
-        {todos.map((t) => (
-          <li key={t.id} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <label style={{ display: 'flex', gap: 8, alignItems: 'center', flex: 1 }}>
-              <input type="checkbox" checked={t.done} onChange={() => toggle(t.id)} />
-              <span style={{ textDecoration: t.done ? 'line-through' : 'none' }}>{t.title}</span>
-            </label>
-            <button onClick={() => remove(t.id)}>삭제</button>
-          </li>
+       <ul style={{ paddingLeft: 16 }}>
+        {filteredTodos.map((t) => (
+          <TodoItem key={t.id} todo={t} />
         ))}
       </ul>
     </div>

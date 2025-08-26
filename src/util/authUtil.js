@@ -24,7 +24,7 @@ export const clearUserData = () => {
   localStorage.removeItem("userData");
 };
 
-//유효성 검사
+// 유효성 검사
 export const isAuthenticated = () => {
   return !!getAccessToken();
 };

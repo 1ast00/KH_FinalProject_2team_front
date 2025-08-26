@@ -13,11 +13,10 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import BoardIndex from "./pages/BoardIndex";
 import MainPage from "./pages/MainPage";
 import RegisterSuccess from "./pages/RegisterSuccess";
+import BoardIndex from "./pages/BoardIndex";
 
-//  추가
 import { isAuthenticated, getUserData } from "./util/authUtil";
 import PrivateRoute from "./components/PrivateRoute";
 import MyPage from "./pages/MyPage";
@@ -32,22 +31,21 @@ import HealthDailyLogPage from "./pages/HealthDailyLogPage";
 import ExerciseListPage from "./pages/ExerciseListPage";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
 
-//  관리자 페이지들
+// 관리자 페이지들
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminMembersPage from "./pages/admin/AdminMembersPage";
 import AdminPostsPage from "./pages/admin/AdminPostsPage";
 import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
-import AdminLayout from "./layout/AdminLayout";
 
-//  관리자 권한 가드
+import AdminLayout from "./layout/AdminLayout"
+
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
   const role = (getUserData()?.role || "").toString().toUpperCase();
   return role.includes("ADMIN") ? <Outlet /> : <Navigate to="/" replace />;
 }
 
-//  관리자 경로에서는 Header/Footer 숨김
 function ChromeFrame({ children }) {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
@@ -69,14 +67,18 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-
           <Route path="/board/*" element={<BoardIndex />} />
-
 
           <Route path="/RegisterSuccess" element={<RegisterSuccess />} />
           <Route path="/find-id" element={<FindIDPage />} />
           <Route path="/find-pw" element={<FindPWPage />} />
           <Route path="/reset-password" element={<ResetPWPage />} />
+
+          <Route path="/exercise" element={<ExerciseListPage />} />
+          <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
+
+          <Route path="/food/search" element={<FoodSearch/>}/>
+
           {/* 비공개 라우트 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<MyPage />} />
@@ -89,7 +91,6 @@ function App() {
             <Route path="/admin/*" element={<AdminLayout />} />
           </Route>
 
-          <Route path="/food/search" element={<FoodSearch />} />
 
           {/*  관리자 라우트: 자식 라우트 추가 */}
           <Route element={<AdminRoute />}>
@@ -97,20 +98,11 @@ function App() {
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="members" element={<AdminMembersPage />} />
-              <Route path="posts" element={<AdminPostsPage />} />{" "}
-              {/* 식단 게시판 */}
+              <Route path="posts" element={<AdminPostsPage />} />        {/* 식단 게시판 */}
               <Route path="reviews" element={<AdminReviewsPage />} />
               <Route path="reports" element={<AdminReportsPage />} />
             </Route>
           </Route>
-
-          {/* 추천 운동 페이지 라우트 */}
-          <Route path="/exercise" element={<ExerciseListPage />} />
-          <Route
-            path="/exercise/:exerciseName"
-            element={<ExerciseDetailPage />}
-          />
-          <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
 
           {/* 404방지 */}
           <Route path="*" element={<h2>404</h2>} />

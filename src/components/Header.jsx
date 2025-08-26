@@ -10,7 +10,9 @@ export default () => {
     try {
       await apiLogout();
       clearUserData();
-      navigate("/");
+
+      window.location.reload(); // 로그아웃 시 페이지 새로고침
+
     } catch (error) {
       console.error(error);
     }
@@ -97,3 +99,4 @@ export default () => {
     </nav>
   );
 };
+

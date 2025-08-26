@@ -15,7 +15,7 @@ const authApi = axios.create({
   withCredentials: true, // CORS 요청 시 쿠키나 HTTP 인증 헤더를 포함할지 여부
 });
 
-//토큰 자동 생성
+// 토큰 자동 생성
 authApi.interceptors.request.use(
   (config) => {
     const accessToken = getAccessToken();
@@ -29,7 +29,7 @@ authApi.interceptors.request.use(
   }
 );
 
-//401처리
+// 401처리
 authApi.interceptors.response.use(
   (response) => {
     return response;
@@ -39,7 +39,7 @@ authApi.interceptors.response.use(
   }
 );
 
-//회원가입
+// 회원가입
 export const signup = async (
   userid,
   password,
@@ -64,7 +64,7 @@ export const signup = async (
   return response.data;
 };
 
-//로그인
+// 로그인
 export const login = async (userid, password) => {
   const response = await authApi.post("/auth/login", { userid, password });
   setAccessToken(response.data.accessToken);
@@ -72,20 +72,19 @@ export const login = async (userid, password) => {
   return response.data;
 };
 
-//사용자 정보 get 함수
+// 사용자 정보 get 함수
 export const getUserData = async () => {
   const response = await authApi.get("/auth/user-data");
   setUserData(JSON.stringify(response.data));
   return response.data;
 };
 
-//로그아웃
 export const apiLogout = async () => {
   const response = await authApi.post("/auth/logout");
   clearToken();
 };
 
-//아이디 찾기
+// 아이디 찾기
 export const findID = async (mname, nickname) => {
   const response = await authApi.post("/auth/findID", {
     mname,
@@ -94,7 +93,7 @@ export const findID = async (mname, nickname) => {
   return response.data;
 };
 
-//암호 찾기
+// 암호 찾기
 export const findPW = async (userid, mname) => {
   const response = await authApi.post("/auth/findPW", {
     userid,
@@ -103,7 +102,7 @@ export const findPW = async (userid, mname) => {
   return response.data;
 };
 
-//암호 재설정
+// 암호 재설정
 export const resetPW = async (userid, password) => {
   const response = await authApi.post("/auth/resetPW", {
     userid,

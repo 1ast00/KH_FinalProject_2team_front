@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 import { useTodoStore } from '../store/todoStore';
 
-export default function TodoInput() {
-  // ✅ add 액션만 구독(다른 값 변경 시 리렌더되지 않음)
+export default function TodoInput({ selectedDate, setSelectedDate }) {
   const add = useTodoStore((s) => s.add);
   const [title, setTitle] = useState('');
-
+  
   const onSubmit = (e) => {
     e.preventDefault();
     const v = title.trim();
     if (!v) return;
-    add(v);
+    add(v, selectedDate);
     setTitle('');
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: 'flex', gap: 8 }}>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="할 일을 입력하세요" />
-      <button type="submit">추가</button>
-    </form>
+    <div>
+      <div>
+        <img src="/img/todoList.png" alt="todoList" />
+      </div>
+      <h3>오늘의 할 일</h3>
+      <div>
+        <form onSubmit={onSubmit} style={{ display: 'flex', gap: 8 }}>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="오늘의 목표를 작성해 보세요." />
+          <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+          
+          <button type="submit">+</button>
+        </form>
+    </div>
+    </div>
   );
 }
