@@ -12,7 +12,7 @@ export default () => {
   const height = useRef(null);
   const weight = useRef(null);
   const gender = useRef(null);
-  const goalWeight = useRef(null);
+  const goalweight = useRef(null);
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const [isTextVisible, setIsTextVisible] = useState(false);
@@ -32,7 +32,7 @@ export default () => {
       !nickname.current.value ||
       !height.current.value ||
       !weight.current.value ||
-      !goalWeight.current.value
+      !goalweight.current.value
     ) {
       alert("모든 정보를 입력해주세요.");
       return null;
@@ -47,7 +47,7 @@ export default () => {
     if (
       isNaN(height.current.value) ||
       isNaN(weight.current.value) ||
-      isNaN(goalWeight.current.value)
+      isNaN(goalweight.current.value)
     ) {
       alert("키, 체중, 목표 체중은 숫자로 입력해주세요.");
       return null;
@@ -72,7 +72,7 @@ export default () => {
         height.current.value,
         weight.current.value,
         gender.current.value,
-        goalWeight.current.value
+        goalweight.current.value
       );
       navigate("/RegisterSuccess");
     } catch (error) {
@@ -147,7 +147,7 @@ export default () => {
         <input
           type="text"
           placeholder="사이트를 통하여 달성하고 싶은 체중을 입력해주세요!! 💪"
-          ref={goalWeight}
+          ref={goalweight}
           maxLength="3"
         />
         <br />

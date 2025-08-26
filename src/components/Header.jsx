@@ -10,7 +10,7 @@ export default () => {
     try {
       await apiLogout();
       clearUserData();
-      window.location.reload(); // 로그아웃 시 페이지 새로고침
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
