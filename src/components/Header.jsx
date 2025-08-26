@@ -41,7 +41,7 @@ export default () => {
             </Link>
           </li>
           <li className={header.hli}>
-            <Link>
+            <Link to={"/board"}>
               <p>게시판</p>
             </Link>
           </li>

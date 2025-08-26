@@ -13,6 +13,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import BoardIndex from "./pages/BoardIndex";
 import MainPage from "./pages/MainPage";
 import RegisterSuccess from "./pages/RegisterSuccess";
 
@@ -59,7 +60,6 @@ function ChromeFrame({ children }) {
   );
 }
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -69,6 +69,9 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+
+          <Route path="/board/*" element={<BoardIndex />} />
+
 
           <Route path="/RegisterSuccess" element={<RegisterSuccess />} />
           <Route path="/find-id" element={<FindIDPage />} />
@@ -99,7 +102,6 @@ function App() {
               <Route path="reports" element={<AdminReportsPage />} />
             </Route>
           </Route>
-
 
           {/* 추천 운동 페이지 라우트 */}
           <Route path="/exercise" element={<ExerciseListPage />} />
