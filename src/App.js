@@ -38,7 +38,7 @@ import AdminMembersPage from "./pages/admin/AdminMembersPage";
 import AdminPostsPage from "./pages/admin/AdminPostsPage";
 import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
-import AdminLayout from "./layout/AdminLayout"
+import AdminLayout from "./layout/AdminLayout";
 
 //  관리자 권한 가드
 function AdminRoute() {
@@ -81,6 +81,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
+            <Route path="/todoList" element={<TodoListPage />}/>
           </Route>
 
           {/* 관리자 라우트 */}
@@ -88,8 +89,7 @@ function App() {
             <Route path="/admin/*" element={<AdminLayout />} />
           </Route>
 
-
-          <Route path="/food/search" element={<FoodSearch/>}/>
+          <Route path="/food/search" element={<FoodSearch />} />
 
           {/*  관리자 라우트: 자식 라우트 추가 */}
           <Route element={<AdminRoute />}>
@@ -97,7 +97,8 @@ function App() {
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="members" element={<AdminMembersPage />} />
-              <Route path="posts" element={<AdminPostsPage />} />        {/* 식단 게시판 */}
+              <Route path="posts" element={<AdminPostsPage />} />{" "}
+              {/* 식단 게시판 */}
               <Route path="reviews" element={<AdminReviewsPage />} />
               <Route path="reports" element={<AdminReportsPage />} />
             </Route>
@@ -105,15 +106,11 @@ function App() {
 
           {/* 추천 운동 페이지 라우트 */}
           <Route path="/exercise" element={<ExerciseListPage />} />
+          <Route
+            path="/exercise/:exerciseName"
+            element={<ExerciseDetailPage />}
+          />
           <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
-
-          {/* 비공개 라우트 */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/todoList" element={<TodoListPage />}/>
-          </Route>
-          <Route />
-          
-          <Route />
 
           {/* 404방지 */}
           <Route path="*" element={<h2>404</h2>} />
