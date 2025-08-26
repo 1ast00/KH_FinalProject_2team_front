@@ -97,7 +97,7 @@ export const useTodoStore = create()(
               s.todos = data.map((d) => ({
                 id: d.tno,
                 title: d.tcontent,
-                done: d.tcheck === 1,
+                done: d.tcheck,
                 date: d.tdate
               }));
             },
