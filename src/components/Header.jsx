@@ -10,7 +10,9 @@ export default () => {
     try {
       await apiLogout();
       clearUserData();
+
       window.location.reload(); // 로그아웃 시 페이지 새로고침
+
     } catch (error) {
       console.error(error);
     }
@@ -41,7 +43,7 @@ export default () => {
             </Link>
           </li>
           <li className={header.hli}>
-            <Link>
+            <Link to={"/board"}>
               <p>게시판</p>
             </Link>
           </li>
@@ -97,3 +99,4 @@ export default () => {
     </nav>
   );
 };
+

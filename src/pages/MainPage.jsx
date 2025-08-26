@@ -22,7 +22,6 @@ export default () => {
     };
     fetchUserData();
   }, []); 
-  
 
   return (
     <div className={styles.container}>

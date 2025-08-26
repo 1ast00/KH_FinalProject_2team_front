@@ -48,7 +48,7 @@ export const signup = async (
   height,
   weight,
   gender,
-  goalWeight
+  goalweight
 ) => {
   const response = await authApi.post("/auth/register", {
     userid,
@@ -58,7 +58,7 @@ export const signup = async (
     height,
     weight,
     gender,
-    goalWeight,
+    goalweight,
   });
   console.log("호출: ", response);
   return response.data;
@@ -79,7 +79,6 @@ export const getUserData = async () => {
   return response.data;
 };
 
-// 로그아웃
 export const apiLogout = async () => {
   const response = await authApi.post("/auth/logout");
   clearToken();
@@ -112,20 +111,32 @@ export const resetPW = async (userid, password) => {
   return response.data;
 };
 
+export const updateUserData = async (mname, nickname, goalweight, userid) => {
+  const response = await authApi.post("/auth/updateUser", {
+    mname,
+    nickname,
+    goalweight,
+    userid,
+  });
+  return response.data;
+};
+
 // HACCP 인증 api에서 데이터를 받아오는 함수
 export const getSearchResult = async (searchTxt, currentPage) => {
+  console.log("searchTxt in authApi: ", searchTxt);
+  console.log("currentPage in authApi: ", currentPage);
 
-    console.log("searchTxt in authApi: ",searchTxt);
-    console.log("currentPage in authApi: ",currentPage);
-
-    const response = await authApi.get('/food/search', {
-        params: {
-            searchTxt,
-            page: currentPage
-        }
-    });
-    console.log("response in authApi: ", response);
-    console.log("response.data in authApi: ",response.data);
-    console.log("response.data.data.length in authApi: ",response.data.data.length)
-    return response.data;
-}
+  const response = await authApi.get("/food/search", {
+    params: {
+      searchTxt,
+      page: currentPage,
+    },
+  });
+  console.log("response in authApi: ", response);
+  console.log("response.data in authApi: ", response.data);
+  console.log(
+    "response.data.data.length in authApi: ",
+    response.data.data.length
+  );
+  return response.data;
+};
