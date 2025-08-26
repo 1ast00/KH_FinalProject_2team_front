@@ -1,0 +1,141 @@
+.detailContainer {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.detailTitle {
+  margin-top: -15px;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.detailInfo {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.detailInfo p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+.intensityBadge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.intensityBadge.light { background-color: #4caf50; }
+.intensityBadge.moderate { background-color: #ff9800; }
+.intensityBadge.intense { background-color: #f44336; }
+
+
+.calculatorBox {
+  position: relative; 
+  border: 1px solid #eee;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden; 
+  z-index: 1; 
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  opacity: 0.5;
+  z-index: -1; 
+  border-radius: 8px; 
+}
+
+.calculatorBox h2, .calculatorBox label {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #fff; 
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); 
+}
+
+.inputGroup {
+  margin-bottom: 10px;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.inputGroup input, .inputGroup select {
+  width: 55%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  color: #333; 
+}
+
+.calculateBtn {
+  margin-top: 10px;
+  width: 55%;
+  padding: 12px;
+  background-color: #50AC58;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.calculateBtn:hover {
+  background-color: #5EAC24;
+}
+
+.resultBox, .hintBox {
+  margin-top: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: #fff;
+  width: 55%;
+  box-sizing: border-box;
+}
+
+.hintBox {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #333;
+}
+
+.resultBox {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.resultCalories {
+  color: #ffeb3b; 
+  font-size: 1.5rem;
+}
+
+.backLink {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #50AC58;
+}
+
+.backLinkContainer {
+  text-align: right;
+}
