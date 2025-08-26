@@ -24,6 +24,8 @@ import FindIDPage from "./pages/FindIDPage";
 import FindPWPage from "./pages/FindPWPage";
 import ResetPWPage from "./pages/ResetPWPage";
 import FoodSearch from "./components/FoodSearch";
+import TodoListPage from "./pages/TodoListPage";
+import HealthDailyLogPage from "./pages/HealthDailyLogPage";
 
 // 추천 운동
 import ExerciseListPage from "./pages/ExerciseListPage";
@@ -74,6 +76,8 @@ function App() {
           {/* 비공개 라우트 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
+            <Route path="/todoList" element={<TodoListPage />}/>
           </Route>
 
           {/* 관리자 라우트 */}
@@ -102,6 +106,7 @@ function App() {
             path="/exercise/:exerciseName"
             element={<ExerciseDetailPage />}
           />
+          <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
 
           {/* 404방지 */}
           <Route path="*" element={<h2>404</h2>} />
