@@ -197,8 +197,6 @@ export default () => {
                 </div>
             ):(
                 <>
-                 {!!nutrientObj2?.nutrients?.단백질 && !!nutrientObj2?.nutrients?.지방 ? (
-
                 <div>
                     <div>
                         <ul>
@@ -299,11 +297,9 @@ export default () => {
                         </ul>
                     </div>
                     <div>
-                        <p>원재료: {state?.item?.rawmtrl ?? "정보가 없습니다."}</p>
+                        <p>원재료: {state?.item?.rawmtrl ?? "-"}</p>
                     </div>
-                </div>) : (
-                    <p>해당 제품 정보가 없습니다.</p>
-                )}
+                </div>) 
                 </>
             )}
         </div>
