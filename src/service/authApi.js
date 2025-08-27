@@ -96,7 +96,6 @@ export const getSearchResult = async (searchTxt, currentPage) => {
             page: currentPage
         }
     });
-    console.log("response.data in authApi: ",response.data);
-    console.log("response.data.data.length in authApi: ",response.data.data.length)
     return response.data;
 }
+

@@ -9,7 +9,6 @@ import LoginPage from "./pages/LoginPage";
 import FoodSearch from "./components/FoodSearch";
 
 import MainPage from "./pages/MainPage";
-import FoodSearch from "./components/FoodSearch";
 
 // 추천 운동
 import ExerciseListPage from "./pages/ExerciseListPage";
@@ -25,6 +24,7 @@ import AdminMembersPage from "./pages/admin/AdminMembersPage";
 import AdminPostsPage from "./pages/admin/AdminPostsPage";
 import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
+import FoodDetail from "./components/FoodDetail";
 
 //  관리자 권한 가드
 function AdminRoute() {
@@ -57,6 +57,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/food/search" element={<FoodSearch/>}/>
+          <Route path="/food/detail" element={<FoodDetail/>}/>
 
           {/*  관리자 라우트: 자식 라우트 추가 */}
           <Route element={<AdminRoute />}>

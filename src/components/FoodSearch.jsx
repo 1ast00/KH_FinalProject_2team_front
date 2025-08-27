@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSearchResult } from "../service/authApi";
 import Pagination from "./Pagination";
+import { useNavigate } from "react-router-dom";
 
 export default () => {
 
@@ -19,6 +20,9 @@ export default () => {
     const PAGE_SIZE =5;
     const [searchPerformed,setSearchPerformed] = useState(false);
 
+    //useNavigate: Page navigation
+    const navigate = useNavigate();
+
     useEffect(() => {
 
         if(!searchTxt) return;
@@ -26,6 +30,7 @@ export default () => {
         console.log("useEffect로 다시 렌더링한 searchTxt: "+ searchTxt);
 
         {/* 2. searchTxt값을 api를 받는 controller에 연결해서 넘겨줌*/}
+        {/*closure: 바깥에 있는 변수를 참조*/}
         const fetchApiData = async() => {
         const responseData = await getSearchResult(searchTxt, currentPage);
 
@@ -90,9 +95,9 @@ export default () => {
                         const nutrientObj = parseNutrients(item.nutrient);
 
                         return(
-                            <div key={item.rnum}>
+                            <div key={item.prdlstReportNo}>
                                 <ul>
-                                    <li><img src={item.imgurl2} /></li>
+                                    <li><img src={item.imgurl2} style={{ cursor: "pointer" }} onClick={() => navigate(`/food/detail/${item.prdlstNm}`,{ state: {item}})}/></li>
                                     <li>{item.prdlstNm}</li>
                                     {!!nutrientObj.열량 && (
                                         <li>열량: {nutrientObj.열량.value} {nutrientObj.열량.unit}</li>
@@ -121,5 +126,4 @@ export default () => {
             </div>
         </div>
     );
-}
 }
