@@ -126,7 +126,7 @@ export default function ExerciseDetailPage() {
           <label htmlFor="weight">체중 (kg)</label>
           <input id="weight" type="text" value={weight} onChange={handleWeightChange} placeholder="예: 70" />
           
-          {/* 👇 메시지 컨테이너로 감싸서 레이아웃 시프트 방지 */}
+          {/* 체중 입력 오류 방지 메시지, 분당 소모 칼로리 계산 메시지 */}
           <div className={styles.messageContainer}>
             {/* 체중 입력 오류 메시지 */}
             {weightError && <div className={styles.errorText}>{weightError}</div>}
