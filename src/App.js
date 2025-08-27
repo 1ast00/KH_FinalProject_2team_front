@@ -39,6 +39,7 @@ import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
 
 import AdminLayout from "./layout/AdminLayout"
+import FoodDetail from "./components/FoodDetail";
 
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
@@ -78,7 +79,7 @@ function App() {
           <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
 
           <Route path="/food/search" element={<FoodSearch/>}/>
-          <Route path="/food/detail" element={<FoodDetail/>}/>
+          <Route path="/food/search/detail/:prdlstNm" element={<FoodDetail/>}/>
 
           {/* 비공개 라우트 */}
           <Route element={<PrivateRoute />}>

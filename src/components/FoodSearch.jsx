@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getSearchResult } from "../service/authApi";
-import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
 
@@ -98,7 +97,7 @@ export default () => {
                         return(
                             <div key={item.prdlstReportNo}>
                                 <ul>
-                                    <li><img src={item.imgurl2} style={{ cursor: "pointer" }} onClick={() => navigate(`/food/detail/${item.prdlstNm}`,{ state: {item}})}/></li>
+                                    <li><img src={item.imgurl2} style={{ cursor: "pointer" }} onClick={() => navigate(`/food/search/detail/${item.prdlstNm}`,{ state: {item}})}/></li>
                                     <li>{item.prdlstNm}</li>
                                     {!!nutrientObj.열량 && (
                                         <li>열량: {nutrientObj.열량.value} {nutrientObj.열량.unit}</li>
