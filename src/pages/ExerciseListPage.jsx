@@ -4,7 +4,10 @@ import ExerciseSearch from '../components/ExerciseSearch'; // 검색창 컴포�
 import ExerciseFilter from '../components/ExerciseFilter'; // 정렬 필터 컴포넌트
 import { getExerciseData } from '../service/exerciseApi'; // API 호출 함수 import
 import styles from '../css/ExerciseListPage.module.css'; // CSS 모듈 import
+<<<<<<< HEAD
 // import BannerImage from '/img/exercise-banner.png'; // 배너 이미지 import
+=======
+>>>>>>> e3021ee (관리자 페이지)
 
 // 운동 목록을 보여주는 메인 페이지 컴포넌트
 export default function ExerciseListPage() {
@@ -70,7 +73,11 @@ export default function ExerciseListPage() {
   // 렌더링
   return (
     <div className={styles.appContainer}>
+<<<<<<< HEAD
       { /* <img src={BannerImage} alt="운동 추천 배너" className={styles.bannerImage} /> */ }
+=======
+      <img src="/img/exercise_1.png" alt="운동 추천 배너" className={styles.bannerImage} />
+>>>>>>> e3021ee (관리자 페이지)
       
       {/* MET 설명 + 검색창 + 정렬 */}
       <div className={styles.metAndControls}>
@@ -92,4 +99,8 @@ export default function ExerciseListPage() {
       <ExerciseList healthData={displayHealthData} loading={loading} />
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e3021ee (관리자 페이지)

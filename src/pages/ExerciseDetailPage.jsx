@@ -100,6 +100,10 @@ export default function ExerciseDetailPage() {
       </div>
       {/* 칼로리 계산기 */}
       <div className={styles.calculatorBox}>
+<<<<<<< HEAD
+=======
+        <img src="/img/exercise_2.png" alt="배경" className={styles.backgroundImage} />
+>>>>>>> e3021ee (관리자 페이지)
         <h2>소모 칼로리 계산기</h2>
         <div className={styles.inputGroup}>
           <label htmlFor="weight">체중 (kg)</label>
@@ -119,14 +123,23 @@ export default function ExerciseDetailPage() {
         </div>
         <button onClick={handleCalculate} className={styles.calculateBtn}>계산하기</button>
         {/* 분당 소모 칼로리 (체중 입력 시 보임) */}
+<<<<<<< HEAD
         {kcalPerMin && <div className={styles.hintBox}><small>분당 약 {kcalPerMin} kcal 소모</small></div>}
+=======
+        {kcalPerMin && <div className={styles.hintBox}><small>분당 약 {kcalPerMin} kcal를 소모합니다.</small></div>}
+
+>>>>>>> e3021ee (관리자 페이지)
         {/* 계산 결과 (계산하기 버튼 클릭 시 보임) */}
         {calories !== null && <div className={styles.resultBox}><p>약 <strong className={styles.resultCalories}>{calories} kcal</strong>를 소모합니다!</p></div>}
       </div>
       {/* 목록으로 돌아가기 링크 */}
       <div className={styles.backLinkContainer}>
         <Link to="/exercise" className={styles.backLink}>
+<<<<<<< HEAD
           목록으로 돌아가기 →
+=======
+          목록으로 돌아가기🏃🏻‍♂️
+>>>>>>> e3021ee (관리자 페이지)
         </Link>
       </div>
     </div>
