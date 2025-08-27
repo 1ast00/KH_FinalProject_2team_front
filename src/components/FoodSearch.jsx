@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getSearchResult } from "../service/authApi";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
+import Pagination from "./Pagination";
 
 export default () => {
 
@@ -22,6 +23,11 @@ export default () => {
 
     //useNavigate: Page navigation
     const navigate = useNavigate();
+
+    //Pagination
+    const [currentPage,setCurrentPage] = useState(1);
+    const PAGE_SIZE =5;
+    const [searchPerformed,setSearchPerformed] = useState(false);
 
     useEffect(() => {
 
@@ -79,7 +85,7 @@ export default () => {
 
     return (
         <div>
-            <img src=""/>
+            {/* <img src=""/> */}
 
             <input type="text" 
             placeholder="원하시는 식품을 입력하세요." 

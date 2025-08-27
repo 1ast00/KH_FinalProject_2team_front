@@ -77,7 +77,6 @@
 .nickname {
   color: #000;
   font-weight: 800;
-  text-shadow: 0 2px 6px rgba(94, 172, 36, 0.3);
 }
 
 .welcomeText {
@@ -98,6 +97,11 @@
   border-radius: 15px;
   border-left: 5px solid #6DC82A;
   backdrop-filter: blur(10px);
+}
+
+.goalweight {
+  color: #6DC82A;
+  font-weight: 800;
 }
 
 .iconRow {
@@ -301,7 +305,7 @@
   .featureTitle {
     font-size: 18px;
   }
-  
+
   .featureText {
     font-size: 13px;
   }
