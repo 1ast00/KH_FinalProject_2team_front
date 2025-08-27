@@ -23,7 +23,6 @@ export default function TodoInput({ selectedDate, setSelectedDate }) {
         <form onSubmit={onSubmit} style={{ display: 'flex', gap: 8 }}>
           <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="오늘의 목표를 작성해 보세요." />
           <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
-          
           <button type="submit">+</button>
         </form>
     </div>
