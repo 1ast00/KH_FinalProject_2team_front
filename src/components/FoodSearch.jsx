@@ -16,11 +16,6 @@ export default () => {
     //searchTxt의 결과값을 상태값으로 저장할 변수를 하나 만듬: foodData
     const [foodData, setFoodData] = useState([]);
 
-    //Pagination
-    const [currentPage,setCurrentPage] = useState(1);
-    const PAGE_SIZE =5;
-    const [searchPerformed,setSearchPerformed] = useState(false);
-
     //useNavigate: Page navigation
     const navigate = useNavigate();
 
