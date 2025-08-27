@@ -125,18 +125,14 @@ export default function ExerciseDetailPage() {
         <div className={styles.inputGroup}>
           <label htmlFor="weight">체중 (kg)</label>
           <input id="weight" type="text" value={weight} onChange={handleWeightChange} placeholder="예: 70" />
-          
-          {/* 체중 입력 오류 방지 메시지, 분당 소모 칼로리 계산 메시지 */}
-          <div className={styles.messageContainer}>
-            {/* 체중 입력 오류 메시지 */}
-            {weightError && <div className={styles.errorText}>{weightError}</div>}
+          {/* 체중 입력 오류 메시지 */}
+          {weightError && <div className={styles.errorText}>{weightError}</div>}
 
-            {!weightError && kcalPerMin && (
-              <div className={styles.hintBox}>
-                <small>📌 분당 약 {kcalPerMin} kcal 소모합니다.</small>
-              </div>
-            )}
-          </div>
+          {!weightError && kcalPerMin && (
+            <div className={styles.hintBox}>
+              <small>📌 분당 약 {kcalPerMin} kcal 소모합니다.</small>
+            </div>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label htmlFor="duration">운동 시간</label>
