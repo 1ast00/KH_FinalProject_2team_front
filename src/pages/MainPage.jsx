@@ -85,10 +85,12 @@ export default () => {
                   <p className={styles.featureText}>운동의 칼로리를 지금 확인해 보세요.</p>
                 </div>
               </Link>
-              <div className={styles.featureCard}>
-                <h3 className={styles.featureTitle}>식품</h3>
-                <p className={styles.featureText}>음식의 영양 성분을 확인해 보세요.</p>
-              </div>
+              <Link to="/food/search" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className={styles.featureCard}>
+                  <h3 className={styles.featureTitle}>식품</h3>
+                  <p className={styles.featureText}>음식의 영양 성분을 확인해 보세요.</p>
+                </div>
+              </Link>
               <div className={styles.featureCard}>
                 <h3 className={styles.featureTitle}>다이어트 간단 플랜</h3>
                 <p className={styles.featureText}>간단한 다이어트 플랜을 받아보세요.</p>
