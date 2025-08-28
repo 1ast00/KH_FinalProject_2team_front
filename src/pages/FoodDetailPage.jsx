@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import FoodImgTitle from "../components/food/FoodImgTitle";
 import FoodCalories from "../components/food/FoodCalories";
 import FoodThreeMajorNutrientsTable from "../components/food/FoodThreeMajorNutrientsTable";
@@ -8,14 +8,25 @@ import FoodServing from "../components/food/FoodServing";
 import FoodManufacture from "../components/food/FoodManufacture";
 import FoodDetailTable from "../components/food/FoodDetailTable";
 import FoodRawMtrl from "../components/food/FoodRawMtrl";
+import FoodCalories2 from "../components/food/FoodCalories2";
+import FoodThreeMajorNutrientsTable2 from "../components/food/FoodThreeMajorNutrientsTable2";
+import FoodDetailTable2 from "../components/food/FoodDetailTable2";
+import { useState } from "react";
 
 export default () => {
 
-    //useParams()
-    //1. App.js에서 Route의 경로 설정( path = "path/:variable_name")
-    //2. FoodSearch에서 ${}형태로 변수값 보내주기 ( navigate("path/${variable_name}"))
-    //3. FoodDetail.jsx에서 const {variable_name} = useParams()로 받기
-    // const {prdlstNm} = useParams();
+    const [query,setQuery] = useState("");
+
+    const navigate = useNavigate();
+
+    const handleSearch = () => {
+        if(!query) return;
+        navigate("/food/search",{
+            state: {
+                searchTxtSentInDetailPage: query
+            }
+        });
+    }
 
     //useLocation()
     //1. FoodSearch에서 { property: "value"}형태로 보내주기
@@ -92,8 +103,8 @@ export default () => {
     //nutrient String을 정규식을 이용해 parsing하는 함수 3
     const parseFoodData3 = (nutrientStr) => {
         const result = {
-        servingSize: null,  // 1회 제공량
-        kcal: null,         // 1회 제공 열량
+        serving: null,  // 1회 제공량
+        calories: null,         // 1회 제공 열량
         nutrients: {}       // 성분별 { value, unit }
         };
 
@@ -105,13 +116,13 @@ export default () => {
         // 2. 1회 제공량 추출 (예: 총 내용량 120g 1회(30g)당)
         const servingMatch = cleaned.match(/1회\(([\d.]+)(g|ml)\)/);
         if (servingMatch) {
-            result.servingSize = { value: parseFloat(servingMatch[1]), unit: servingMatch[2] };
+            result.serving = parseFloat(servingMatch[1]);
         }
 
         // 3. kcal 추출 (예: 170kcal)
         const kcalMatch = cleaned.match(/(\d+)\s*kcal/);
         if (kcalMatch) {
-            result.kcal = parseInt(kcalMatch[1], 10);
+            result.calories = parseInt(kcalMatch[1], 10);
         }
 
         // 4. 영양성분 추출 (예: 나트륨160mg, 단백질2g 등)
@@ -127,13 +138,23 @@ export default () => {
         return result;
     }
 
+    //Zustand로 관리
+    // const goBack = () => {
+    //     navigate(-1);
+    // }
+
     //api에서 제공하는 nutrients String 형식이 다르므로 다른 함수들로 parsing함.
+    //3개의 정규식으로 대부분의 nutrient 정보를 parsing
     const nutrientObj = state?.item? parseFoodData(state.item.nutrient) : null;
     const nutrientObj2 = state?.item? parseFoodData2(state.item.nutrient) : null;
     const nutrientObj3 = state?.item? parseFoodData3(state.item.nutrient) : null;
 
     return(
         <div>
+            {/* Zustand로 관리
+            <div>
+                <button onClick={goBack}>뒤로 가기</button>
+            </div> */}
             {!!nutrientObj?.nutrients?.단백질 && !!nutrientObj?.nutrients?.지방 ? (
 
                 <div>
@@ -151,13 +172,13 @@ export default () => {
                 <div>
                     {!!nutrientObj2?.nutrients?.열량 ? (<div>
                         <FoodImgTitle item={state.item}/>
-                        <FoodCalories nutrientObj={nutrientObj2}/>
-                        <FoodThreeMajorNutrientsTable nutrientObj={nutrientObj2}/>
+                        <FoodCalories2 nutrientObj={nutrientObj2}/>
+                        <FoodThreeMajorNutrientsTable2 nutrientObj={nutrientObj2}/>
                         <Foodallergy item={state.item}/>
                         <FoodProductGb item={state.item}/>
                         <FoodServing nutrientObj={nutrientObj2}/>
                         <FoodManufacture item={state.item}/>
-                        <FoodDetailTable nutrientObj2={nutrientObj2} />
+                        <FoodDetailTable2 nutrientObj={nutrientObj2} />
                         <FoodRawMtrl item={state.item}/>
                     </div>): (<div>
                         <FoodImgTitle item={state.item}/>
@@ -167,11 +188,19 @@ export default () => {
                         <FoodProductGb item={state.item}/>
                         <FoodServing nutrientObj={nutrientObj3}/>
                         <FoodManufacture item={state.item}/>
-                        <FoodDetailTable nutrientObj2={nutrientObj3} />
+                        <FoodDetailTable nutrientObj={nutrientObj3} />
                         <FoodRawMtrl item={state.item}/>
                     </div>)}
                 </div>) 
             }
+            <div>
+                {/* input + button, input값을 상태값으로 관리하고 FoodSearch에 넘겨주기 */}
+                <input type="text" 
+                placeholder="원하시는 식품을 입력하세요." 
+                value={query} 
+                onChange={e=>{setQuery(e.target.value)}}/>
+                <button onClick={handleSearch}>검색</button>
+            </div>
         </div>
     );
 }
