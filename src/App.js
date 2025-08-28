@@ -30,6 +30,7 @@ import HealthDailyLogPage from "./pages/HealthDailyLogPage";
 // 추천 운동
 import ExerciseListPage from "./pages/ExerciseListPage";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
+import Gemini from "./pages/Gemini"; // AI 코치
 
 // 관리자 페이지들
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -84,6 +85,7 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
             <Route path="/todoList" element={<TodoListPage />}/>
+            <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
           </Route>
 
           {/* 관리자 라우트 */}
