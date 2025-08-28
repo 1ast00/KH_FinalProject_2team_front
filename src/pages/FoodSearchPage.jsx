@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getSearchResult } from "../service/authApi";
-import { useNavigate } from "react-router-dom";
-import Pagination from "./Pagination";
+import Pagination from "../components/Pagination";
+import FoodSearch from "../components/food/FoodSearch";
+import FoodResult from "../components/food/FoodResult";
 
 export default () => {
 
@@ -14,9 +15,6 @@ export default () => {
 
     //searchTxt의 결과값을 상태값으로 저장할 변수를 하나 만듬: foodData
     const [foodData, setFoodData] = useState([]);
-
-    //useNavigate: Page navigation
-    const navigate = useNavigate();
 
     //Pagination
     const [currentPage,setCurrentPage] = useState(1);
@@ -42,9 +40,7 @@ export default () => {
         // /*Optional Chaining: returns the undefined if the data does not exist*/
         // console.log("foodData?.data?.[0]: ",foodData?.data?.[0]);
         }
-
-        fetchApiData(searchTxt);
-        
+        fetchApiData(searchTxt); 
     },[searchTxt, currentPage])
 
 
@@ -53,12 +49,11 @@ export default () => {
         //비동기적으로 예약되기에 다음 렌더링 사이클에 도달해서야 searchTxt가 바뀜
         //따라서 렌더링 후 실행되는 useEffect를 이용해 다시금 렌더링 해보는 방법을 고안
         setSearchTxt(query);
-        console.log("handleSearch()안 searchTxt: "+ searchTxt);
-
         setCurrentPage(1);
         setSearchPerformed(true);
     }
 
+    //영양성분 nutrient의 string으로 부터 영양성분을 추출하는 함수
     const parseNutrients = (nutrientStr) => {
         const nutrients = {}
         if (!nutrientStr) return nutrients;
@@ -73,45 +68,21 @@ export default () => {
             const unit = match[3];
             nutrients[key] ={value,unit};
         }
-
         return nutrients;
     }
 
     return (
         <div>
             {/* <img src=""/> */}
-
-            <input type="text" 
-            placeholder="원하시는 식품을 입력하세요." 
-            value={query} 
-            onChange={e=>{setQuery(e.target.value)}}/>
-            <button onClick={handleSearch}>검색</button>
+            <FoodSearch query={query} setQuery={setQuery} handleSearch={handleSearch}/>
 
             <div>
                 {/*검색 결과 출력*/}
                 { !foodData && <p>검색 결과가 없습니다.</p>}
                 { !!foodData && foodData?.data?.map((item,index) => {
-
-                        const nutrientObj = parseNutrients(item.nutrient);
-
                         return(
                             <div key={item.prdlstReportNo}>
-                                <ul>
-                                    <li><img src={item.imgurl2} style={{ cursor: "pointer" }} onClick={() => navigate(`/food/search/detail/${item.prdlstNm}`,{ state: {item}})}/></li>
-                                    <li>{item.prdlstNm}</li>
-                                    {!!nutrientObj.열량 && (
-                                        <li>열량: {nutrientObj.열량.value} {nutrientObj.열량.unit}</li>
-                                    )}
-                                    {!!nutrientObj.단백질 && (
-                                        <li>단백질: {nutrientObj.단백질.value} {nutrientObj.단백질.unit}</li>
-                                    )}
-                                    {!!nutrientObj.탄수화물 && (
-                                        <li>탄수화물: {nutrientObj.탄수화물.value} {nutrientObj.탄수화물.unit}</li>
-                                    )}
-                                    {!!nutrientObj.지방 && (
-                                        <li>지방: {nutrientObj.지방.value} {nutrientObj.지방.unit}</li>
-                                    )}
-                                </ul>
+                                <FoodResult item={item} parseNutrients={parseNutrients}/>
                             </div>
                         )
                     })

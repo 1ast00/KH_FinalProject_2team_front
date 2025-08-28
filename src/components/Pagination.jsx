@@ -1,7 +1,7 @@
 export default ({currentPage,dataLength,pageSize,onPageChange,searchPerformed}) => {
     
     // console.log("currentPage in Pagination.jsx",currentPage);
-    console.log("dataLength in Pagination.jsx",dataLength);
+    // console.log("dataLength in Pagination.jsx",dataLength);
     // console.log("pageSize in Pagination.jsx",pageSize);
     // console.log("onPageChange in Pagination.jsx",onPageChange);
 

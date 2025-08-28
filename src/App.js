@@ -23,7 +23,6 @@ import MyPage from "./pages/MyPage";
 import FindIDPage from "./pages/FindIDPage";
 import FindPWPage from "./pages/FindPWPage";
 import ResetPWPage from "./pages/ResetPWPage";
-import FoodSearch from "./components/FoodSearch";
 import TodoListPage from "./pages/TodoListPage";
 import HealthDailyLogPage from "./pages/HealthDailyLogPage";
 
@@ -39,7 +38,8 @@ import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
 
 import AdminLayout from "./layout/AdminLayout"
-import FoodDetail from "./components/FoodDetail";
+import FoodSearchPage from "./pages/FoodSearchPage";
+import FoodDetailPage from "./pages/FoodDetailPage";
 
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
@@ -78,8 +78,8 @@ function App() {
           <Route path="/exercise" element={<ExerciseListPage />} />
           <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
 
-          <Route path="/food/search" element={<FoodSearch/>}/>
-          <Route path="/food/search/detail/:prdlstNm" element={<FoodDetail/>}/>
+          <Route path="/food/search" element={<FoodSearchPage/>}/>
+          <Route path="/food/search/detail/:prdlstNm" element={<FoodDetailPage/>}/>
 
           {/* 비공개 라우트 */}
           <Route element={<PrivateRoute />}>
