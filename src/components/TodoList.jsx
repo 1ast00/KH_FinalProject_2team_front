@@ -4,11 +4,10 @@ import TodoItem from './TodoItem';
 import { getTodosByDate } from '../service/todoApi';
 import { getUserData } from "../service/authApi";
 import { isAuthenticated } from "../util/authUtil";
+import styles from '../css/TodoList.module.css';
 
-export default function TodoList({ selectedDate }) {
-  const loadInitial = useTodoStore((s) => s.loadInitial);
-  const clearDone = useTodoStore((s) => s.clearDone);
-  const todos = useTodoStore((s) => s.todos);
+export default ({ selectedDate }) => {
+  const { loadInitial, clearDone, todos, doneTodos} = useTodoStore();
   const updateChk = useTodoStore((s) => s.updateChk);
   const [currentUser, setCurrentUser] = useState({});
 
@@ -32,20 +31,50 @@ export default function TodoList({ selectedDate }) {
     })(); 
   }, [selectedDate, currentUser]); // 변경될 때마다 이 훅이 실행됨
 
+  const handleAllRemoveClick = () => {
+    clearDone(doneTodos)
+  };
+
   return (
-    <div style={{ display: 'grid', gap: 8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <button onClick={updateChk} style={{ marginLeft: 'auto' }}>변경 사항 저장</button>
-        <button onClick={clearDone} style={{ marginLeft: 'auto' }}>
+    <div className={styles.todoContainer}>
+      <div className={styles.todoActions}>
+        <button className={`${styles.actionBtn} ${styles.saveBtn}`} onClick={updateChk}>변경 사항 저장</button>
+        <button className={`${styles.actionBtn} ${styles.clearBtn}`} onClick={handleAllRemoveClick}>
           완료 항목 삭제
         </button>
       </div>
 
-       <ul style={{ paddingLeft: 16 }}>
-        {todos.map((t) => (
-          <TodoItem key={t.id} todo={t} />
-        ))}
-      </ul>
+      {/* 미완료 할 일 섹션 */}
+      <div className={styles.todoListContainer}>
+        {todos.length > 0 && (
+          <>
+            <h4 className={`${styles.sectionHeader} ${styles.pending}`}>오늘의 할 일</h4>
+            <ul className={styles.todoList}>
+              {todos.map((t) => (
+                <TodoItem key={t.id} todo={t} />
+              ))}
+            </ul>
+          </>
+        )}
+
+        {/* 완료된 할 일 섹션 */}
+        {doneTodos.length > 0 && (
+          <>
+            <h4 className={`${styles.sectionHeader} ${styles.completed}`}>완료된 할 일</h4>
+            <ul className={styles.todoList}>
+              {doneTodos.map((t) => (
+                <TodoItem key={t.id} todo={t} />
+              ))}
+            </ul>
+          </>
+        )}
+
+        {todos.length === 0 && (
+          <div className={styles.emptyMessage}>
+            할 일을 추가해보세요!
+          </div>
+        )}
+      </div>
     </div>
   );
 }
