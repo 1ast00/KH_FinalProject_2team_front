@@ -42,7 +42,7 @@ export default () => {
               <h3 className={styles.welcomeTitle}>안녕하세요, <span className={styles.nickname}>{currentUser.nickname}</span> 님!</h3>
               <p className={styles.welcomeText}>오늘도 건강한 하루를 시작해 보세요!</p>
               <p className={styles.welcomeText}>충분한 수분 섭취와 규칙적인 운동으로 활기찬 하루를 만들어 보세요.</p>
-              <p className={styles.goalText}>목표 체중까지 <span className={styles.goalweight}>{currentUser.goalweight}</span> kg 남았습니다.</p>
+              <p className={styles.goalText}>목표 체중까지 <span className={styles.goalweight}>{currentUser.weight - currentUser.goalweight}</span> kg 남았습니다.</p>
               
               <div className={styles.iconRow}>
                 {icons.map((_, index) => (

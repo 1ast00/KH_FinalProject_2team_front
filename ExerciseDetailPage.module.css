@@ -93,7 +93,7 @@
   color: #ff0000;
   font-size: 0.8rem;   
   line-height: 1.4;    
-  min-height: 18px;  
+  min-height: 18px;   
   margin-top: 5px;
 }
 
@@ -192,10 +192,4 @@
   position: relative;
   text-align: right;
   width: 100%; 
-}
-
-.messageContainer {
-  min-height: 24px; 
-  display: flex;
-  align-items: center; 
 }
