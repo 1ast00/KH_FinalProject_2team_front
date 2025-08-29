@@ -1,7 +1,13 @@
-import { Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import BoardReviewAllview from "../components/board/review/BoardReviewAllview";
 import BoardReviewDetail from "../components/board/review/BoardReviewDetail";
-import BoardReviewWrite  from "../components/board/review/BoardReviewWrite ";
+import BoardReviewWrite from "../components/board/review/BoardReviewWrite ";
 import BoardReviewItem from "../components/board/review/BoardReviewItem";
 import BoardMealsAllview from "../components/board/meals/BoardMealsAllview";
 import BoardMealsDetail from "../components/board/meals/BoardMealsDetail";
@@ -9,15 +15,14 @@ import BoardMealsWrite from "../components/board/meals/BoardMealsWrite";
 import BoardMealsItem from "../components/board/meals/BoardMealsItem";
 import BoardWeekly from "../components/board/BoardWeekly";
 
-
 function BoardIndex() {
   const navigate = useNavigate();
-  const location = useLocation();  //현재url정보를 가져옵니다.
+  const location = useLocation(); //현재url정보를 가져옵니다.
 
-let writepath = "/board/review/write";  //기본값reviewwrite
-if (location.pathname.includes("/board/meals")){
-  writepath = "/board/meals/write";  //mealswrite
-}
+  let writepath = "/board/review/write"; //기본값reviewwrite
+  if (location.pathname.includes("/board/meals")) {
+    writepath = "/board/meals/write"; //mealswrite
+  }
 
   return (
     <div>
@@ -26,7 +31,8 @@ if (location.pathname.includes("/board/meals")){
           여기에 게시판 이미지 출력
           <hr />
         </div>
-        <div>여기에 BoardWeekly 출력  - 이 말은 boardIndex에 있습니다.
+        <div>
+          여기에 BoardWeekly 출력 - 이 말은 boardIndex에 있습니다.
           <BoardWeekly />
         </div>
         <div className="btn_getin">
@@ -65,6 +71,5 @@ if (location.pathname.includes("/board/meals")){
       </div>
     </div> //class containebefore
   );
-
 }
 export default BoardIndex;

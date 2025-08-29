@@ -7,5 +7,5 @@
   display: flex;
 }
 .boardtop{
-  
+  background-color: #f8f9fa; /* 임시-밝은 회색 배경 */
 }
