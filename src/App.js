@@ -41,6 +41,7 @@ import AdminReportsPage from "./pages/admin/AdminReportsPage";
 import AdminLayout from "./layout/AdminLayout"
 import FoodSearchPage from "./pages/FoodSearchPage";
 import FoodDetailPage from "./pages/FoodDetailPage";
+import ScrollToTop from "./components/food/ScrollToTop";
 
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
@@ -64,6 +65,7 @@ function App() {
   return (
     <BrowserRouter>
       <ChromeFrame>
+        <ScrollToTop/>
         <Routes>
           {/* 공개된 라우트 */}
           <Route path="/" element={<MainPage />} />
