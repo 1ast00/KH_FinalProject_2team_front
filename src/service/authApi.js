@@ -84,3 +84,48 @@ export const apiLogout = async () => {
   const response = await authApi.post("/auth/logout");
   clearToken();
 };
+
+//아이디 찾기
+export const findID = async (mname, nickname) => {
+  const response = await authApi.post("/auth/findID", {
+    mname,
+    nickname,
+  });
+  return response.data;
+};
+
+//암호 찾기
+export const findPW = async (userid, mname) => {
+  const response = await authApi.post("/auth/findPW", {
+    userid,
+    mname,
+  });
+  return response.data;
+};
+
+//암호 재설정
+export const resetPW = async (userid, password) => {
+  const response = await authApi.post("/auth/resetPW", {
+    userid,
+    password,
+  });
+  return response.data;
+};
+
+// HACCP 인증 api에서 데이터를 받아오는 함수
+export const getSearchResult = async (searchTxt, currentPage) => {
+
+    console.log("searchTxt in authApi: ",searchTxt);
+    console.log("currentPage in authApi: ",currentPage);
+
+    const response = await authApi.get('/food/search', {
+        params: {
+            searchTxt,
+            page: currentPage
+        }
+    });
+    console.log("response in authApi: ", response);
+    console.log("response.data in authApi: ",response.data);
+    console.log("response.data.data.length in authApi: ",response.data.data.length)
+    return response.data;
+}
