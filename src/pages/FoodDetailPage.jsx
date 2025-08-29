@@ -32,7 +32,7 @@ export default () => {
     //1. FoodSearch에서 { property: "value"}형태로 보내주기
     //2. FoodDetail.jsx에서 const {property} = useLocation();으로 받기
     const {state} = useLocation();
-    // console.log(state);
+    console.log(state);
 
     //nutrient String을 정규식을 이용해 parsing하는 함수 1
     const parseFoodData = (nutrientStr) => {

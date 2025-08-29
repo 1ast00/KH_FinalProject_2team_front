@@ -123,8 +123,8 @@ export const updateUserData = async (mname, nickname, goalweight, userid) => {
 
 // HACCP 인증 api에서 데이터를 받아오는 함수
 export const getSearchResult = async (searchTxt, currentPage) => {
-  console.log("searchTxt in authApi: ", searchTxt);
-  console.log("currentPage in authApi: ", currentPage);
+  // console.log("searchTxt in authApi: ", searchTxt);
+  // console.log("currentPage in authApi: ", currentPage);
 
   const response = await authApi.get("/food/search", {
     params: {
@@ -132,7 +132,23 @@ export const getSearchResult = async (searchTxt, currentPage) => {
       page: currentPage,
     },
   });
-  console.log("response in authApi: ", response);
-  console.log("response.data in authApi: ", response.data);
+  // console.log("response in authApi: ", response);
+  // console.log("response.data in authApi: ", response.data);
+  return response.data;
+};
+
+// HACCP 인증 api에서 데이터를 받아오는 함수: Carousel 전용
+export const getTotalSearchResult = async (searchTxt, currentPage) => {
+  // console.log("searchTxt in authApi: ", searchTxt);
+  // console.log("currentPage in authApi: ", currentPage);
+
+  const response = await authApi.get("/food/search/all", {
+    params: {
+      searchTxt,
+      page: currentPage,
+    },
+  });
+  // console.log("response in authApi: ", response);
+  // console.log("response.data in authApi: ", response.data);
   return response.data;
 };

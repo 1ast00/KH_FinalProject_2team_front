@@ -24,12 +24,15 @@ export default ({searchTxtSentInFoodDetailPage}) => {
     const PAGE_SIZE =5;
     const [searchPerformed,setSearchPerformed] = useState(false);
 
+    //Manufacturer(img click)
+    const [Manufacturer,setManufacturer] = useState("(유)푸드원 전라남도 고흥군 동강면 청정식품단지길63");
+
     const navigate = useNavigate();
     
     useEffect(() => {
 
-        console.log("searchTxt: ",searchTxt);
-        console.log("searchTxtSentInFoodDetailPage: ",searchTxtSentInFoodDetailPage)
+        // console.log("searchTxt: ",searchTxt);
+        // console.log("searchTxtSentInFoodDetailPage: ",searchTxtSentInFoodDetailPage)
     
         if((!searchTxt || searchTxt.trim() === "") && 
         (!searchTxtSentInFoodDetailPage || searchTxtSentInFoodDetailPage.trim() === "")) 
@@ -39,6 +42,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
             {/*closure: 바깥에 있는 변수를 참조*/}
             const fetchApiData = async() => {
 
+            {/* 3. response값을 foodData에 넣어줌*/}    
             if(!!searchTxtSentInFoodDetailPage){
                 const responseData = await getSearchResult(searchTxtSentInFoodDetailPage, currentPage);
                 navigate("/food/search", { replace: true, state: { searchTxtSentInDetailPage: "" } });
@@ -47,13 +51,12 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                 const responseData2 = await getSearchResult(searchTxt, currentPage);
                 setFoodData(responseData2);
             }
-            {/* 3. response값을 foodData에 넣어줌*/}
 
             }
 
-            fetchApiData(searchTxt); 
+            fetchApiData(); 
             
-        },[searchTxt, currentPage])
+        },[searchTxt,searchTxtSentInFoodDetailPage, currentPage])
 
     const handleSearch = () => {
         {/* 1. query값을 searchTxt state값에 저장*/}
@@ -101,30 +104,18 @@ export default ({searchTxtSentInFoodDetailPage}) => {
         return nutrients;
     }
 
+    const handleClick = (productFrom) => {
+        setManufacturer(productFrom);
+    }
+
     return(
         <div>
-            <div style={{
-                width: "88%",
-                height: "280.72px",
-                overflow: "hidden"
-            }}>
-                <img src="/img/food_banner.jpg" 
-                style={{
-                    width: "1267.2px"
-                }}/>
+            <div>
+                <ManufacturerCarousel searchTxt={searchTxt} 
+                searchTxtSentInFoodDetailPage={searchTxtSentInFoodDetailPage}
+                currentPage={currentPage}
+                Manufacturer={Manufacturer}/>
             </div>
-            { !!foodData && foodData?.data?.map((item,index) => {
-                console.log("item: ",item);
-                    return(
-                        <div key={item.prdlstReportNo}>
-                            <div>
-                                {/* 추천식품 Carousel*/}
-                                <ManufacturerCarousel item={item}/>
-                            </div>
-                        </div>
-                    )
-                })
-            }
             <div>
                 <input type="text" 
                 placeholder="원하시는 식품을 입력하세요." 
@@ -164,6 +155,20 @@ export default ({searchTxtSentInFoodDetailPage}) => {
             </div>
             <div>
                 {/* Sponsor Image*/}
+                <div>
+                    <div>
+                        <p>Sponsors</p>
+                    </div>
+                    <hr/>
+                    <div>
+                        <img src="/img/food_manufacturer/dongone.jpg" style={{ cursor: "pointer" }} onClick={() => handleClick("㈜동원F&B/서울시 서초구 마방로 68(www.dongwonfnb.co.kr)")} />
+                        <img src="/img/food_manufacturer/foodone.png" style={{ cursor: "pointer" }} onClick={() => handleClick("(유)푸드원 전라남도 고흥군 동강면 청정식품단지길63")}/>
+                        <img src="/img/food_manufacturer/hangbokdamgi.png" style={{ cursor: "pointer" }} onClick={() => handleClick("행복담기㈜ 충북 옥천군 옥천읍 중앙로 153")}/>
+                        <img src="/img/food_manufacturer/hansung.png" style={{ cursor: "pointer" }} onClick={() => handleClick("한성기업㈜/경남 김해시 삼안로 51")}/>
+                        <img src="/img/food_manufacturer/prom.jpg" style={{ cursor: "pointer" }} onClick={() => handleClick("㈜프로엠_경기도 광주시 초월읍 동막골길 140-28")}/>
+                        <img src="/img/food_manufacturer/pulmuone.png" style={{ cursor: "pointer" }} onClick={() => handleClick("풀무원건강생활㈜ 충북 증평군 도안면 원명로35")}/>
+                    </div>
+                </div>
             </div>
         </div>
     );
