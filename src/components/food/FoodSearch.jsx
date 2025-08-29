@@ -114,7 +114,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                 <ManufacturerCarousel searchTxt={searchTxt} 
                 searchTxtSentInFoodDetailPage={searchTxtSentInFoodDetailPage}
                 currentPage={currentPage}
-                Manufacturer={manufacturer}/>
+                manufacturer={manufacturer}/>
             </div>
             <div>
                 <input type="text" 
