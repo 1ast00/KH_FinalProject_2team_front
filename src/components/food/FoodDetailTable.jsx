@@ -1,6 +1,6 @@
 export default ({nutrientObj}) => {
     
-    console.log("nobj:",nutrientObj);
+    // console.log("nobj:",nutrientObj);
 
     return(
         <div>

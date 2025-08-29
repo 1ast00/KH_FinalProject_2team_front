@@ -25,7 +25,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
     const [searchPerformed,setSearchPerformed] = useState(false);
 
     //Manufacturer(img click)
-    const [Manufacturer,setManufacturer] = useState("(유)푸드원 전라남도 고흥군 동강면 청정식품단지길63");
+    const [manufacturer,setManufacturer] = useState("(유)푸드원 전라남도 고흥군 동강면 청정식품단지길63");
 
     const navigate = useNavigate();
     
@@ -114,7 +114,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                 <ManufacturerCarousel searchTxt={searchTxt} 
                 searchTxtSentInFoodDetailPage={searchTxtSentInFoodDetailPage}
                 currentPage={currentPage}
-                Manufacturer={Manufacturer}/>
+                Manufacturer={manufacturer}/>
             </div>
             <div>
                 <input type="text" 

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 export default ({item, parseNutrients, parseNutrients2}) => {
 
-    console.log("item in FoodResult.jsx: ",item);
+    // console.log("item in FoodResult.jsx: ",item);
     const navigate = useNavigate(); 
 
     let nutrientObj = null;
@@ -13,8 +13,8 @@ export default ({item, parseNutrients, parseNutrients2}) => {
     nutrientObj2 = parseNutrients2(item.nutrient);
     } 
 
-    console.log("nutrientObj: ",nutrientObj);
-    console.log("nutrientObj2: ",nutrientObj2);
+    // console.log("nutrientObj: ",nutrientObj);
+    // console.log("nutrientObj2: ",nutrientObj2);
 
         return(               
             <div key={item.prdlstReportNo}>

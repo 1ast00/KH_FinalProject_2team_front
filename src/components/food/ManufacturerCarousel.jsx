@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { getTotalSearchResult } from "../../service/authApi";
 import { useNavigate } from "react-router-dom";
 
-export default ({searchTxt,searchTxtSentInFoodDetailPage,currentPage,Manufacturer}) => {
+export default ({searchTxt,searchTxtSentInFoodDetailPage,currentPage,manufacturer}) => {
 
-    console.log("searchTxt in Manufacturer Carousel: ",searchTxt);
-    console.log("Manufacturer in Manufacturer Carousel: ",Manufacturer);
+    // console.log("searchTxt in Manufacturer Carousel: ",searchTxt);
+    // console.log("manufacturer in Manufacturer Carousel: ",manufacturer);
 
     const [carouselText,setCarouselText] = useState("닭가슴살");
     const [totalList, setTotalList] = useState([]);
@@ -45,7 +45,7 @@ export default ({searchTxt,searchTxtSentInFoodDetailPage,currentPage,Manufacture
         <>
             {(!!totalList ) ? 
             totalList?.data
-            ?.filter((item) => item.manufacture === Manufacturer)
+            ?.filter((item) => item.manufacture === manufacturer)
             .map((item)=>(
                 <div key={item.prdlstReportNo}>
                     <div>
