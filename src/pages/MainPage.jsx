@@ -5,10 +5,18 @@ import { useEffect, useState } from "react";
 import { getUserData } from "../service/authApi";
 import TodoItem from "../components/TodoItem";
 import { useTodoStore } from "../store/todoStore";
+import RecipeList from "../components/RecipeList";
+
+// swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination'; 
+import 'swiper/css/navigation'; 
+import { Pagination, Navigation } from 'swiper/modules';
 
 export default () => {
+  const {todos} = useTodoStore();
   const [currentUser, setCurrentUser] = useState({});
-  const todos = useTodoStore((s) => s.todos);
 
   // icon 3 번 출력
   const icons = [1, 2, 3];
@@ -24,6 +32,18 @@ export default () => {
     };
     fetchUserData();
   }, []); 
+
+  // 추천 메뉴(레시피)
+  const {recipeList} = RecipeList();
+
+  // 
+  const BP = {
+    0: { slidesPerView: 1, spaceBetween: 10 },
+    480: { slidesPerView: 2, spaceBetween: 12 },
+    768: { slidesPerView: 3, spaceBetween: 14 },
+    1024: { slidesPerView: 4, spaceBetween: 16 },
+    1280: { slidesPerView: 5, spaceBetween: 16 },
+  };
 
   return (
     <div className={styles.container}>
@@ -69,10 +89,37 @@ export default () => {
               </Link>
 
               {/* 추천 메뉴 */}
-              <div className={styles.section}>
-                <img src="/img/main_icon_4.png" alt="main recipe icon" className={styles.sectionIcon}/>
-                <h3 className={styles.sectionTitle}>추천 메뉴</h3>
-              </div>
+              <Link to="/recipe" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className={styles.section}>
+                  <img src="/img/main_icon_4.png" alt="main recipe icon" className={styles.sectionIcon}/>
+                  <h3 className={styles.sectionTitle}>추천 메뉴</h3>
+                      {
+                        !recipeList && (
+                          <p>데이터 로딩 중입니다.</p>
+                        )
+                      }
+
+                      <Swiper
+                          slidesPerView={BP}
+                          spaceBetween={2}
+                          pagination={{ clickable: true }}
+                          navigation={true}
+                          modules={[Pagination, Navigation]}
+                          className={styles.mySwiper}
+                      >
+                      {
+                        recipeList && recipeList.map((item) => (
+                          <SwiperSlide key={item.recipe_id}>
+                            <div className={styles.recipeCard}>
+                              <h4 className={styles.recipeTitle}>{item.recipe_nm_ko}</h4>
+                              <p className={styles.recipeDesc}>{item.sumry}</p>
+                            </div>
+                          </SwiperSlide>
+                        ))
+                      }
+                      </Swiper>
+                </div>
+              </Link>
               </>
             )}
           </div>

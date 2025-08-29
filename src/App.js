@@ -41,7 +41,7 @@ import AdminReportsPage from "./pages/admin/AdminReportsPage";
 import AdminLayout from "./layout/AdminLayout"
 import FoodSearchPage from "./pages/FoodSearchPage";
 import FoodDetailPage from "./pages/FoodDetailPage";
-import ScrollToTop from "./components/food/ScrollToTop";
+import RecipePage from "./pages/RecipePage";
 
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
@@ -65,7 +65,6 @@ function App() {
   return (
     <BrowserRouter>
       <ChromeFrame>
-        <ScrollToTop/>
         <Routes>
           {/* 공개된 라우트 */}
           <Route path="/" element={<MainPage />} />
@@ -90,6 +89,7 @@ function App() {
             <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
             <Route path="/todoList" element={<TodoListPage />}/>
             <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
+            <Route path="/recipe" element={<RecipePage />}/>
           </Route>
 
           {/* 관리자 라우트 */}
