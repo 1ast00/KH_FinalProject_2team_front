@@ -3,6 +3,7 @@ import { getSearchResult } from "../../service/authApi";
 import FoodResult from "./FoodResult";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
+import ManufacturerCarousel from "./ManufacturerCarousel";
 
 //검색바와 결과를 출력하는 component
 //후에 검색바와 결과를 분리할 예정
@@ -99,12 +100,31 @@ export default ({searchTxtSentInFoodDetailPage}) => {
         }
         return nutrients;
     }
-    
-    console.log("useEffect로 다시 렌더링한 searchTxt: ",searchTxt);
-    console.log("foodData in FoodSearch.jsx: ",foodData);
 
     return(
         <div>
+            <div style={{
+                width: "88%",
+                height: "280.72px",
+                overflow: "hidden"
+            }}>
+                <img src="/img/food_banner.jpg" 
+                style={{
+                    width: "1267.2px"
+                }}/>
+            </div>
+            { !!foodData && foodData?.data?.map((item,index) => {
+                console.log("item: ",item);
+                    return(
+                        <div key={item.prdlstReportNo}>
+                            <div>
+                                {/* 추천식품 Carousel*/}
+                                <ManufacturerCarousel item={item}/>
+                            </div>
+                        </div>
+                    )
+                })
+            }
             <div>
                 <input type="text" 
                 placeholder="원하시는 식품을 입력하세요." 
@@ -118,19 +138,32 @@ export default ({searchTxtSentInFoodDetailPage}) => {
             { !!foodData && foodData?.data?.map((item,index) => {
                     return(
                         <div key={item.prdlstReportNo}>
-                            <FoodResult item={item} parseNutrients={parseNutrients} parseNutrients2={parseNutrients2}/>
+                            <div>
+                                <FoodResult item={item} parseNutrients={parseNutrients} parseNutrients2={parseNutrients2}/>
+                            </div>
                         </div>
-                            )
+                    )
                 })
                 }
-                <Pagination
-                    currentPage={currentPage}
-                    dataLength={foodData?.data?.length}
-                    pageSize={PAGE_SIZE}
-                    onPageChange={setCurrentPage}
-                    searchPerformed={searchPerformed}
-                    totalCount={foodData?.data?.[0]?.totalCount}
-                />
+                <div>
+                    {/* 페이지 이동 바 */}
+                    <Pagination
+                        currentPage={currentPage}
+                        dataLength={foodData?.data?.length}
+                        pageSize={PAGE_SIZE}
+                        onPageChange={setCurrentPage}
+                        searchPerformed={searchPerformed}
+                        totalCount={foodData?.data?.[0]?.totalCount}
+                    />
+                </div>
+            { !!foodData && foodData?.data?.length && (
+                <div>
+                    <p>{"*"}한국식품안전관리인증원(HACCP)에 등록되어 있지 않은 경우 결과에 나타나지 않을수도 있습니다.</p>
+                </div>
+            )}
+            </div>
+            <div>
+                {/* Sponsor Image*/}
             </div>
         </div>
     );

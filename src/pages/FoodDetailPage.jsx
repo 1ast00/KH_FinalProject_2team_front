@@ -155,6 +155,16 @@ export default () => {
             <div>
                 <button onClick={goBack}>뒤로 가기</button>
             </div> */}
+            <div style={{
+                width: "88%",
+                height: "280.72px",
+                overflow: "hidden"
+            }}>
+                <img src="/img/food_banner.jpg" 
+                style={{
+                    width: "1267.2px"
+                }}/>
+            </div>
             {!!nutrientObj?.nutrients?.단백질 && !!nutrientObj?.nutrients?.지방 ? (
 
                 <div>

@@ -49,7 +49,7 @@ export default ({nutrientObj}) => {
                                 </tbody>
                             </table>
                             </li>
-                            <li>출처: 한국식품관리인증원</li>
+                            <li>출처: 한국식품관리인증원(HACCP)</li>
                         </ul>
                     </div>
     );
