@@ -14,6 +14,7 @@ import BoardMealsDetail from "../components/board/meals/BoardMealsDetail";
 import BoardMealsWrite from "../components/board/meals/BoardMealsWrite";
 import BoardMealsItem from "../components/board/meals/BoardMealsItem";
 import BoardWeekly from "../components/board/BoardWeekly";
+import styles from "../css/BoardIndex.module.css";
 
 function BoardIndex() {
   const navigate = useNavigate();
@@ -26,18 +27,14 @@ function BoardIndex() {
 
   return (
     <div>
-      <div className="container">
-        <div className="boardtop">
-          여기에 게시판 이미지 출력
-          <hr />
-        </div>
+      <div className={styles.container}>
+        <div className={styles.boardtop}>여기에 게시판 이미지 출력</div>
         <div>
-          여기에 BoardWeekly 출력 - 이 말은 boardIndex에 있습니다.
+          {/*boardweekly가 잘보여서 바꿈.*/}
           <BoardWeekly />
         </div>
         <div className="btn_getin">
-          {/* 참여하기버튼 누르면 회원님이 해야할것 출력 */}
-          <button>+ 참여하기</button>
+          {/* 참여하기버튼 누르면 회원님이 해야할것 출력  - 여기 참여하기 버튼 없애고 Boardweekly로 이동 <button>+ 참여하기</button> add25.08.29*/}
         </div>
         <hr />
         <div>
@@ -50,6 +47,7 @@ function BoardIndex() {
         </div>
         <div>
           <Link to={writepath}>
+            {/* 아래 + 글작성버튼 클릭후 content출력후 화면안보여야 함  */}
             <button className="btn_addword">+ 글작성</button>
           </Link>
           <button className="btn_moveback" onClick={() => navigate(-1)}>
