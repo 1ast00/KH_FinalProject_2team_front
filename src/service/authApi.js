@@ -134,10 +134,6 @@ export const getSearchResult = async (searchTxt, currentPage) => {
   });
   console.log("response in authApi: ", response);
   console.log("response.data in authApi: ", response.data);
-  console.log(
-    "response.data.data.length in authApi: ",
-    response.data.data.length
-  );
   return response.data;
 };
 
