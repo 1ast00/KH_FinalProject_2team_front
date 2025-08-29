@@ -13,7 +13,11 @@ export default ({searchTxt,searchTxtSentInFoodDetailPage,currentPage,manufacture
 
     useEffect(() => {
 
-        setCarouselText(searchTxt);
+        if(!!searchTxtSentInFoodDetailPage){
+            setCarouselText(searchTxtSentInFoodDetailPage);
+        } else {
+            setCarouselText(searchTxt);
+        }
 
         // if((!searchTxt || searchTxt.trim() === "") && 
         // (!searchTxtSentInFoodDetailPage || searchTxtSentInFoodDetailPage.trim() === "")) 
