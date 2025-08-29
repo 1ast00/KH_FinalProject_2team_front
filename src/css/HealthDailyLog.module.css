@@ -1,9 +1,10 @@
-.page { max-width: 1200px; margin: 0 auto; padding: 0 12px 40px; }
+/* 페이지 */
+.page { max-width: 1200px; margin: 0 auto; padding: 0 12px 40px; box-sizing: border-box; }
 
 /* 히어로 */
-.heroWrap { position: relative; margin: 16px 0 12px; }
-.hero { position: relative; height: 180px; border-radius: 8px; overflow: hidden; cursor: pointer; }
-.hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.heroWrap { position: relative; margin: 16px 0 4px; }
+.hero { position: relative; height: 180px; border-radius: 0; overflow: hidden; cursor: pointer; }
+.hero img { width: 100%; height: 100%; object-fit: cover; display: block; filter: none; }
 .heroOverlay {
   position: absolute; inset: 0; display: grid; place-items: center;
   background: rgba(0,0,0,0); color: rgba(255,255,255,0);
@@ -11,57 +12,74 @@
   transition: background .25s ease, color .25s ease;
 }
 .hero:hover .heroOverlay { background: rgba(0,0,0,.45); color: rgba(255,255,255,.95); }
-.heroSmall { height: 140px; }
 
-/* 날짜 필터 (오른쪽 상단) */
-.dateFilter { position: absolute; right: 8px; top: 8px; }
-.dateInput { border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px; }
+/* 배너 아래 아이콘 바 (배너 바로 아래 오른쪽 끝) */
+.actionBar { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin: 6px 0 10px; }
+.iconBtn { border: 1px solid #ddd; background:#fff; border-radius: 8px; padding: 6px 10px; cursor:pointer; }
+.hiddenDate { position: absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
 
 /* 2분할 */
 .split { display: grid; grid-template-columns: 1fr; gap: 16px; }
-.split.open { grid-template-columns: 1fr 380px; }
+.split.open { grid-template-columns: 1fr 1fr; } /* 폼이 전체의 1/2 폭 */
 
 /* 좌측 리스트 */
 .leftPane { min-height: 200px; }
 .grid { display: grid; gap: 12px; }
+.cols4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+.cols2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
 .card {
-  background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 14px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  background: #fff; border: 1px solid #ccc; border-radius: 0; padding: 14px;
 }
 .cardDate { font-weight: 700; margin-bottom: 8px; }
 .row { margin: 4px 0; display:flex; gap:8px; align-items: baseline; }
-.label { color:#666; min-width: 50px; font-size: 13px; }
-.foodWrap { margin-top: 6px; }
-.food {
-  white-space: pre-wrap; /* 줄바꿈 유지 */
-  overflow-wrap: anywhere; /* 긴 단어 줄바꿈 */
-  margin: 4px 0 0;
+.label { color:#666; min-width: 72px; font-size: 13px; }
+.cross { color: #e53935; }
+
+/* 식단은 한 줄 영역(넘치면 감춤) */
+.foodInline {
+  max-height: 64px;
+  overflow: hidden;
+  display: inline-block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
-.cardActions { display:flex; justify-content: flex-end; gap:8px; margin-top: 10px; }
+
+/* 카드 하단 동작 */
+.cardActions { display:flex; justify-content: flex-end; gap:12px; margin-top: 10px; }
 .linkBtn { background:none; border:none; color:#3a75ff; cursor:pointer; padding:0; }
 
-/* 우측 폼 + 애니메이션 */
+/* 우측 폼 */
 .rightPane { position: relative; }
-.formWrap {
-  position: sticky; top: 12px; height: calc(100vh - 160px);
-  border-left: 1px dashed #eee; padding-left: 16px;
-}
+.formWrap { position: sticky; top: 12px; height: auto; }
 .form {
-  background:#fff; border:1px solid #eee; border-radius:10px; padding:14px;
-  transform: translateX(12px); opacity: 0; animation: slideIn .28s ease forwards;
+  background:#fff; border:1px solid #ddd; border-radius:8px; padding:14px;
+  box-sizing: border-box; animation: slideIn .28s ease forwards; transform: translateX(0); opacity: 1;
 }
-@keyframes slideIn { to { transform: translateX(0); opacity: 1; } }
+@keyframes slideIn { from { transform: translateX(12px); opacity:0; } to { transform: translateX(0); opacity:1; } }
 
 .formRow { position: relative; margin-bottom:10px; }
 .input, .inputRight {
-  width: 100%; border:1px solid #ddd; border-radius:8px; padding:10px 12px; outline:none;
+  width: 100%; border:1px solid #ddd; border-radius:8px; padding:10px 12px; outline:none; box-sizing: border-box;
 }
 .inputRight { padding-right: 36px; }
 .unit { position:absolute; right:10px; top:50%; transform: translateY(-50%); color:#888; }
-.plusBtn {
-  margin-left: 8px; border:1px solid #ddd; background:#fff; border-radius:8px;
-  padding: 0 10px; height: 38px; cursor: pointer;
+
+/* 수면시간: 같은 행, 같은 폭(50:50) */
+.timeRow { display: flex; align-items: center; gap: 8px; }
+.timeSep { color:#666; }
+.inputWrap { position: relative; flex: 1; }
+.inputWithAddon { padding-right: 36px; }
+.insidePlus {
+  position:absolute; right:6px; top:50%; transform: translateY(-50%);
+  border:0; background:transparent; font-size:20px; cursor:pointer; line-height:1;
 }
+
+/* number 스피너 제거 */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+/* 동적 입력 */
 .foodInputBlock { display:flex; flex-direction:column; gap:6px; flex:1; }
 
 .formActions { display:flex; justify-content: space-between; gap:10px; margin-top: 16px; }
