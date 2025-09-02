@@ -1,38 +1,98 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTodoStore } from '../store/todoStore';
-// ⚠️ 주의: selector에서 객체/배열을 만들면 렌더마다 참조가 달라져 무한 리렌더 위험
-// 가장 안전한 방법: 필요한 값을 "각각" 구독하세요.
+import TodoItem from './TodoItem';
+import { getUserData } from "../service/authApi";
+import { isAuthenticated } from "../util/authUtil";
+import styles from '../css/TodoList.module.css';
 
-export default function TodoList() {
-  // ✅ 각 값 개별 구독 패턴 (권장)
-  const todos = useTodoStore((s) => s.todos);
-  const toggle = useTodoStore((s) => s.toggle);
-  const remove = useTodoStore((s) => s.remove);
-  const clearDone = useTodoStore((s) => s.clearDone);
+export default ({ selectedDate }) => {
+  const { loadInitial, clearDone, todos, doneTodos} = useTodoStore();
+  const updateChk = useTodoStore((s) => s.updateChk);
+  const [currentUser, setCurrentUser] = useState({});
+  const [resPonseMsg, setResPonseMsg] = useState("");
+  
 
-  // 파생 값은 상태에 저장하지 말고 selector로 계산하세요.
-  const remaining = useTodoStore((s) => s.todos.filter((t) => !t.done).length);
+  // 회원 정보 불러오는 api
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (isAuthenticated()) {
+        const user = await getUserData(); // 서버에 다시 요청
+        setCurrentUser(user);
+        console.log(user);
+      }
+    };
+    fetchUserData();
+  }, []); 
+
+  // list 항목 불러옴
+  useEffect(() => {
+    (async () => {
+      await loadInitial(selectedDate);
+      console.log(loadInitial);
+    })(); 
+  }, [selectedDate, currentUser]); // 변경될 때마다 이 훅이 실행됨
+
+  // 변경 사항 저장
+  const handleUpdateChk = async () => {
+    try {
+      const response = await updateChk();   
+      setResPonseMsg(response?.msg || "변경 사항 저장을 완료했습니다.");
+    } catch (error) {
+      setResPonseMsg("변경 사항 저장을 실패했습니다.");
+    }
+  };
+
+  // 완료 항목 삭제
+  const handleAllRemoveClick = async () => {
+    try {
+      const response = await clearDone(doneTodos);
+      setResPonseMsg(response?.msg || "완료 항목 일괄 삭제가 완료되었습니다.");
+    } catch (error) {
+      setResPonseMsg("완료 항목 일괄 삭제를 실패했습니다.")
+    }
+  };
 
   return (
-    <div style={{ display: 'grid', gap: 8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <strong>남은 일: {remaining}</strong>
-        <button onClick={clearDone} style={{ marginLeft: 'auto' }}>
-          완료 비우기
+    <div className={styles.todoContainer}>
+      <div className={styles.todoActions}>
+        <span>{resPonseMsg}</span>
+        <button className={`${styles.actionBtn} ${styles.saveBtn}`} onClick={handleUpdateChk}>변경 사항 저장</button>
+        <button className={`${styles.actionBtn} ${styles.clearBtn}`} onClick={handleAllRemoveClick}>
+          완료 항목 삭제
         </button>
       </div>
 
-      <ul style={{ paddingLeft: 16 }}>
-        {todos.map((t) => (
-          <li key={t.id} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <label style={{ display: 'flex', gap: 8, alignItems: 'center', flex: 1 }}>
-              <input type="checkbox" checked={t.done} onChange={() => toggle(t.id)} />
-              <span style={{ textDecoration: t.done ? 'line-through' : 'none' }}>{t.title}</span>
-            </label>
-            <button onClick={() => remove(t.id)}>삭제</button>
-          </li>
-        ))}
-      </ul>
+      {/* 미완료 할 일 섹션 */}
+      <div className={styles.todoListContainer}>
+        {todos.length > 0 && (
+          <>
+            <h4 className={`${styles.sectionHeader} ${styles.pending}`}>오늘의 할 일</h4>
+            <ul className={styles.todoList}>
+              {todos.map((t) => (
+                <TodoItem key={t.id} todo={t} />
+              ))}
+            </ul>
+          </>
+        )}
+
+        {/* 완료된 할 일 섹션 */}
+        {doneTodos.length > 0 && (
+          <>
+            <h4 className={`${styles.sectionHeader} ${styles.completed}`}>완료된 할 일</h4>
+            <ul className={styles.todoList}>
+              {doneTodos.map((t) => (
+                <TodoItem key={t.id} todo={t} />
+              ))}
+            </ul>
+          </>
+        )}
+
+        {todos.length === 0 && (
+          <div className={styles.emptyMessage}>
+            할 일을 추가해 보세요!
+          </div>
+        )}
+      </div>
     </div>
   );
 }

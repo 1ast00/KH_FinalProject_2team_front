@@ -10,6 +10,7 @@
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",
     "axios": "^1.11.0",
+    "cors": "^2.8.5",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -19,6 +20,7 @@
     "recharts": "^3.1.2",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
+    "swiper": "^11.2.10",
     "web-vitals": "^2.1.4",
     "zustand": "^5.0.8"
   },

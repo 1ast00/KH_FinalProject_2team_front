@@ -4,7 +4,6 @@ import ExerciseSearch from '../components/ExerciseSearch'; // 검색창 컴포�
 import ExerciseFilter from '../components/ExerciseFilter'; // 정렬 필터 컴포넌트
 import { getExerciseData } from '../service/exerciseApi'; // API 호출 함수 import
 import styles from '../css/ExerciseListPage.module.css'; // CSS 모듈 import
-// import BannerImage from '/img/exercise-banner.png'; // 배너 이미지 import
 
 // 운동 목록을 보여주는 메인 페이지 컴포넌트
 export default function ExerciseListPage() {
@@ -70,7 +69,7 @@ export default function ExerciseListPage() {
   // 렌더링
   return (
     <div className={styles.appContainer}>
-      { /* <img src={BannerImage} alt="운동 추천 배너" className={styles.bannerImage} /> */ }
+      <img src="/img/exercise_1.png" alt="운동 추천 배너" className={styles.bannerImage} />
       
       {/* MET 설명 + 검색창 + 정렬 */}
       <div className={styles.metAndControls}>
