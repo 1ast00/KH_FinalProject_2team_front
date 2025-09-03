@@ -1,6 +1,6 @@
-// src/routes/ProtectedRoute.jsx
-import RoleRoute from "./RoleRoute";
+import { Navigate, Outlet } from "react-router-dom";
+import { isAuthenticated } from "../util/authUtil";
 
-export default function ProtectedRoute(props) {
-  return <RoleRoute {...props} requiredRoles={[]} />;
+export default function ProtectedRoute() {
+  return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
 }

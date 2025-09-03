@@ -1,71 +1,127 @@
 .detailContainer {
+  position: relative; 
+  overflow: hidden; 
   max-width: 800px;
   margin: 20px auto;
   padding: 30px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #fff;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pageBackgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  z-index: -1; 
+  opacity: 0.4; 
 }
 
 .detailTitle {
-  font-size: 2.5rem;
+  position: relative; 
+  margin-top: -15px;
+  font-size: 2rem;
   text-align: center;
   margin-bottom: 20px;
+  color: #000; 
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .detailInfo {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 30px;
+  position: relative;
+  width: 65%;
 }
 
 .detailInfo p {
   margin: 10px 0;
   font-size: 1.1rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .intensityBadge {
-  padding: 5px 10px;
+  padding: 3px 10px; 
   border-radius: 15px;
-  color: #fff;
   font-weight: bold;
+  font-size: 0.9rem; 
+  text-shadow: none; 
+
+  background-color: rgba(0, 0, 0, 0.3); 
+  border: 2px solid; 
 }
 
-.intensityBadge.light { background-color: #4caf50; }
-.intensityBadge.moderate { background-color: #ff9800; }
-.intensityBadge.intense { background-color: #f44336; }
+.intensityBadge.light {border-color: #4caf50;color: #4caf50;}
+.intensityBadge.moderate {border-color: #ff9800;color: #ff9800;}
+.intensityBadge.intense {border-color: #f44336;color: #f44336;}
+
+.divider {
+  width: 85%; 
+  border: none; 
+  height: 1px; 
+  background-color: rgba(255, 255, 255, 0.3); 
+  margin: 25px 0; 
+}
 
 .calculatorBox {
-  border: 1px solid #eee;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.5); 
   padding: 20px;
   border-radius: 8px;
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 65%;
+  margin: 0 auto 20px;
+  overflow: hidden;
+}
+
+.calculatorBox h2, .calculatorBox label {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #fff; 
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); 
 }
 
 .inputGroup {
-  margin-bottom: 15px;
+  width: 85%;
+  margin-bottom: 10px;
 }
+
+.errorText {
+  width: 100%;
+  color: #ff0000;
+  font-size: 0.8rem;   
+  line-height: 1.4;    
+  min-height: 18px;  
+  margin-top: 5px;
+}
+
 
 .inputGroup label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  text-align: left; 
 }
 
 .inputGroup input, .inputGroup select {
-  width: 100%;
+  width: 100%; 
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 1rem;
+  color: #fff;
 }
 
 .calculateBtn {
-  width: 100%;
+  margin-top: 10px;
+  width: 85%;
   padding: 12px;
-  background-color: #2979ff;
+  background-color: #50AC58;
   color: white;
   border: none;
   border-radius: 8px;
@@ -75,37 +131,72 @@
 }
 
 .calculateBtn:hover {
-  background-color: #2962ff;
+  background-color: #5EAC24;
+}
+
+.resultsWrapper {
+  width: 85%;
+  min-height: 155px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .resultBox, .hintBox {
-  margin-top: 20px;
+  margin-top: 0;
+  margin-bottom: 10px;
   padding: 15px;
   border-radius: 8px;
   text-align: center;
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hintBox:last-child, .resultBox:last-child {
+  margin-bottom: 0;
 }
 
 .hintBox {
-  background-color: #f0f0f0;
+  width: 100%;
+  margin-top: 5px;
+  font-size: 0.9rem;   
+  line-height: 1.4;    
+  color: #ccc;
+  background: none;
+  padding: 0;
+  text-align: left;
 }
 
 .resultBox {
-  background-color: #eef7ff;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .resultCalories {
-  color: #f44336;
+  color: #ffeb3b; 
   font-size: 1.5rem;
 }
 
 .backLink {
+  position: relative;
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 10px;
   text-decoration: none;
-  color: #2979ff;
-  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .backLinkContainer {
+  position: relative;
   text-align: right;
+  width: 100%; 
+}
+
+.messageContainer {
+  min-height: 24px; 
+  display: flex;
+  align-items: center; 
 }

@@ -33,7 +33,7 @@
 /* 로그인된 사용자 컨텐츠 */
 .authenticatedContent {
   padding: 30px 40px;
-  background-color: #f8fffe;
+  background-color: #C4EEAE;
 }
 
 /* 환영 섹션 */
@@ -77,7 +77,6 @@
 .nickname {
   color: #000;
   font-weight: 800;
-  text-shadow: 0 2px 6px rgba(94, 172, 36, 0.3);
 }
 
 .welcomeText {
@@ -98,6 +97,11 @@
   border-radius: 15px;
   border-left: 5px solid #6DC82A;
   backdrop-filter: blur(10px);
+}
+
+.goalweight {
+  color: #6DC82A;
+  font-weight: 800;
 }
 
 .iconRow {
@@ -122,8 +126,9 @@
 /* 섹션 스타일 */
 .section {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  gap: 15px;
   padding: 25px 30px;
   margin-bottom: 25px;
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
@@ -136,7 +141,7 @@
 .section:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(94, 172, 36, 0.15);
-  border-color: #a7f3d0;
+  border-color: #6DC82A;
 }
 
 .sectionIcon {
@@ -148,8 +153,12 @@
 .sectionTitle {
   font-size: 22px;
   font-weight: 600;
-  color: #6DC82A;
+  color: #5EAC24;
   margin: 0;
+}
+
+.sectionContent {
+  width: 1000px;
 }
 
 /* 비로그인 사용자 컨텐츠 */
@@ -301,11 +310,7 @@
   .featureTitle {
     font-size: 18px;
   }
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> e3021ee (관리자 페이지)
   .featureText {
     font-size: 13px;
   }

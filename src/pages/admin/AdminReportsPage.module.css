@@ -1,0 +1,34 @@
+.page{ display:grid; gap:16px; }
+.title{ font-size:20px; font-weight:800; color:var(--title); margin:0; }
+.filters{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+.input, .select{
+  height:36px; padding:0 12px; border:1px solid var(--ring);
+  background:var(--card); color:var(--title); border-radius:10px;
+}
+.input{ flex:1; }
+.input::placeholder{ color:var(--muted); }
+
+.btn, .btnDanger{
+  height:36px; padding:0 12px; border-radius:10px; border:1px solid var(--ring);
+  background:var(--card); color:var(--title); cursor:pointer;
+}
+.btn:hover{ background:color-mix(in srgb, var(--card) 85%, var(--ring)); }
+.btnDanger{ background:#ef4444; border-color:#ef4444; color:#fff; }
+
+.card{ background:var(--card); border:1px solid var(--ring); border-radius:14px; overflow:hidden; }
+
+.table{ width:100%; border-collapse:collapse; background:var(--card); color:var(--title); }
+.table th, .table td{ padding:12px 14px; border-bottom:1px solid var(--ring); vertical-align:top; }
+.table thead th{ color:var(--title); font-weight:700; text-align:left; }
+.table tbody tr:nth-child(even){ background: color-mix(in srgb, var(--card) 92%, var(--ring)); }
+.table tbody tr:hover{ background: color-mix(in srgb, var(--card) 85%, var(--ring)); }
+
+.statusBadge{
+  display:inline-block; padding:3px 8px; border-radius:999px; font-size:12px;
+  background: color-mix(in srgb, var(--card) 85%, var(--ring)); color:var(--title); border:1px solid var(--ring);
+}
+.statusOpen   { background:#fbbf24; color:#111827; }
+.statusClosed { background:#22c55e; color:#065f46; }
+
+.actions{ display:inline-flex; gap:8px; }
