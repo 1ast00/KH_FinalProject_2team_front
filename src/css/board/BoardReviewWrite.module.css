@@ -1,0 +1,67 @@
+* {
+  margin: 0px ;
+  padding: 0px;
+}
+.container{
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 824px; /* 토스트Ui 맞춰서 바꿈*/
+  border: 1px solid #5EAC24;
+  border-top: none;
+  padding-bottom: 10px;
+}
+.btn_gap {
+  display: flex;
+  flex-flow: row wrap;
+  width: 800px;  /* add 25.09.01 1200 >800*/
+  height: 60px;
+  /* background-color: #C4EEAE; */
+  /* border: 1px solid #5EAC24;  중복이라서*/
+  justify-content: space-between;
+}
+.titleInput{
+  flex-flow: row wrap;
+  width: 800px;  /* 토스트UI랑 동일하게.*/
+  height: 60px;
+  border-top: 1px solid #C4EEAE;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  padding-left: 20px;
+}
+.titleInput:focus{
+  outline: none;
+}
+.editorContents {
+  color: #333333 !important;
+  background-color: #C4EEAE;
+  border-color: 1px solid #5EAC24;
+  height: 500px;
+}
+.btn_addwrite{
+  width: 130px;
+  height: 45px;
+  font-size: 18px;
+  background-color: #5EAC24;
+  border: 1px solid #5EAC24;
+  border-radius: 30px;
+  color: white;
+  margin: 10px 10px;
+}
+.btn_back{
+  width: 130px;
+  height: 45px;
+  font-size: 18px;
+  background-color: #5EAC24;
+  border: 1px solid #5EAC24;
+  border-radius: 30px;
+  color: white;
+  margin: 10px 10px;
+}
+.contentArea{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
