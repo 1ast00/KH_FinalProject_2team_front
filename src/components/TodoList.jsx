@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useTodoStore } from '../store/todoStore';
 import TodoItem from './TodoItem';
-import { getTodosByDate } from '../service/todoApi';
 import { getUserData } from "../service/authApi";
 import { isAuthenticated } from "../util/authUtil";
+import styles from '../css/TodoList.module.css';
 
-export default function TodoList({ selectedDate }) {
-  const clearDone = useTodoStore((s) => s.clearDone);
-  const [filteredTodos, setFilteredTodos] = useState([]);
+export default ({ selectedDate }) => {
+  const { loadInitial, clearDone, todos, doneTodos} = useTodoStore();
+  const updateChk = useTodoStore((s) => s.updateChk);
   const [currentUser, setCurrentUser] = useState({});
+  const [resPonseMsg, setResPonseMsg] = useState("");
+  
 
   // 회원 정보 불러오는 api
   useEffect(() => {
@@ -24,45 +26,73 @@ export default function TodoList({ selectedDate }) {
 
   // list 항목 불러옴
   useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        if (!currentUser) {
-          console.log("!currentUser");
-          return
-        }; // 사용자가 없으면 요청하지 않음
-
-        // 백엔드 API를 호출하여 선택된 날짜의 할 일만 가져옴
-        console.log("selectedDate: ", selectedDate);
-        const response = await getTodosByDate(selectedDate);
-        console.log("TodoList.jsx response: ", response);
-        // setFilteredTodos(response.data.map(d => ({
-        //   id: d.tno,
-        //   title: d.tcontent,
-        //   done: d.tcheck,
-        //   date: d.tdate
-        // })));
-        console.log("fetchTodos");
-      } catch (error) {
-        console.error("Error fetching todos:", error);
-        setFilteredTodos([]); // 에러 발생 시 빈 배열로 설정
-      }
-    };
-    fetchTodos();
+    (async () => {
+      await loadInitial(selectedDate);
+      console.log(loadInitial);
+    })(); 
   }, [selectedDate, currentUser]); // 변경될 때마다 이 훅이 실행됨
 
+  // 변경 사항 저장
+  const handleUpdateChk = async () => {
+    try {
+      const response = await updateChk();   
+      setResPonseMsg(response?.msg || "변경 사항 저장을 완료했습니다.");
+    } catch (error) {
+      setResPonseMsg("변경 사항 저장을 실패했습니다.");
+    }
+  };
+
+  // 완료 항목 삭제
+  const handleAllRemoveClick = async () => {
+    try {
+      const response = await clearDone(doneTodos);
+      setResPonseMsg(response?.msg || "완료 항목 일괄 삭제가 완료되었습니다.");
+    } catch (error) {
+      setResPonseMsg("완료 항목 일괄 삭제를 실패했습니다.")
+    }
+  };
+
   return (
-    <div style={{ display: 'grid', gap: 8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <button onClick={clearDone} style={{ marginLeft: 'auto' }}>
+    <div className={styles.todoContainer}>
+      <div className={styles.todoActions}>
+        <span>{resPonseMsg}</span>
+        <button className={`${styles.actionBtn} ${styles.saveBtn}`} onClick={handleUpdateChk}>변경 사항 저장</button>
+        <button className={`${styles.actionBtn} ${styles.clearBtn}`} onClick={handleAllRemoveClick}>
           완료 항목 삭제
         </button>
       </div>
 
-       <ul style={{ paddingLeft: 16 }}>
-        {filteredTodos.map((t) => (
-          <TodoItem key={t.id} todo={t} />
-        ))}
-      </ul>
+      {/* 미완료 할 일 섹션 */}
+      <div className={styles.todoListContainer}>
+        {todos.length > 0 && (
+          <>
+            <h4 className={`${styles.sectionHeader} ${styles.pending}`}>오늘의 할 일</h4>
+            <ul className={styles.todoList}>
+              {todos.map((t) => (
+                <TodoItem key={t.id} todo={t} />
+              ))}
+            </ul>
+          </>
+        )}
+
+        {/* 완료된 할 일 섹션 */}
+        {doneTodos.length > 0 && (
+          <>
+            <h4 className={`${styles.sectionHeader} ${styles.completed}`}>완료된 할 일</h4>
+            <ul className={styles.todoList}>
+              {doneTodos.map((t) => (
+                <TodoItem key={t.id} todo={t} />
+              ))}
+            </ul>
+          </>
+        )}
+
+        {todos.length === 0 && (
+          <div className={styles.emptyMessage}>
+            할 일을 추가해 보세요!
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -59,7 +59,7 @@ export default () => {
             </Link>
           </li>
           <li className={header.hli}>
-            <Link>
+            <Link to={"/Gemini-ai"}>
               <p>AI질문</p>
             </Link>
           </li>

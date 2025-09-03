@@ -14,6 +14,7 @@ export default function ExerciseDetailPage() {
 
   // 칼로리 계산기 관련 상태
   const [weight, setWeight] = useState(''); // 사용자 체중
+  const [weightError, setWeightError] = useState(''); // 체중 입력 오류 메시지(0826 추가)
   const [duration, setDuration] = useState(30); // 운동 시간 (기본값 30분)
   const [calories, setCalories] = useState(null); // 계산된 소모 칼로리
 
@@ -27,9 +28,9 @@ export default function ExerciseDetailPage() {
 
       // 전달받은 데이터가 없으면(예:URL로 직접 접속) API를 새로 호출
       if (!data) {
-        data = await getExerciseData(); 
+        data = await getExerciseData();
       }
-      
+
       // 전체 데이터에서 현재 URL에 맞는 운동을 찾음
       const foundExercise = data.find(
         (item) => item['운동명'] === decodedExerciseName
@@ -81,6 +82,19 @@ export default function ExerciseDetailPage() {
   const metValue = parseFloat(exercise['단위체중당에너지소비량']);
   const intensity = getExerciseIntensity(metValue);
 
+  // 체중 입력값이 바뀔 때마다 호출(0826 추가)
+  const handleWeightChange = (e) => {
+    const value = e.target.value;
+    // 정규표현식을 사용해 입력값이 비어있거나 숫자(소수점 포함)일 경우에만 허용
+    if (value === '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
+      setWeight(value);
+      setWeightError(''); // 유효한 값이면 에러 메시지 초기화
+    } else {
+      // 유효하지 않은 값이면 에러 메시지 설정
+      setWeightError('📢숫자를 입력해주세요!');
+    }
+  };
+
   // 체중 입력 시 실시간으로 분당 소모 칼로리를 계산
   const kcalPerMin = (() => {
     const w = parseFloat(weight);
@@ -91,20 +105,38 @@ export default function ExerciseDetailPage() {
   // 렌더링
   return (
     <div className={styles.detailContainer}>
+
       <h1 className={styles.detailTitle}>{exercise['운동명']}</h1>
-      {/* 운동 기본 정보 */}
-      <div className={styles.detailInfo}>
-        <p><strong>MET :</strong> <span>{metValue}</span></p>
-        <p><strong>에너지 소비량 :</strong> <span>MET × 체중(kg) × 시간(hr)</span></p>
-        <p><strong>운동 강도 :</strong> <span className={`${styles.intensityBadge} ${styles[intensity.style]}`}>{intensity.level}</span></p>
-      </div>
+
       {/* 칼로리 계산기 */}
       <div className={styles.calculatorBox}>
-        <img src="/img/exercise_2.png" alt="배경" className={styles.backgroundImage} />
+        <img src="/img/exercise_2.png" alt="배경" className={styles.pageBackgroundImage} />
+        {/* 운동 기본 정보 */}
+        <div className={styles.detailInfo}>
+          <p><strong>MET :</strong> <span>{metValue}</span></p>
+          <p><strong>에너지 소비량 :</strong> <span>MET × 체중(kg) × 시간(hr)</span></p>
+          <p><strong>운동 강도 :</strong> <span className={`${styles.intensityBadge} ${styles[intensity.style]}`}>{intensity.level}</span></p>
+        </div>
+
+        {/* 정보와 계산기를 구분하는 라인 */}
+        <hr className={styles.divider} />
+
         <h2>소모 칼로리 계산기</h2>
         <div className={styles.inputGroup}>
           <label htmlFor="weight">체중 (kg)</label>
-          <input id="weight" type="number" value={weight} onChange={(e) => setWeight(e.target.value)} placeholder="예: 70" />
+          <input id="weight" type="text" value={weight} onChange={handleWeightChange} placeholder="예: 70" />
+          
+          {/* 체중 입력 오류 방지 메시지, 분당 소모 칼로리 계산 메시지 */}
+          <div className={styles.messageContainer}>
+            {/* 체중 입력 오류 메시지 */}
+            {weightError && <div className={styles.errorText}>{weightError}</div>}
+
+            {!weightError && kcalPerMin && (
+              <div className={styles.hintBox}>
+                <small>📌 분당 약 {kcalPerMin} kcal 소모합니다.</small>
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.inputGroup}>
           <label htmlFor="duration">운동 시간</label>
@@ -119,17 +151,20 @@ export default function ExerciseDetailPage() {
           </select>
         </div>
         <button onClick={handleCalculate} className={styles.calculateBtn}>계산하기</button>
-        {/* 분당 소모 칼로리 (체중 입력 시 보임) */}
-        {kcalPerMin && <div className={styles.hintBox}><small>분당 약 {kcalPerMin} kcal를 소모합니다.</small></div>}
-
-        {/* 계산 결과 (계산하기 버튼 클릭 시 보임) */}
-        {calories !== null && <div className={styles.resultBox}><p>약 <strong className={styles.resultCalories}>{calories} kcal</strong>를 소모합니다!</p></div>}
-      </div>
-      {/* 목록으로 돌아가기 링크 */}
-      <div className={styles.backLinkContainer}>
-        <Link to="/exercise" className={styles.backLink}>
-          목록으로 돌아가기🏃🏻‍♂️
-        </Link>
+        <div className={styles.resultsWrapper}>
+          {/* 계산 결과 (계산하기 버튼 클릭 시 보임) */}
+          {!weightError && calories !== null && (
+            <div className={styles.resultBox}>
+              <p><strong>{exercise['운동명']}</strong> 운동을 <strong>{duration}분</strong> 동안 하시면<br />약 <strong className={styles.resultCalories}>{calories} kcal</strong>를 소모합니다!</p>
+            </div>
+          )}
+        </div>
+        {/* 목록으로 돌아가기 링크 */}
+        <div className={styles.backLinkContainer}>
+          <Link to="/exercise" className={styles.backLink}>
+            목록으로 돌아가기🏃🏻‍♂️
+          </Link>
+        </div>
       </div>
     </div>
   );
