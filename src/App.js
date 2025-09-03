@@ -1,5 +1,6 @@
 // src/App.jsx
 import "./App.css";
+import "./pages/admin/theme.css";
 
 import {
   BrowserRouter,

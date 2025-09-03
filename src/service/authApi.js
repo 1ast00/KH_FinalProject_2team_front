@@ -80,9 +80,10 @@ export const getUserData = async () => {
 };
 
 export const apiLogout = async () => {
-  const response = await authApi.post("/auth/logout");
+  await authApi.post("/auth/logout");
   clearToken();
 };
+
 
 // 아이디 찾기
 export const findID = async (mname, nickname) => {

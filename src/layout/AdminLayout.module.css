@@ -102,3 +102,29 @@
   .sidebar{ width: 56px; }
   .sidebar:hover{ width: 220px; }
 }
+
+/* ===== 다크모드 세트 ===== */
+:root.dark{
+  --bg: #0b1020;
+  --panel: #111827;
+  --aside-bg: #0b1224;
+  --aside-bg-hover: #0a0f1f;
+  --text: #94a3b8;
+  --text-strong: #f9fafb;
+  --active: #1e293b;
+  --ring: #0f172a;
+  --border: #334155;
+}
+
+:root.dark .pageTitle,
+:root.dark .username{
+  color: var(--text-strong);
+}
+
+:root.dark .topIcon{
+  background: var(--panel);
+  border-color: var(--border);
+}
+:root.dark .topIcon:hover{
+  background: #1f2937;
+}

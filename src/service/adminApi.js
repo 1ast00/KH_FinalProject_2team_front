@@ -1,4 +1,3 @@
-// src/service/adminApi.js
 import axios from "axios";
 import { getAccessToken } from "../util/authUtil";
 
@@ -16,30 +15,22 @@ api.interceptors.request.use((config) => {
 });
 
 /* ----- 대시보드 ----- */
-export const getAdminDashboardSummary = () =>
-  api.get("/admin/dashboard/summary");
-export const getAdminRecentReviews = () =>
-  api.get("/admin/dashboard/recent-reviews");
-export const getAdminRecentDiets = () =>
-  api.get("/admin/dashboard/recent-diets");
+export const getAdminDashboardSummary = () => api.get("/admin/dashboard/summary");
+export const getAdminRecentReviews   = () => api.get("/admin/dashboard/recent-reviews");
+export const getAdminRecentDiets     = () => api.get("/admin/dashboard/recent-diets");
 
 /* ----- 회원관리 ----- */
-export const getAdminMembers = (params) =>
-  api.get("/admin/members", { params });
-
-export const getAdminMemberDetail = (mno) =>
-  api.get(`/admin/members/${mno}`);
-
-export const patchAdminMemberRole = (mno, role) =>
-  api.patch(`/admin/members/${mno}/role`, { role });
+export const getAdminMembers       = (params) => api.get("/admin/members", { params });
+export const getAdminMemberDetail  = (mno)    => api.get(`/admin/members/${mno}`);
+export const patchAdminMemberRole  = (mno, role) => api.patch(`/admin/members/${mno}/role`, { role });
+export const deleteAdminMember     = (mno)    => api.delete(`/admin/members/${mno}`);
 
 export default {
-  // 대시보드
   getAdminDashboardSummary,
   getAdminRecentReviews,
   getAdminRecentDiets,
-  // 회원관리
   getAdminMembers,
   getAdminMemberDetail,
   patchAdminMemberRole,
+  deleteAdminMember,
 };
