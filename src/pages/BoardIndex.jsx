@@ -41,9 +41,6 @@ function BoardIndex() {
   : styles.btn_tapreview;
 
 
-
-
-
   return (
     <div>
       <div className={styles.container}>
