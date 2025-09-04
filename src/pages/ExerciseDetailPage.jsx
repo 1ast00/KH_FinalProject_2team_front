@@ -85,6 +85,9 @@ export default function ExerciseDetailPage() {
   // 체중 입력값이 바뀔 때마다 호출(0826 추가)
   const handleWeightChange = (e) => {
     const value = e.target.value;
+
+      setCalories(null); // 체중이 바뀌면 계산 결과 초기화(0904 추가)
+
     // 정규표현식을 사용해 입력값이 비어있거나 숫자(소수점 포함)일 경우에만 허용
     if (value === '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
       setWeight(value);
