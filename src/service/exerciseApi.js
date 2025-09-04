@@ -10,11 +10,7 @@ const publicApi = axios.create({
   baseURL: API_BASE_URL,
 });
 
-/**
- * 오늘의 추천 운동 목록을 가져오는 함수
- * @param {string} exerciseType '실내' 또는 '실외'
- * @returns {Promise<Array>} 추천 운동 목록 데이터
- */
+// 추천 운동 데이터를 가져오는 함수
 export const getRecommendedExercises = async (exerciseType) => {
     try {
         const response = await publicApi.get("/exercise/recommendations", {
