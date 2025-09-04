@@ -3,12 +3,27 @@ import ExerciseList from '../components/ExerciseList';
 import ExerciseSearch from '../components/ExerciseSearch';
 import ExerciseFilter from '../components/ExerciseFilter';
 import { getExerciseData, getRecommendedExercises } from '../service/exerciseApi';
-import { getCurrentWeather } from '../service/weatherApi'; // 날씨 API 서비스 import
+import { getCurrentWeather } from '../service/weatherApi';
 import styles from '../css/ExerciseListPage.module.css';
 import { Link } from 'react-router-dom';
 
+// 날씨 객체를 받아 추천할 운동 타입을 결정하는 함수
+const getExerciseTypeByWeather = (weather) => {
+    if (!weather) return '실외';
+
+    const weatherIconCode = weather.icon.slice(0, 2);
+    const temp = weather.temp;
+
+    if (['09', '10', '11', '13', '50'].includes(weatherIconCode)) {
+        return '실내';
+    }
+    if (temp > 30 || temp < 0) {
+        return '실내';
+    }
+    return '실외';
+};
+
 export default function ExerciseListPage() {
-  // 상태
   const [healthData, setHealthData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [recommended, setRecommended] = useState([]);
@@ -18,49 +33,48 @@ export default function ExerciseListPage() {
   const [sortOrder, setSortOrder] = useState('asc');
   const [weather, setWeather] = useState(null);
 
+  // 1. 전체 운동 목록과 날씨 정보를 먼저 가져오기
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       setLoading(true);
 
-      const fetchWeather = async () => {
+      const fetchWeather = new Promise((resolve) => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              const weatherData = await getCurrentWeather(latitude, longitude);
-              setWeather(weatherData);
-            },
-            async (error) => {
-              console.warn("위치 정보를 가져올 수 없습니다. 기본 위치(서울)로 날씨를 조회합니다.", error);
-              const weatherData = await getCurrentWeather(37.5665, 126.9780);
-              setWeather(weatherData);
-            }
+            async (position) => resolve(await getCurrentWeather(position.coords.latitude, position.coords.longitude)),
+            async () => resolve(await getCurrentWeather(37.5665, 126.9780)) // 거부 시 서울 날씨
           );
         } else {
-            console.warn("이 브라우저는 위치 정보 기능을 지원하지 않습니다.");
-            const weatherData = await getCurrentWeather(37.5665, 126.9780); 
-            setWeather(weatherData);
+            resolve((async () => await getCurrentWeather(37.5665, 126.9780))()); // 미지원 시 서울 날씨
         }
-      };
+      });
 
-      // 운동 데이터와 날씨 데이터를 동시에 요청
-      await Promise.all([
-        (async () => {
-          const [allData, recommendedData] = await Promise.all([
-            getExerciseData(),
-            getRecommendedExercises(),
-          ]);
-          setHealthData(allData);
-          setRecommended(recommendedData);
-        })(),
-        fetchWeather(),
+      const [allData, weatherData] = await Promise.all([
+          getExerciseData(),
+          fetchWeather,
       ]);
 
+      setHealthData(allData);
+      setWeather(weatherData);
       setLoading(false);
     };
-    fetchData();
+    fetchInitialData();
   }, []);
 
+  // 2. 날씨(weather) 정보가 확정되면, 그에 맞는 추천 운동을 요청
+  useEffect(() => {
+    if (!weather) return;
+
+    const fetchRecommendations = async () => {
+        const exerciseType = getExerciseTypeByWeather(weather);
+        console.log(`오늘의 날씨 기반 추천 타입: ${exerciseType}`);
+        const recommendedData = await getRecommendedExercises(exerciseType);
+        setRecommended(recommendedData);
+    };
+    fetchRecommendations();
+  }, [weather]);
+
+  // 검색, 정렬 관련 로직
   useEffect(() => {
     const filteredData = healthData.filter(item =>
       item && item['운동명'] && item['운동명'].toLowerCase().includes(searchTerm.toLowerCase())
@@ -94,10 +108,10 @@ export default function ExerciseListPage() {
     <div className={styles.appContainer}>
       <img src="/img/exercise_1.png" alt="운동 추천 배너" className={styles.bannerImage} />
       
-      {recommended.length > 0 && (
+      {!loading && recommended.length > 0 && (
         <div className={styles.recommendationContainer}>
             <div className={styles.recommendationHeader}>
-              <h2 className={styles.recommendationTitle}>🚴🏻‍♀️ 오늘의 추천 운동</h2>
+              <h2 className={styles.recommendationTitle}>🚴🏻‍♀️ 오늘의 추천 운동(WOD)</h2>
               {weather && (
                 <div className={styles.weatherWidget}>
                   <img
@@ -133,6 +147,7 @@ export default function ExerciseListPage() {
         </div>
       )}
 
+      {/* 전체 운동 목록 */}
       <div className={styles.metAndControls}>
         <div className={styles.metExplanation}>
           <p>
