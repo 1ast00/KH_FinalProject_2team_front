@@ -126,8 +126,8 @@
 /* 섹션 스타일 */
 .section {
   display: flex;
-  flex-direction: column; /* 세로 정렬 */
-  align-items: flex-start; /* 왼쪽 정렬 */
+  flex-direction: column;
+  align-items: flex-start;
   gap: 15px;
   padding: 25px 30px;
   margin-bottom: 25px;
@@ -136,6 +136,10 @@
   border: 2px solid #e6fffa;
   transition: all 0.3s ease;
   cursor: pointer;
+  /* 컨테이너를 넘지 않도록 수정 */
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .section:hover {
@@ -157,22 +161,198 @@
   margin: 0;
 }
 
+/* sectionContent 수정 - 고정 너비 제거 */
 .sectionContent {
-  width: 1000px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto; /* 가로 스크롤 추가 */
 }
 
-.recipeCard {
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-  border-radius: 16px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(94, 172, 36, 0.12);
-  min-height: 120px;
-  max-width: 700px;
+/* 섹션 헤더 (아이콘 + 제목 + 전체보기) */
+.sectionHeader {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.sectionHeader .sectionIcon {
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0 3px 6px rgba(94, 172, 36, 0.2));
+}
+
+.sectionHeader .sectionTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #5EAC24;
+  margin: 0;
+  flex: 1;
+}
+
+/* 전체보기 링크 */
+.viewAllLink {
+  font-size: 14px;
+  color: #6DC82A;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1px solid #6DC82A;
+  border-radius: 20px;
   transition: all 0.3s ease;
+  background: rgba(109, 200, 42, 0.1);
+}
+
+.viewAllLink:hover {
+  background: #6DC82A;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(94, 172, 36, 0.3);
+}
+
+/* Swiper 컨테이너 */
+.swiperContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 가운데 정렬 */
+  gap: 5px;
+  width: 100%;
+}
+
+/* Swiper 본체 */
+.mySwiper {
+  width: 100%;
+  padding: 10px 0;
+  flex: 1;
+  overflow: visible;
+}
+
+/* 기본 Swiper 네비게이션 버튼 커스터마이징 */
+.mySwiper :global(.swiper-button-next),
+.mySwiper :global(.swiper-button-prev) {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  border: 2px solid #6DC82A;
+  border-radius: 50%;
+  color: #6DC82A;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: -22.5px; /* 중앙 정렬을 위해 높이의 절반만큼 위로 */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(94, 172, 36, 0.15);
+}
+
+/* 네비게이션 버튼 호버 효과 */
+.mySwiper :global(.swiper-button-next:hover),
+.mySwiper :global(.swiper-button-prev:hover) {
+  background: #6DC82A;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(94, 172, 36, 0.3);
+}
+
+/* 네비게이션 버튼 활성 상태 */
+.mySwiper :global(.swiper-button-next:active),
+.mySwiper :global(.swiper-button-prev:active) {
+  transform: scale(0.95);
+}
+
+/* 네비게이션 버튼 비활성화 상태 */
+.mySwiper :global(.swiper-button-next.swiper-button-disabled),
+.mySwiper :global(.swiper-button-prev.swiper-button-disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  color: #ccc;
+  border-color: #ddd;
+}
+
+.mySwiper :global(.swiper-button-next.swiper-button-disabled:hover),
+.mySwiper :global(.swiper-button-prev.swiper-button-disabled:hover) {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(94, 172, 36, 0.15);
+  background: #f5f5f5;
+  color: #ccc;
+}
+
+/* 이전 버튼 위치 조정 */
+.mySwiper :global(.swiper-button-prev) {
+  left: 5px; /* 컨테이너 밖으로 배치 */
+}
+
+/* 다음 버튼 위치 조정 */
+.mySwiper :global(.swiper-button-next) {
+  right: 5px; /* 컨테이너 밖으로 배치 */
+}
+
+/* 네비게이션 버튼 아이콘 크기 조정 */
+.mySwiper :global(.swiper-button-next:after),
+.mySwiper :global(.swiper-button-prev:after) {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* 커스텀 페이지네이션 컨테이너 */
+.customPagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+  width: 100%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 커스텀 페이지네이션 불릿 */
+.customBullet {
+  width: 10px;
+  height: 10px;
+  background-color: #e6fffa;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #C4EEAE;
+  opacity: 1;
+}
+
+.customBullet:hover {
+  background-color: #C4EEAE;
+  transform: scale(1.2);
+}
+
+/* 활성화된 불릿 */
+.customBulletActive {
+  background-color: #6DC82A;
+  border-color: #5EAC24;
+  transform: scale(1.3);
+  box-shadow: 0 2px 8px rgba(94, 172, 36, 0.4);
+}
+
+.recipeContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+   justify-items: center;
+}
+
+/* 레시피 카드 */
+.recipeCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); 
+  border-radius: 16px; 
+  padding: 20px; 
+  text-align: center; 
+  box-shadow: 0 6px 18px rgba(94, 172, 36, 0.12); 
+  min-height: 120px; 
+  width: 100%; 
+  height: 100%; 
+  box-sizing: border-box; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-evenly; 
+  transition: all 0.3s ease; 
   border: 2px solid #C4EEAE;
 }
 
@@ -188,6 +368,10 @@
   color: #5EAC24;
   margin-bottom: 8px;
   text-shadow: 0 1px 3px rgba(94, 172, 36, 0.1);
+  /* 긴 제목 처리 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .recipeDesc {
@@ -195,6 +379,11 @@
   color: #444;
   line-height: 1.6;
   font-weight: 400;
+  /* 긴 설명 처리 */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* 비로그인 사용자 컨텐츠 */
@@ -291,7 +480,7 @@
   text-shadow: 0 2px 6px rgba(94, 172, 36, 0.3);
 }
 
-/* 반응형 디자인 */
+/* 반응형 디자인 개선 */
 @media (max-width: 768px) {
   .container {
     padding: 0;
@@ -299,7 +488,7 @@
   
   .authenticatedContent,
   .nonAuthenticatedContent {
-    padding: 20px 20px;
+    padding: 20px 15px; /* 좌우 패딩 줄임 */
   }
   
   .welcomeSection {
@@ -321,8 +510,9 @@
   }
   
   .section {
-    padding: 20px;
+    padding: 20px 15px; /* 패딩 줄임 */
     gap: 15px;
+    margin-bottom: 20px;
   }
   
   .sectionIcon {
@@ -334,13 +524,29 @@
     font-size: 18px;
   }
   
+  /* 레시피 카드 모바일 최적화 */
+  .recipeCard {
+    padding: 15px 12px;
+    min-height: 100px;
+  }
+  
+  .recipeTitle {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  
+  .recipeDesc {
+    font-size: 13px;
+    -webkit-line-clamp: 2; /* 모바일에서는 2줄로 제한 */
+  }
+  
   .featuresGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 15px; /* 간격 줄임 */
   }
   
   .featureCard {
-    padding: 25px 20px;
+    padding: 20px 15px;
   }
   
   .featureTitle {
@@ -353,6 +559,11 @@
 }
 
 @media (max-width: 480px) {
+  .authenticatedContent,
+  .nonAuthenticatedContent {
+    padding: 15px 10px; /* 더 작은 패딩 */
+  }
+  
   .welcomeSection {
     padding: 25px 15px;
   }
@@ -371,17 +582,146 @@
   }
   
   .section {
-    padding: 18px 15px;
+    padding: 18px 12px; /* 더 작은 패딩 */
     flex-direction: column;
     text-align: center;
     gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .sectionTitle {
+    font-size: 16px;
+  }
+  
+  .recipeCard {
+    padding: 12px 10px;
+    min-height: 90px;
+  }
+  
+  .recipeTitle {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .recipeDesc {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
   }
   
   .featuresGrid {
-    gap: 15px;
+    gap: 12px;
+    grid-template-columns: 1fr; /* 초소형 화면에서는 1열 */
   }
   
   .featureCard {
-    padding: 20px 15px;
+    padding: 18px 12px;
+  }
+  
+  .featureTitle {
+    font-size: 16px;
+  }
+  
+  .featureText {
+    font-size: 12px;
+  }
+}
+
+/* 추가: 매우 작은 화면 대응 */
+@media (max-width: 360px) {
+  .authenticatedContent,
+  .nonAuthenticatedContent {
+    padding: 10px 8px;
+  }
+  
+  .section {
+    padding: 15px 10px;
+  }
+  
+  .welcomeSection {
+    padding: 20px 12px;
+  }
+  
+  .featuresGrid {
+    gap: 10px;
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .swiperContainer {
+    gap: 10px;
+  }
+  
+  .btn_left,
+  .btn_right {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+  
+  .customPagination {
+    margin-top: 12px;
+    gap: 6px;
+  }
+  
+  .customBullet {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .swiperContainer {
+    gap: 8px;
+  }
+  
+  .btn_left,
+  .btn_right {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+  
+  .customPagination {
+    margin-top: 10px;
+    gap: 5px;
+  }
+  
+  .customBullet {
+    width: 7px;
+    height: 7px;
+  }
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .sectionHeader {
+    gap: 10px;
+  }
+  
+  .sectionHeader .sectionIcon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .sectionHeader .sectionTitle {
+    font-size: 18px;
+  }
+  
+  .viewAllLink {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionHeader {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .viewAllLink {
+    font-size: 11px;
+    padding: 5px 10px;
   }
 }
