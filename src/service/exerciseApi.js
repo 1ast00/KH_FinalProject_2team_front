@@ -1,4 +1,6 @@
-import axios from "axios"; // HTTP 통신을 위한 axios 라이브러리
+// src/service/exerciseApi.js
+
+import axios from "axios";
 
 // 백엔드 서버의 기본 URL 주소
 const API_BASE_URL = "http://localhost:9999/api";
@@ -7,6 +9,19 @@ const API_BASE_URL = "http://localhost:9999/api";
 const publicApi = axios.create({
   baseURL: API_BASE_URL,
 });
+
+// 추천 운동 데이터를 가져오는 함수
+export const getRecommendedExercises = async (exerciseType) => {
+    try {
+        const response = await publicApi.get("/exercise/recommendations", {
+            params: { exerciseType } // 요청 시 파라미터 추가
+        });
+        return response.data;
+    } catch (error) {
+        console.error("추천 운동 데이터를 불러오는 중 오류 발생:", error);
+        return [];
+    }
+};
 
 // 운동 데이터 목록을 가져오는 함수
 export const getExerciseData = async () => {

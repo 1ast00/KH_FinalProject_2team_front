@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { reviewsAPI } from "../../../service/boardApi";
 import { Viewer } from "@toast-ui/react-editor";
+import { getUserData } from "../../../util/authUtil";
 import styles from "../../../css/board/BoardReviewDetail.module.css";
 
 export default function BoardReviewDetail() {
@@ -11,9 +12,14 @@ export default function BoardReviewDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+const userData = getUserData();
+const loggedInNickname = userData ? userData.nickname : "";
+const [awesomeMemberIds, setAwesomeMemberIds] = useState([]);
+
   useEffect(() => {
     const fetchReviewDetail = async () => {
       try {
+        console.log("brno:", brno);
         const response = await reviewsAPI.get(`/detail/${brno}`);
         setReview(response.data.review); // 'review' 키로 데이터에 접근
         setAwesomeCount(response.data.awesomeCount);
@@ -38,18 +44,16 @@ export default function BoardReviewDetail() {
     return <div>게시글을 찾을 수 없습니다.</div>;
   }
 
+const heartIcon = awesomeCount > 0 ? "♥" : "♡";
+
   return (
     <div className={styles.container}>
-      {/* 이미지에 보이는 게시글 제목 영역 */}
-      <h1 className={styles.brtitle}>{review.brtitle}</h1>
+      <h2 className={styles.brtitle}>{review.brtitle}</h2>
       <hr className={styles.divider} />
 
-      {/* 작성자 정보 및 좋아요, 신고 버튼 영역 */}
       <div className={styles.brinfo}>
         <div className={styles.brwriter}>
-          {/*<span className={styles.username}>{review.username}</span>*/} 
-          <span className={styles.username}>{review.mname}</span> 
-          review.username
+          <span className={styles.nickname}>{review.nickname}</span>
           <span className={styles.date}>
             {new Date(review.brwrite_date).toLocaleDateString()}
           </span>
@@ -60,15 +64,16 @@ export default function BoardReviewDetail() {
             </span>
           )}
         </div>
+
         <div className={styles.actions}>
-          {/* <span>❤ {review.awesomeCount}</span> */}
-          <span>❤ {awesomeCount}</span>
+          <span>
+            {heartIcon} {awesomeCount}
+          </span>
           <span>신고</span>
         </div>
       </div>
       <hr className={styles.divider} />
 
-      {/* TUI Viewer를 사용하여 HTML 내용을 렌더링 */}
       <div className={styles.brcontent}>
         <Viewer initialValue={review.brcontent} />
       </div>
@@ -79,7 +84,7 @@ export default function BoardReviewDetail() {
       <div className={styles.commentSection}>
         {/* 로그인한 회원 아이디 (예시) */}
         <div className={styles.commentInputBox}>
-          <span className={styles.loggedInUser}>로그인한 회원 아이디</span>
+          <span className={styles.loggedInUser}>{loggedInNickname}</span>
           <textarea
             className={styles.commentInput}
             placeholder="댓글을 남겨주세요."

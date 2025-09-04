@@ -44,6 +44,7 @@ import FoodDetailPage from "./pages/FoodDetailPage";
 import RecipePage from "./pages/RecipePage";
 import RecipeDetailPage from "./pages/RecipeDetailPage";
 
+
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
   const role = (getUserData()?.role || "").toString().toUpperCase();
@@ -92,6 +93,7 @@ function App() {
             <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
             <Route path="/recipe" element={<RecipePage />}/>
             <Route path="/recipeDetail/:id" element={<RecipeDetailPage />}/>
+
           </Route>
 
           {/* 관리자 라우트 */}

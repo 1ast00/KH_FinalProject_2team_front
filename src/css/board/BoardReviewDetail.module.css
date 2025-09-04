@@ -2,3 +2,118 @@
   margin: 0px;
   padding: 0px;
 }
+.container{
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 824px;
+  border: 1px solid #5EAC24;
+  border-top: none;
+  padding-bottom: 10px;
+  font-family: 'Arial', sans-serif;
+  color: #595959;
+}
+
+.brtitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #595959;
+    padding: 0px 0px 20px 20px
+}
+
+.brinfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.brwriter {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #595959;
+}
+
+.nickname {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.date, .updatedDate {
+    color: #888;
+    margin-left: 5px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+}
+
+.actions span {
+    margin-left: 15px;
+    font-size: 14px;
+    color: #888;
+    cursor: pointer;
+}
+
+.actions span:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: #C4EEAE; /* hr 색상을 밝은 초록색으로 변경 */
+    margin: 10px 0;
+}
+
+.brcontent {
+    margin: 20px 0;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.commentSection {
+    margin-top: 30px;
+}
+
+.commentInputBox {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.loggedInUser {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.commentInput {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    resize: vertical;
+}
+
+.commentSubmitBtn {
+    background-color: #5EAC24;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.commentSubmitBtn:hover {
+    background-color: #4b8a1c;
+}
+
+.commentList {
+    /* 댓글 목록을 위한 스타일 */
+}
