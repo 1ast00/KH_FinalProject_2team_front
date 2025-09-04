@@ -1,8 +1,8 @@
 // ToDo 전역 스토어 (persist + devtools + immer)
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import { addTodo, deleteDoneTodo, deleteTodo, getTodosByDate, updateCheck, updateTodo } from '../service/todoApi';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
+import { addTodo, deleteDoneTodo, deleteTodo, getTodosByDate, updateCheck, updateTodo } from "../service/todoApi";
 
 export const useTodoStore = create()(
   // devtools는 Redux DevTools 연동을 가능하게 함
@@ -35,10 +35,10 @@ export const useTodoStore = create()(
                 ]
               }),
               false,
-              'todo/add'
+              "todo/add"
             );
           } catch (error) {
-            console.error('할 일 추가 실패:', error);
+            console.error("할 일 추가 실패:", error);
           }
         },
 
@@ -77,7 +77,7 @@ export const useTodoStore = create()(
                 }
               },
             false,
-            'todo/toggle'
+            "todo/toggle"
           );
         },
 
@@ -85,10 +85,9 @@ export const useTodoStore = create()(
         updateChk: async () => {
           try {
             const todoAll = [...get().todos, ...get().doneTodos];
-            const response = await updateCheck(todoAll);
-            alert(response.msg);
+            await updateCheck(todoAll);
           } catch (error) {
-            console.error('저장 실패:', error);
+            console.error("저장 실패:", error);
           }
         },
 
@@ -97,7 +96,7 @@ export const useTodoStore = create()(
           try {
             await deleteTodo(id);
           } catch (error) {
-            console.log('항목 삭제 실패: ', error);
+            console.log("항목 삭제 실패: ", error);
           }
 
           set(
@@ -106,17 +105,16 @@ export const useTodoStore = create()(
               state.doneTodos = state.doneTodos.filter((t) => t.id !== id);
             },
             false,
-            'todo/delete',
+            "todo/delete",
           )
         },
 
         // 완료 항목 일괄 삭제
         clearDone: async (doneTodos) => {
           try {
-            const response = await deleteDoneTodo(doneTodos);
-            alert(response.msg);
+            await deleteDoneTodo(doneTodos);
           } catch (error) {
-            console.log('일괄 삭제 실패: ', error);
+            console.log("일괄 삭제 실패: ", error);
           }
 
           set(
@@ -124,7 +122,7 @@ export const useTodoStore = create()(
               state.doneTodos = state.doneTodos.filter((t) => !t.done);
             },
             false,
-            'todo/deleteDoneTodo',
+            "todo/deleteDoneTodo",
           )
         },
 
@@ -132,9 +130,8 @@ export const useTodoStore = create()(
         edit: async (id, newTitle) => {
           try {
             await updateTodo({id, title: newTitle});
-
           } catch (error) {
-            console.log('수정 실패: ', error);
+            console.log("수정 실패: ", error);
           }
 
           set(
@@ -145,14 +142,14 @@ export const useTodoStore = create()(
               if (d) d.title = newTitle;
             },
             false,
-            'todo/edit'
+            "todo/edit"
           )
         },
 
         // 초기 데이터 불러오기
         loadInitial: async (date) => {
-          const res = await getTodosByDate(date);
-          const data = res.todoList;
+          const response = await getTodosByDate(date);
+          const data = response.todoList;
           const todos = [];
           const doneTodos = [];
 
@@ -178,14 +175,14 @@ export const useTodoStore = create()(
               state.doneTodos = doneTodos;
             },
             false,
-            'todo/loadInitial'
+            "todo/loadInitial"
           );
         },
       })),
       // persist 옵션: key 이름
-      { name: 'todos-storage' },
+      { name: "todos-storage" },
     ),
     // devtools 옵션: 스토어 이름 (Redux DevTools에 표시됨)
-    { name: 'TodoStore' },
+    { name: "TodoStore" },
   ),
 );

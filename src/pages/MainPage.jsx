@@ -1,14 +1,25 @@
 import { isAuthenticated } from "../util/authUtil";
 import { Link } from "react-router-dom";
 import styles from "../css/Main.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getUserData } from "../service/authApi";
 import TodoItem from "../components/TodoItem";
 import { useTodoStore } from "../store/todoStore";
+import RecipeList from "../components/RecipeList";
+
+// swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination'; 
+import 'swiper/css/navigation'; 
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 
 export default () => {
+  const {todos} = useTodoStore();
   const [currentUser, setCurrentUser] = useState({});
-  const todos = useTodoStore((s) => s.todos);
+  const swiperRef = useRef(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
   // icon 3 번 출력
   const icons = [1, 2, 3];
@@ -25,6 +36,15 @@ export default () => {
     fetchUserData();
   }, []); 
 
+  // 추천 메뉴(레시피)
+  const {recipeList} = RecipeList();
+
+  // Swiper 이벤트 핸들러
+  const handleSlideChange = (swiper) => {
+    setIsBeginning(swiper.isBeginning);
+    setIsEnd(swiper.isEnd);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.headerImage}>
@@ -39,7 +59,7 @@ export default () => {
         isAuthenticated() ? (
           <div className={styles.authenticatedContent}>
             { currentUser.nickname && (
-              <>
+            <>
               {/* 닉네임, 목표 체중 */}
               <div className={styles.welcomeSection}>
                 <img src="/img/main_icon_1.png" alt="main icon 1" className={styles.icon}/>
@@ -70,10 +90,64 @@ export default () => {
 
               {/* 추천 메뉴 */}
               <div className={styles.section}>
-                <img src="/img/main_icon_4.png" alt="main recipe icon" className={styles.sectionIcon}/>
-                <h3 className={styles.sectionTitle}>추천 메뉴</h3>
+                <div className={styles.sectionHeader}>
+                  <img src="/img/main_icon_4.png" alt="main recipe icon" className={styles.sectionIcon}/>
+                  <h3 className={styles.sectionTitle}>추천 메뉴</h3>
+                  {/* 전체보기 링크 */}
+                  <Link to="/recipe" className={styles.viewAllLink}>
+                    전체보기 →
+                  </Link>
+                </div>
+
+                <div className={styles.swiperContainer}>
+                  <Swiper
+                    ref={swiperRef}
+                    slidesPerGroup={5}
+                    spaceBetween={16}
+                    slidesPerView={3}
+                    navigation={true}
+                    pagination={{ 
+                      clickable: true,
+                      dynamicBullets: true,
+                      el: `.${styles.customPagination}`,
+                      bulletClass: styles.customBullet,
+                      bulletActiveClass: styles.customBulletActive
+                    }}
+                    modules={[Pagination, Navigation, Autoplay]}
+                    className={styles.mySwiper}
+                    onSlideChange={handleSlideChange}
+                    onSwiper={(swiper) => {
+                      setIsBeginning(swiper.isBeginning);
+                      setIsEnd(swiper.isEnd);
+                    }}
+                    autoplay={{
+                      delay: 3500,
+                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
+                    }}
+                  >
+                    {
+                      recipeList && recipeList.map((item) => (
+                        <SwiperSlide key={item.recipe_id}>
+                          {/* 개별 레시피 상세 페이지로 이동 */}
+                          <Link to={`/recipe/detail/${item.recipe_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <div className={styles.recipeContainer}>
+                              <div className={styles.recipeCard}>
+                                <h4 className={styles.recipeTitle}>{item.recipe_nm_ko}</h4>
+                                <p className={styles.recipeDesc}>{item.sumry}</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </SwiperSlide>
+                      ))
+                    }
+                  </Swiper>
+                </div>
+
+                {/* 커스텀 페이지네이션 */}
+                <div className={styles.customPagination}></div>
               </div>
-              </>
+            </>
             )}
           </div>
         ) : (
@@ -87,7 +161,7 @@ export default () => {
               <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className={styles.featureCard}>
                   <h3 className={styles.featureTitle}>건강 일지</h3>
-                  <p className={styles.featureText}>현재 <span className={styles.writeMember}>{}</span>명의 회원이 <br />건강 일지를 작성하고 있습니다.</p>
+                  <p className={styles.featureText}>현재 <span className={styles.writeMember}>{}</span>명의 회원이 건강 일지를 작성하고 있습니다.</p>
                 </div>
               </Link>
               <Link to="/exercise" style={{ textDecoration: 'none', color: 'inherit' }}>

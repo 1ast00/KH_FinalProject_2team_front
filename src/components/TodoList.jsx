@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTodoStore } from '../store/todoStore';
 import TodoItem from './TodoItem';
-import { getTodosByDate } from '../service/todoApi';
 import { getUserData } from "../service/authApi";
 import { isAuthenticated } from "../util/authUtil";
 import styles from '../css/TodoList.module.css';
@@ -10,6 +9,8 @@ export default ({ selectedDate }) => {
   const { loadInitial, clearDone, todos, doneTodos} = useTodoStore();
   const updateChk = useTodoStore((s) => s.updateChk);
   const [currentUser, setCurrentUser] = useState({});
+  const [resPonseMsg, setResPonseMsg] = useState("");
+  
 
   // 회원 정보 불러오는 api
   useEffect(() => {
@@ -31,14 +32,31 @@ export default ({ selectedDate }) => {
     })(); 
   }, [selectedDate, currentUser]); // 변경될 때마다 이 훅이 실행됨
 
-  const handleAllRemoveClick = () => {
-    clearDone(doneTodos)
+  // 변경 사항 저장
+  const handleUpdateChk = async () => {
+    try {
+      const response = await updateChk();   
+      setResPonseMsg(response?.msg || "변경 사항 저장을 완료했습니다.");
+    } catch (error) {
+      setResPonseMsg("변경 사항 저장을 실패했습니다.");
+    }
+  };
+
+  // 완료 항목 삭제
+  const handleAllRemoveClick = async () => {
+    try {
+      const response = await clearDone(doneTodos);
+      setResPonseMsg(response?.msg || "완료 항목 일괄 삭제가 완료되었습니다.");
+    } catch (error) {
+      setResPonseMsg("완료 항목 일괄 삭제를 실패했습니다.")
+    }
   };
 
   return (
     <div className={styles.todoContainer}>
       <div className={styles.todoActions}>
-        <button className={`${styles.actionBtn} ${styles.saveBtn}`} onClick={updateChk}>변경 사항 저장</button>
+        <span>{resPonseMsg}</span>
+        <button className={`${styles.actionBtn} ${styles.saveBtn}`} onClick={handleUpdateChk}>변경 사항 저장</button>
         <button className={`${styles.actionBtn} ${styles.clearBtn}`} onClick={handleAllRemoveClick}>
           완료 항목 삭제
         </button>
@@ -71,7 +89,7 @@ export default ({ selectedDate }) => {
 
         {todos.length === 0 && (
           <div className={styles.emptyMessage}>
-            할 일을 추가해보세요!
+            할 일을 추가해 보세요!
           </div>
         )}
       </div>
