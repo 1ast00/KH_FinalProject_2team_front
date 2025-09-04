@@ -8,6 +8,18 @@ const publicApi = axios.create({
   baseURL: API_BASE_URL,
 });
 
+// 추천 운동 데이터를 가져오는 함수(0904 추가)
+export const getRecommendedExercises = async () => {
+    try {
+        // 백엔드 컨트롤러의 '/api/exercise/recommendations' 경로로 GET 요청
+        const response = await publicApi.get("/exercise/recommendations");
+        return response.data;
+    } catch (error) {
+        console.error("추천 운동 데이터를 불러오는 중 오류 발생:", error);
+        return [];
+    }
+};
+
 // 운동 데이터 목록을 가져오는 함수
 export const getExerciseData = async () => {
   try {

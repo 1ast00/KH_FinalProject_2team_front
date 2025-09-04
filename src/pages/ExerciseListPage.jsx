@@ -1,42 +1,70 @@
-import React, { useState, useEffect, useCallback } from 'react'; // 리액트 및 훅 import
-import ExerciseList from '../components/ExerciseList'; // 운동 목록 컴포넌트
-import ExerciseSearch from '../components/ExerciseSearch'; // 검색창 컴포넌트
-import ExerciseFilter from '../components/ExerciseFilter'; // 정렬 필터 컴포넌트
-import { getExerciseData } from '../service/exerciseApi'; // API 호출 함수 import
-import styles from '../css/ExerciseListPage.module.css'; // CSS 모듈 import
+import React, { useState, useEffect, useCallback } from 'react';
+import ExerciseList from '../components/ExerciseList';
+import ExerciseSearch from '../components/ExerciseSearch';
+import ExerciseFilter from '../components/ExerciseFilter';
+import { getExerciseData, getRecommendedExercises } from '../service/exerciseApi';
+import { getCurrentWeather } from '../service/weatherApi'; // 날씨 API 서비스 import
+import styles from '../css/ExerciseListPage.module.css';
+import { Link } from 'react-router-dom';
 
-// 운동 목록을 보여주는 메인 페이지 컴포넌트
 export default function ExerciseListPage() {
+  // 상태
+  const [healthData, setHealthData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [recommended, setRecommended] = useState([]);
+  const [displayHealthData, setDisplayHealthData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortCriteria, setSortCriteria] = useState('');
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [weather, setWeather] = useState(null);
 
-  // 상태(State)
-  const [healthData, setHealthData] = useState([]); // API로부터 받아온 원본 운동 데이터
-  const [loading, setLoading] = useState(true); // 데이터 로딩 상태 (true: 로딩중, false: 로딩완료)
-  
-  const [displayHealthData, setDisplayHealthData] = useState([]); // 화면에 실제로 보여줄 필터링/정렬된 운동 데이터
-  const [searchTerm, setSearchTerm] = useState(''); // 사용자가 입력한 검색어
-  const [sortCriteria, setSortCriteria] = useState(''); // 정렬 기준 (예: '운동명')
-  const [sortOrder, setSortOrder] = useState('asc'); // 정렬 순서 ('asc': 오름차순, 'desc': 내림차순)
-
-  // 효과(Effect)
-  // 1. 컴포넌트가 처음 마운트될 때 API를 호출하여 운동 데이터를 가져옴
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // 로딩 시작
-      const data = await getExerciseData(); // API 호출
-      setHealthData(data); // 받아온 데이터로 상태 업데이트
-      setLoading(false); // 로딩 완료
+      setLoading(true);
+
+      const fetchWeather = async () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude, longitude } = position.coords;
+              const weatherData = await getCurrentWeather(latitude, longitude);
+              setWeather(weatherData);
+            },
+            async (error) => {
+              console.warn("위치 정보를 가져올 수 없습니다. 기본 위치(서울)로 날씨를 조회합니다.", error);
+              const weatherData = await getCurrentWeather(37.5665, 126.9780);
+              setWeather(weatherData);
+            }
+          );
+        } else {
+            console.warn("이 브라우저는 위치 정보 기능을 지원하지 않습니다.");
+            const weatherData = await getCurrentWeather(37.5665, 126.9780); 
+            setWeather(weatherData);
+        }
+      };
+
+      // 운동 데이터와 날씨 데이터를 동시에 요청
+      await Promise.all([
+        (async () => {
+          const [allData, recommendedData] = await Promise.all([
+            getExerciseData(),
+            getRecommendedExercises(),
+          ]);
+          setHealthData(allData);
+          setRecommended(recommendedData);
+        })(),
+        fetchWeather(),
+      ]);
+
+      setLoading(false);
     };
     fetchData();
-  }, []); // 빈 배열을 전달하여 최초 1회만 실행
+  }, []);
 
-  // 2. 검색어, 정렬 기준 등이 변경될 때마다 화면에 보여줄 데이터를 필터링하고 정렬함
   useEffect(() => {
-    // 원본 데이터에서 검색어가 포함된 항목만 필터링
     const filteredData = healthData.filter(item =>
       item && item['운동명'] && item['운동명'].toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    // 정렬 기준이 있으면 데이터 정렬
     if (sortCriteria) {
       filteredData.sort((a, b) => {
         let aValue, bValue;
@@ -47,47 +75,75 @@ export default function ExerciseListPage() {
           aValue = parseFloat(a['단위체중당에너지소비량']);
           bValue = parseFloat(b['단위체중당에너지소비량']);
         }
-
         if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
         if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
         return 0;
       });
     }
-    // 최종적으로 화면에 보여줄 데이터 상태를 업데이트
     setDisplayHealthData(filteredData);
-  }, [searchTerm, sortCriteria, sortOrder, healthData]); // 의존성 배열: 이 값들이 바뀔 때마다 실행
+  }, [searchTerm, sortCriteria, sortOrder, healthData]);
 
-  // 이벤트 핸들러
-  // 정렬 필터의 값이 변경될 때 호출되는 함수
   const handleSortChange = useCallback((e) => {
-    const value = e.target.value; // 예: "운동명-asc"
-    const [criteria, order] = value.split('-'); // 기준과 순서로 분리
+    const value = e.target.value;
+    const [criteria, order] = value.split('-');
     setSortCriteria(criteria);
     setSortOrder(order);
-  }, []); // 빈 배열을 전달하여 함수가 재생성되지 않도록 함
+  }, []);
 
-  // 렌더링
   return (
     <div className={styles.appContainer}>
       <img src="/img/exercise_1.png" alt="운동 추천 배너" className={styles.bannerImage} />
       
-      {/* MET 설명 + 검색창 + 정렬 */}
+      {recommended.length > 0 && (
+        <div className={styles.recommendationContainer}>
+            <div className={styles.recommendationHeader}>
+              <h2 className={styles.recommendationTitle}>🚴🏻‍♀️ 오늘의 추천 운동</h2>
+              {weather && (
+                <div className={styles.weatherWidget}>
+                  <img
+                    className={styles.weatherIcon}
+                    src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                    alt={weather.description}
+                  />
+                  <div className={styles.weatherInfo}>
+                    <span className={styles.weatherTemp}>{Math.round(weather.temp)}°C</span>
+                    <span className={styles.weatherDesc}>{weather.city}, {weather.description}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={styles.recommendationGrid}>
+                {recommended.map((item, index) => (
+                    <Link
+                      to={`/exercise/${encodeURIComponent(item['운동명'])}`}
+                      key={`rec-${index}`}
+                      className={styles.dataCardLink}
+                      state={{ healthData: healthData.length > 0 ? healthData : recommended }}
+                    >
+                        <div className={`${styles.dataCard} ${styles.recommendedCard}`}>
+                            <h3 className={styles.cardTitle}>{item['운동명']}</h3>
+                            <p className={styles.cardInfo}>
+                                <span className={styles.cardInfoLabel}>MET:</span>{' '}
+                                {item['단위체중당에너지소비량']}
+                            </p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        </div>
+      )}
+
       <div className={styles.metAndControls}>
-        {/* MET 설명 */}
         <div className={styles.metExplanation}>
           <p>
             <strong className={styles.metHighlight}>MET</strong> : 운동 강도를 나타내는 값으로, 숫자가 높을수록 칼로리 소모가 많다는 의미에요💡
           </p>
         </div>
-        {/* 검색창 + 정렬 필터 */}
         <div className={styles.controls}>
-          {/* 검색창 컴포넌트 */}
           <ExerciseSearch searchTerm={searchTerm} onSearchTermChange={setSearchTerm} />
-          {/* 정렬 필터 컴포넌트 */}
           <ExerciseFilter onSortChange={handleSortChange} sortCriteria={sortCriteria} sortOrder={sortOrder} />
         </div>
       </div>
-      {/* 운동 목록 컴포넌트 */}
       <ExerciseList healthData={displayHealthData} loading={loading} />
     </div>
   );
