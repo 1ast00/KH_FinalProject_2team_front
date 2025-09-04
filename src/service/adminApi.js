@@ -4,14 +4,14 @@ import { getAccessToken } from "../util/authUtil";
 const API_BASE_URL = "http://localhost:9999/api";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
+baseURL: API_BASE_URL,
+withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
-  const token = getAccessToken?.();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
+const token = getAccessToken?.();
+if (token) config.headers.Authorization = `Bearer ${token}`;
+return config;
 });
 
 /* ----- 대시보드 ----- */
@@ -26,11 +26,11 @@ export const patchAdminMemberRole  = (mno, role) => api.patch(`/admin/members/${
 export const deleteAdminMember     = (mno)    => api.delete(`/admin/members/${mno}`);
 
 export default {
-  getAdminDashboardSummary,
-  getAdminRecentReviews,
-  getAdminRecentDiets,
-  getAdminMembers,
-  getAdminMemberDetail,
-  patchAdminMemberRole,
-  deleteAdminMember,
+getAdminDashboardSummary,
+getAdminRecentReviews,
+getAdminRecentDiets,
+getAdminMembers,
+getAdminMemberDetail,
+patchAdminMemberRole,
+deleteAdminMember,
 };
