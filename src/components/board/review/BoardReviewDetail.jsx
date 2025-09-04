@@ -73,6 +73,7 @@ const heartIcon = awesomeCount > 0 ? "♥" : "♡";
         </div>
       </div>
       <hr className={styles.divider} />
+
       <div className={styles.brcontent}>
         <Viewer initialValue={review.brcontent} />
       </div>

@@ -8,7 +8,6 @@ import { isAuthenticated } from "../../../util/authUtil";
 export default () => {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
-
   const handleRowClick = (brno) => {
     if (!isAuthenticated()) {
       alert("로그인 후 이용 해주세요.");
