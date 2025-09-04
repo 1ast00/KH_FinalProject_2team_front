@@ -48,7 +48,7 @@ export const signup = async (
   height,
   weight,
   gender,
-  goalWeight
+  goalweight
 ) => {
   const response = await authApi.post("/auth/register", {
     userid,
@@ -58,7 +58,7 @@ export const signup = async (
     height,
     weight,
     gender,
-    goalWeight,
+    goalweight,
   });
   console.log("호출: ", response);
   return response.data;
@@ -79,7 +79,6 @@ export const getUserData = async () => {
   return response.data;
 };
 
-// 로그아웃
 export const apiLogout = async () => {
   const response = await authApi.post("/auth/logout");
   clearToken();
@@ -112,20 +111,55 @@ export const resetPW = async (userid, password) => {
   return response.data;
 };
 
+export const updateUserData = async (mname, nickname, goalweight, userid) => {
+  const response = await authApi.post("/auth/updateUser", {
+    mname,
+    nickname,
+    goalweight,
+    userid,
+  });
+  return response.data;
+};
+
 // HACCP 인증 api에서 데이터를 받아오는 함수
 export const getSearchResult = async (searchTxt, currentPage) => {
+  // console.log("searchTxt in authApi: ", searchTxt);
+  // console.log("currentPage in authApi: ", currentPage);
 
-    console.log("searchTxt in authApi: ",searchTxt);
-    console.log("currentPage in authApi: ",currentPage);
+  const response = await authApi.get("/food/search", {
+    params: {
+      searchTxt,
+      page: currentPage,
+    },
+  });
+  // console.log("response in authApi: ", response);
+  // console.log("response.data in authApi: ", response.data);
+  return response.data;
+};
 
-    const response = await authApi.get('/food/search', {
-        params: {
-            searchTxt,
-            page: currentPage
-        }
-    });
-    console.log("response in authApi: ", response);
-    console.log("response.data in authApi: ",response.data);
-    console.log("response.data.data.length in authApi: ",response.data.data.length)
-    return response.data;
-}
+// HACCP 인증 api에서 데이터를 받아오는 함수: Carousel 전용
+export const getTotalSearchResult = async (searchTxt, currentPage) => {
+  // console.log("searchTxt in authApi: ", searchTxt);
+  // console.log("currentPage in authApi: ", currentPage);
+
+  const response = await authApi.get("/food/search/all", {
+    params: {
+      searchTxt,
+      page: currentPage,
+    },
+  });
+  // console.log("response in authApi: ", response);
+  // console.log("response.data in authApi: ", response.data);
+  return response.data;
+};
+
+// AI에게 요청 보내는 함수
+export const postToAI = async (prompt) => {
+  try {
+    const response = await authApi.post("/ai/chat", { prompt: prompt });
+    return response.data.response;
+  } catch (error) {
+    console.error("AI 코치 응답을 가져오는 중 오류 발생:", error);
+    return "죄송합니다, AI 코치와 연결하는 데 문제가 발생했어요.";
+  }
+};

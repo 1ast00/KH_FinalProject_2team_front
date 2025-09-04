@@ -15,21 +15,21 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import RegisterSuccess from "./pages/RegisterSuccess";
+import BoardIndex from "./pages/BoardIndex";
 
-// 추가
 import { isAuthenticated, getUserData } from "./util/authUtil";
 import PrivateRoute from "./components/PrivateRoute";
 import MyPage from "./pages/MyPage";
 import FindIDPage from "./pages/FindIDPage";
 import FindPWPage from "./pages/FindPWPage";
 import ResetPWPage from "./pages/ResetPWPage";
-import FoodSearch from "./components/FoodSearch";
 import TodoListPage from "./pages/TodoListPage";
 import HealthDailyLogPage from "./pages/HealthDailyLogPage";
 
 // 추천 운동
 import ExerciseListPage from "./pages/ExerciseListPage";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
+import Gemini from "./pages/Gemini"; // AI 코치
 
 // 관리자 페이지들
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -37,16 +37,19 @@ import AdminMembersPage from "./pages/admin/AdminMembersPage";
 import AdminPostsPage from "./pages/admin/AdminPostsPage";
 import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
-import AdminLayout from "./layout/AdminLayout"
 
-// 관리자 권한 가드
+import AdminLayout from "./layout/AdminLayout"
+import FoodSearchPage from "./pages/FoodSearchPage";
+import FoodDetailPage from "./pages/FoodDetailPage";
+import RecipePage from "./pages/RecipePage";
+import RecipeDetailPage from "./pages/RecipeDetailPage";
+
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
   const role = (getUserData()?.role || "").toString().toUpperCase();
   return role.includes("ADMIN") ? <Outlet /> : <Navigate to="/" replace />;
 }
 
-// 관리자 경로에서는 Header/Footer 숨김
 function ChromeFrame({ children }) {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
@@ -59,7 +62,6 @@ function ChromeFrame({ children }) {
   );
 }
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -69,6 +71,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/board/*" element={<BoardIndex />} />
 
           <Route path="/RegisterSuccess" element={<RegisterSuccess />} />
           <Route path="/find-id" element={<FindIDPage />} />
@@ -78,13 +81,17 @@ function App() {
           <Route path="/exercise" element={<ExerciseListPage />} />
           <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
 
-          <Route path="/food/search" element={<FoodSearch/>}/>
+          <Route path="/food/search" element={<FoodSearchPage/>}/>
+          <Route path="/food/search/detail/:prdlstNm" element={<FoodDetailPage/>}/>
 
           {/* 비공개 라우트 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
             <Route path="/todoList" element={<TodoListPage />}/>
+            <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
+            <Route path="/recipe" element={<RecipePage />}/>
+            <Route path="/recipeDetail/:id" element={<RecipeDetailPage />}/>
           </Route>
 
           {/* 관리자 라우트 */}
@@ -92,7 +99,8 @@ function App() {
             <Route path="/admin/*" element={<AdminLayout />} />
           </Route>
 
-          {/* 관리자 라우트: 자식 라우트 추가 */}
+
+          {/*  관리자 라우트: 자식 라우트 추가 */}
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="dashboard" replace />} />
