@@ -1,3 +1,8 @@
+//Slider: carousel CSS
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+
 import { useEffect, useState } from "react";
 import { getSearchResult } from "../../service/authApi";
 import FoodResult from "./FoodResult";
@@ -5,9 +10,22 @@ import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 import ManufacturerCarousel from "./ManufacturerCarousel";
 
+import styles from "../../css/FoodSearch.module.css"
+
 //검색바와 결과를 출력하는 component
 //후에 검색바와 결과를 분리할 예정
 export default ({searchTxtSentInFoodDetailPage}) => {
+
+    //slick settings
+    const settings = {
+    dots: false,
+    fade: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    waitForAnimate: false
+    };
 
     //input에 입력하는 값을 상태값으로 관리할 변수를 하나 만듬: query
     const [query,setQuery] = useState("");
@@ -25,7 +43,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
     const [searchPerformed,setSearchPerformed] = useState(false);
 
     //Manufacturer(img click)
-    const [manufacturer,setManufacturer] = useState("(유)푸드원 전라남도 고흥군 동강면 청정식품단지길63");
+    const [manufacturer,setManufacturer] = useState("영주한우");
 
     const navigate = useNavigate();
     
@@ -56,7 +74,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
 
             fetchApiData(); 
             
-        },[searchTxt,searchTxtSentInFoodDetailPage, currentPage])
+        },[searchTxt,searchTxtSentInFoodDetailPage, currentPage,ManufacturerCarousel])
 
     const handleSearch = () => {
         {/* 1. query값을 searchTxt state값에 저장*/}
@@ -108,27 +126,30 @@ export default ({searchTxtSentInFoodDetailPage}) => {
         setManufacturer(productFrom);
     }
 
+    console.log(manufacturer);
+
     return(
-        <div>
-            <div>
-                <ManufacturerCarousel searchTxt={searchTxt} 
+        <div className={styles.search_container}>
+            <div className={styles.manufacturer_carousel}>
+                <ManufacturerCarousel 
+                searchTxt={searchTxt} 
                 searchTxtSentInFoodDetailPage={searchTxtSentInFoodDetailPage}
                 currentPage={currentPage}
                 manufacturer={manufacturer}/>
             </div>
-            <div>
+            <div className={styles.search_bar}>
                 <input type="text" 
                 placeholder="원하시는 식품을 입력하세요." 
                 value={query} 
                 onChange={e=>{setQuery(e.target.value)}}/>
-                <button onClick={handleSearch}>검색</button>
+                <button onClick={handleSearch}><img src="/img/search_icon.png" alt="search_icon"/></button>
             </div>
-            <div>
+            <div className={styles.result}>
             {/* 검색 결과 출력 */}
             { !foodData && <p>검색 결과가 없습니다.</p>}
             { !!foodData && foodData?.data?.map((item,index) => {
                     return(
-                        <div key={item.prdlstReportNo}>
+                        <div key={item.prdlstReportNo} className={styles.result_list}>
                             <div>
                                 <FoodResult item={item} parseNutrients={parseNutrients} parseNutrients2={parseNutrients2}/>
                             </div>
@@ -148,26 +169,44 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                     />
                 </div>
             { !!foodData && foodData?.data?.length && (
-                <div>
-                    <p>{"*"}한국식품안전관리인증원(HACCP)에 등록되어 있지 않은 경우 결과에 나타나지 않을수도 있습니다.</p>
+                <div className={styles.caution}>
+                    <p>{"*"} 한국식품안전관리인증원(HACCP)에 등록되어 있지 않은 경우 결과에 나타나지 않을수도 있습니다.</p>
                 </div>
             )}
             </div>
-            <div>
-                {/* Sponsor Image*/}
+            <div className={styles.sponsors}>
                 <div>
+                    <h3>Sponsors</h3>
+                </div>
+                <hr/>
+                {/* Sponsor Image*/}
+                <div className="slider-container">
+                    <Slider {...settings}>
                     <div>
-                        <p>Sponsors</p>
+                        <img src="/img/food_manufacturer/dongone.jpg" style={{ cursor: "pointer" }} onClick={() => handleClick("㈜동원F&B/서울시 서초구 마방로 68(www.dongwonfnb.co.kr)")} alt="manufacturer_img1"/>
                     </div>
-                    <hr/>
                     <div>
-                        <img src="/img/food_manufacturer/dongone.jpg" style={{ cursor: "pointer" }} onClick={() => handleClick("㈜동원F&B/서울시 서초구 마방로 68(www.dongwonfnb.co.kr)")} />
-                        <img src="/img/food_manufacturer/foodone.png" style={{ cursor: "pointer" }} onClick={() => handleClick("(유)푸드원 전라남도 고흥군 동강면 청정식품단지길63")}/>
-                        <img src="/img/food_manufacturer/hangbokdamgi.png" style={{ cursor: "pointer" }} onClick={() => handleClick("행복담기㈜ 충북 옥천군 옥천읍 중앙로 153")}/>
-                        <img src="/img/food_manufacturer/hansung.png" style={{ cursor: "pointer" }} onClick={() => handleClick("한성기업㈜/경남 김해시 삼안로 51")}/>
-                        <img src="/img/food_manufacturer/prom.jpg" style={{ cursor: "pointer" }} onClick={() => handleClick("㈜프로엠_경기도 광주시 초월읍 동막골길 140-28")}/>
-                        <img src="/img/food_manufacturer/pulmuone.png" style={{ cursor: "pointer" }} onClick={() => handleClick("풀무원건강생활㈜ 충북 증평군 도안면 원명로35")}/>
+                        <img src="/img/food_manufacturer/foodone.png" style={{ cursor: "pointer" }} onClick={() => handleClick("(유)푸드원 전라남도 고흥군 동강면 청정식품단지길63")} alt="manufacturer_img2"/>
                     </div>
+                    <div>
+                        <img src="/img/food_manufacturer/hangbokdamgi.png" style={{ cursor: "pointer" }} onClick={() => handleClick("행복담기㈜ 충북 옥천군 옥천읍 중앙로 153")} alt="manufacturer_img3"/>
+                    </div>
+                    <div>
+                        <img src="/img/food_manufacturer/hansung.png" style={{ cursor: "pointer" }} onClick={() => handleClick("한성기업㈜/경남 김해시 삼안로 51")} alt="manufacturer_img4"/>
+                    </div>
+                    <div>
+                        <img src="/img/food_manufacturer/prom.jpg" style={{ cursor: "pointer" }} onClick={() => handleClick("㈜프로엠_경기도 광주시 초월읍 동막골길 140-28")} alt="manufacturer_img5"/>
+                    </div>
+                    <div>
+                        <img src="/img/food_manufacturer/pulmuone.png" style={{ cursor: "pointer" }} onClick={() => handleClick("풀무원건강생활㈜ 충북 증평군 도안면 원명로35")} alt="manufacturer_img6"/>
+                    </div>
+                    <div>
+                        <img src="/img/food_manufacturer/ourHome.png" style={{ cursor: "pointer" }} onClick={() => handleClick("㈜아워홈/경기도 안산시 단원구 원시로 216")} alt="manufacturer_img7"/>
+                    </div>
+                    <div>
+                        <img src="/img/food_manufacturer/yeongjuHanwoo.jpg" style={{ cursor: "pointer" }} onClick={() => handleClick("영주한우")} alt="manufacturer_img8"/>
+                    </div>
+                    </Slider>
                 </div>
             </div>
         </div>

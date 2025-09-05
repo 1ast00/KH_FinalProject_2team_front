@@ -1,3 +1,5 @@
+import styles from "../../src/css/Pagination.module.css"
+
 export default ({currentPage,dataLength,pageSize,onPageChange,searchPerformed,totalCount}) => {
     
     // console.log("currentPage in Pagination.jsx",currentPage);
@@ -12,12 +14,12 @@ export default ({currentPage,dataLength,pageSize,onPageChange,searchPerformed,to
     const lastPage = Math.floor(totalCount/pageSize) + 1;
 
     return(
-        <div>
-            {hasPrev && currentPage > 2 && (<button onClick={() => onPageChange(currentPage =1)}> {"<<"} </button>)}
-            {hasPrev && (<button onClick={() => onPageChange(currentPage -1)}> {"<"} </button>)}
-            {dataLength !== 0 && searchPerformed  && (<button onClick={() => onPageChange(currentPage)}>{currentPage}</button>)}
-            {hasNext && (<button onClick={() => onPageChange(currentPage +1)}> {">"} </button>)}
-            { !!searchPerformed && currentPage !== lastPage && hasLast && (<button onClick={() => onPageChange(currentPage = (lastPage))}> {">>"} </button>)}
+        <div className={styles.buttonBar}>
+            {hasPrev && currentPage > 2 && (<button onClick={() => onPageChange(currentPage =1)} className={styles.butttonsAtBothEnd}> {"<<"} </button>)}
+            {hasPrev && (<button onClick={() => onPageChange(currentPage -1)} className={styles.buttonsAround}> {"<"} </button>)}
+            {dataLength !== 0 && searchPerformed  && (<button onClick={() => onPageChange(currentPage)} className={styles.currentPage}>{currentPage}</button>)}
+            {hasNext && (<button onClick={() => onPageChange(currentPage +1)} className={styles.buttonsAround}> {">"} </button>)}
+            { !!searchPerformed && currentPage !== lastPage && hasLast && (<button onClick={() => onPageChange(currentPage = (lastPage))} className={styles.butttonsAtBothEnd}> {">>"} </button>)}
         </div>
     );
 }

@@ -12,6 +12,10 @@ import FoodCalories2 from "../components/food/FoodCalories2";
 import FoodThreeMajorNutrientsTable2 from "../components/food/FoodThreeMajorNutrientsTable2";
 import FoodDetailTable2 from "../components/food/FoodDetailTable2";
 import { useState } from "react";
+import AISearch from "../components/food/AISearch";
+
+// import styles from "../../src/css/FoodDetailPage.module.css";
+import "../css/FoodDetailPage.css";
 
 export default () => {
 
@@ -150,7 +154,7 @@ export default () => {
     const nutrientObj3 = state?.item? parseFoodData3(state.item.nutrient) : null;
 
     return(
-        <div>
+        <div className="food-detail">
             {/* Zustand로 관리
             <div>
                 <button onClick={goBack}>뒤로 가기</button>
@@ -160,56 +164,102 @@ export default () => {
                 height: "280.72px",
                 overflow: "hidden"
             }}>
-                <img src="/img/food_banner.jpg" 
+                <img src="/img/food_banner.png" 
                 style={{
                     width: "1267.2px"
                 }}/>
             </div>
             {!!nutrientObj?.nutrients?.단백질 && !!nutrientObj?.nutrients?.지방 ? (
 
-                <div>
-                    <FoodImgTitle item={state.item}/>
-                    <FoodCalories nutrientObj={nutrientObj}/>
-                    <FoodThreeMajorNutrientsTable nutrientObj={nutrientObj}/>
-                    <Foodallergy item={state.item}/>
-                    <FoodProductGb item={state.item}/>
-                    <FoodServing nutrientObj={nutrientObj}/>
-                    <FoodManufacture item={state.item}/>
-                    <FoodDetailTable nutrientObj={nutrientObj} nutrientObj2={nutrientObj2} item={state.item}/>
-                    <FoodRawMtrl item={state.item}/>
+                <div 
+                // className="hero"
+                // className={styles.totalContainer}
+                >
+                    <div
+                    className="food-detail-grid"
+                    //  className={styles.leftContainer}
+                     >
+                        <FoodImgTitle item={state.item}/>
+                        <FoodCalories nutrientObj={nutrientObj}/>
+                        <FoodThreeMajorNutrientsTable nutrientObj={nutrientObj}/>
+                        <Foodallergy item={state.item}/>
+                    </div>
+                    <div 
+                    className="food-detail-grid"
+                    // className={styles.rightContainer}
+                    >
+                        <FoodProductGb item={state.item}/>
+                        <FoodServing nutrientObj={nutrientObj}/>
+                        <FoodManufacture item={state.item}/>
+                        <FoodDetailTable nutrientObj={nutrientObj} nutrientObj2={nutrientObj2} item={state.item}/>
+                        <FoodRawMtrl item={state.item}/>
+                    </div>
                 </div>
             ):(
-                <div>
+                <div 
+                // className={styles.totalContainer}
+                >
                     {!!nutrientObj2?.nutrients?.열량 ? (<div>
-                        <FoodImgTitle item={state.item}/>
-                        <FoodCalories2 nutrientObj={nutrientObj2}/>
-                        <FoodThreeMajorNutrientsTable2 nutrientObj={nutrientObj2}/>
-                        <Foodallergy item={state.item}/>
-                        <FoodProductGb item={state.item}/>
-                        <FoodServing nutrientObj={nutrientObj2}/>
-                        <FoodManufacture item={state.item}/>
-                        <FoodDetailTable2 nutrientObj={nutrientObj2} />
-                        <FoodRawMtrl item={state.item}/>
-                    </div>): (<div>
-                        <FoodImgTitle item={state.item}/>
-                        <FoodCalories nutrientObj={nutrientObj3}/>
-                        <FoodThreeMajorNutrientsTable nutrientObj={nutrientObj3}/>
-                        <Foodallergy item={state.item}/>
-                        <FoodProductGb item={state.item}/>
-                        <FoodServing nutrientObj={nutrientObj3}/>
-                        <FoodManufacture item={state.item}/>
-                        <FoodDetailTable nutrientObj={nutrientObj3} />
-                        <FoodRawMtrl item={state.item}/>
+                        <div 
+                        className="food-detail-grid"
+                            // className={styles.leftContainer}
+                            >
+                            <FoodImgTitle item={state.item}/>
+                            <FoodCalories2 nutrientObj={nutrientObj2}/>
+                            <FoodThreeMajorNutrientsTable2 nutrientObj={nutrientObj2}/>
+                            <Foodallergy item={state.item}/>
+                            </div>
+                        <div 
+                        className="food-detail-grid"
+                        // className={styles.rightContainer}
+                        >
+                            <FoodProductGb item={state.item}/>
+                            <FoodServing nutrientObj={nutrientObj2}/>
+                            <FoodManufacture item={state.item}/>
+                            <FoodDetailTable2 nutrientObj={nutrientObj2} />
+                            <FoodRawMtrl item={state.item}/>
+                        </div>
+                    </div>): (<div 
+                    // className={styles.totalContainer}
+                    >
+                        <div 
+                        className="food-detail-grid"
+                        // className={styles.leftContainer}
+                        >
+                            <FoodImgTitle item={state.item}/>
+                            <FoodCalories nutrientObj={nutrientObj3}/>
+                            <FoodThreeMajorNutrientsTable nutrientObj={nutrientObj3}/>
+                            <Foodallergy item={state.item}/>
+                        </div>
+                        <div 
+                        className="food-detail-grid"
+                        // className={styles.rightContainer}
+                        >
+                            <FoodProductGb item={state.item}/>
+                            <FoodServing nutrientObj={nutrientObj3}/>
+                            <FoodManufacture item={state.item}/>
+                            <FoodDetailTable nutrientObj={nutrientObj3} />
+                            <FoodRawMtrl item={state.item}/>
+                        </div>
                     </div>)}
                 </div>) 
             }
-            <div>
+            <div 
+            className="search-bar"
+            // className={styles.foodSearchBar}
+            >
                 {/* input + button, input값을 상태값으로 관리하고 FoodSearch에 넘겨주기 */}
                 <input type="text" 
                 placeholder="원하시는 식품을 입력하세요." 
                 value={query} 
                 onChange={e=>{setQuery(e.target.value)}}/>
                 <button onClick={handleSearch}>검색</button>
+            </div>
+            <div 
+            className="search-bar"
+            // className={styles.AISearchBar}
+            >
+                <AISearch item = {state.item}/>
             </div>
         </div>
     );
