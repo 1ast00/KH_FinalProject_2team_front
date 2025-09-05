@@ -42,6 +42,8 @@ import AdminLayout from "./layout/AdminLayout"
 import FoodSearchPage from "./pages/FoodSearchPage";
 import FoodDetailPage from "./pages/FoodDetailPage";
 import RecipePage from "./pages/RecipePage";
+import RecipeDetailPage from "./pages/RecipeDetailPage";
+
 
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
@@ -90,6 +92,8 @@ function App() {
             <Route path="/todoList" element={<TodoListPage />}/>
             <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
             <Route path="/recipe" element={<RecipePage />}/>
+            <Route path="/recipeDetail/:id" element={<RecipeDetailPage />}/>
+
           </Route>
 
           {/* 관리자 라우트 */}

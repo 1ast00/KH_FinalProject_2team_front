@@ -3,7 +3,9 @@ const setupInterceptors = (apiInstance) => {
   apiInstance.interceptors.request.use(
     (config) => {
       const accessToken = localStorage.getItem("accessToken");
+      
       console.log("Interceptor: accessToken ->", accessToken); // 토큰 값 확인
+
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }

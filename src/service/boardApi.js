@@ -12,7 +12,6 @@ export const reviewsAPI = axios.create({
 
 setupInterceptors(reviewsAPI);
 
-
 export const getPostBoardList = async () => {
   const response = await reviewsAPI.get("/list");
   return response.data;

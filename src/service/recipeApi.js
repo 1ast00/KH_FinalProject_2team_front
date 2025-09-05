@@ -1,5 +1,7 @@
 import axios from "axios";
 import { getAccessToken } from "../util/authUtil";
+import setupInterceptors from "./interceptor";
+
 const API_BASE_URL = "http://localhost:9999/api/recipe/";
 
 const recipeApi = axios.create({
@@ -7,20 +9,7 @@ const recipeApi = axios.create({
   withCredentials: true,
 });
 
-// 토큰 자동 생성
-recipeApi.interceptors.request.use(
-  (config) => {
-    const accessToken = getAccessToken();
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    console.log("accessToken: ", config);
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+setupInterceptors(recipeApi);
 
 // 목록
 export const getRecipeList = async () => {

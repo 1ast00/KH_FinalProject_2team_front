@@ -212,33 +212,22 @@
 
 /* Swiper 컨테이너 */
 .swiperContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* 가운데 정렬 */
-  gap: 5px;
   width: 100%;
-}
-
-/* Swiper 본체 */
-.mySwiper {
-  width: 100%;
-  padding: 10px 0;
-  flex: 1;
-  overflow: visible;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 /* 기본 Swiper 네비게이션 버튼 커스터마이징 */
 .mySwiper :global(.swiper-button-next),
 .mySwiper :global(.swiper-button-prev) {
-  width: 45px;
-  height: 45px;
+  width: 30px;
+  height: 30px;
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
   border: 2px solid #6DC82A;
   border-radius: 50%;
   color: #6DC82A;
   font-weight: bold;
   font-size: 18px;
-  margin-top: -22.5px; /* 중앙 정렬을 위해 높이의 절반만큼 위로 */
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(94, 172, 36, 0.15);
 }
@@ -278,12 +267,12 @@
 
 /* 이전 버튼 위치 조정 */
 .mySwiper :global(.swiper-button-prev) {
-  left: 5px; /* 컨테이너 밖으로 배치 */
+  left: 0px;
 }
 
 /* 다음 버튼 위치 조정 */
 .mySwiper :global(.swiper-button-next) {
-  right: 5px; /* 컨테이너 밖으로 배치 */
+  right: 0px;
 }
 
 /* 네비게이션 버튼 아이콘 크기 조정 */
@@ -301,9 +290,6 @@
   gap: 12px;
   margin-top: 15px;
   width: 100%;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 /* 커스텀 페이지네이션 불릿 */
@@ -335,7 +321,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-   justify-items: center;
+  justify-items: center;
 }
 
 /* 레시피 카드 */
@@ -346,14 +332,15 @@
   text-align: center; 
   box-shadow: 0 6px 18px rgba(94, 172, 36, 0.12); 
   min-height: 120px; 
-  width: 100%; 
-  height: 100%; 
+  width: 250px; 
+  height: 180px; 
   box-sizing: border-box; 
   display: flex; 
   flex-direction: column; 
   justify-content: space-evenly; 
   transition: all 0.3s ease; 
   border: 2px solid #C4EEAE;
+  margin: 0 auto;
 }
 
 .recipeCard:hover {

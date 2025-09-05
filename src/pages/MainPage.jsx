@@ -20,6 +20,8 @@ export default () => {
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const {recipeList} = isAuthenticated() ? RecipeList() : { recipeList: [] };
+  const [randomRecipes, setRandomRecipes] = useState([]);
 
   // icon 3 번 출력
   const icons = [1, 2, 3];
@@ -37,7 +39,15 @@ export default () => {
   }, []); 
 
   // 추천 메뉴(레시피)
-  const {recipeList} = RecipeList();
+  useEffect(() => {
+    if (recipeList.length > 0) {
+      const selected = recipeList
+        .slice()
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 9);
+      setRandomRecipes(selected);
+    }
+  }, [recipeList]);
 
   // Swiper 이벤트 핸들러
   const handleSlideChange = (swiper) => {
@@ -102,13 +112,13 @@ export default () => {
                 <div className={styles.swiperContainer}>
                   <Swiper
                     ref={swiperRef}
-                    slidesPerGroup={5}
+                    slidesPerGroup={3}
                     spaceBetween={16}
                     slidesPerView={3}
+                    loop={true}
                     navigation={true}
                     pagination={{ 
                       clickable: true,
-                      dynamicBullets: true,
                       el: `.${styles.customPagination}`,
                       bulletClass: styles.customBullet,
                       bulletActiveClass: styles.customBulletActive
@@ -127,10 +137,10 @@ export default () => {
                     }}
                   >
                     {
-                      recipeList && recipeList.map((item) => (
+                      randomRecipes.map((item) => (
                         <SwiperSlide key={item.recipe_id}>
                           {/* 개별 레시피 상세 페이지로 이동 */}
-                          <Link to={`/recipe/detail/${item.recipe_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                          <Link to={`/recipeDetail/${item.recipe_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <div className={styles.recipeContainer}>
                               <div className={styles.recipeCard}>
                                 <h4 className={styles.recipeTitle}>{item.recipe_nm_ko}</h4>
