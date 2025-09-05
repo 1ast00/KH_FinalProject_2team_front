@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getAccessToken } from "../util/authUtil";
+import setupInterceptors from "./interceptor";
 
 const API_BASE_URL = "http://localhost:9999/api";
 
@@ -8,11 +9,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  const token = getAccessToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+setupInterceptors(api);
 
 // 목록(무한스크롤 + 날짜필터)
 export const apiFetchHealthDailyLogList = async ({ cursor = 0, limit = 12, date = "" }) => {

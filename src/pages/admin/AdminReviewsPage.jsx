@@ -1,76 +1,122 @@
-import { useMemo, useState } from "react";
-import styles from "./AdminMembersPage.module.css"; 
+import { useEffect, useState } from "react";
+import styles from "./AdminMembersPage.module.css";
+import { getAdminReviews, patchAdminReviewStatus } from "../../service/adminApi";
 
 export default function AdminReviewsPage() {
-  const [query, setQuery] = useState("");
-  const [page] = useState(1);
-  const rows = useMemo(
-    () => [
-      { id: 301, title: "다이어트 도시락 리뷰", author: "mint", rating: 5, date: "2025-08-20", status: "게시" },
-      { id: 302, title: "샐러드바 솔직 후기", author: "yoon", rating: 3, date: "2025-08-19", status: "게시" },
-    ],
-    []
-  );
+  const [q, setQ] = useState("");
+  const [status, setStatus] = useState("ALL"); // ALL | POSTED | HIDDEN
+  const [page, setPage] = useState(1);
+  const size = 10;
 
-  const handleSearch = (e) => { e.preventDefault(); /* TODO: API 검색 */ };
+  const [rows, setRows] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState({ id: null });
+
+  const load = async (p = page) => {
+    setLoading(true);
+    try {
+      const { data } = await getAdminReviews({ p: p, size, q, status });
+      setRows(data?.items ?? []);
+      setTotalPages(data?.totalPage ?? 1);
+      setPage(data?.currentPage ?? p);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { load(1); }, [q, status]);
+
+  const handleSearch = (e) => { e.preventDefault(); load(1); };
+
+  const onToggle = async (row) => {
+    setBusy({ id: row.brno });
+    try {
+      const toPosted = row.visible !== "게시"; // 현재가 '숨김'이면 게시로
+      await patchAdminReviewStatus(row.brno, toPosted);
+      await load(page);
+    } finally {
+      setBusy({ id: null });
+    }
+  };
 
   return (
     <div className={styles.page}>
       <h2 className={styles.title}>리뷰 게시판 관리</h2>
 
-      {/* 검색 */}
+      {/* 검색/필터 */}
       <form onSubmit={handleSearch} className={styles.filters}>
         <input
           className={styles.input}
           placeholder="제목/작성자 검색"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
         />
-        <button type="submit" className={styles.btn}>검색</button>
+        <select className={styles.select} value={status} onChange={(e)=>setStatus(e.target.value)}>
+          <option value="ALL">전체</option>
+          <option value="POSTED">게시</option>
+          <option value="HIDDEN">숨김</option>
+        </select>
+        <button type="submit" className={styles.btn} disabled={loading}>검색</button>
       </form>
 
       {/* 테이블 */}
       <div className={styles.card}>
         <table className={styles.table}>
           <thead>
-            <tr>
-              <th style={{ width: 80 }}>ID</th>
-              <th>제목</th>
-              <th style={{ width: 160 }}>작성자</th>
-              <th style={{ width: 100 }}>평점</th>
-              <th style={{ width: 140 }}>작성일</th>
-              <th style={{ width: 100 }}>상태</th>
-              <th style={{ width: 140 }}>액션</th>
-            </tr>
+          <tr>
+            <th style={{ width: 80 }}>ID</th>
+            <th>제목</th>
+            <th style={{ width: 160 }}>작성자</th>
+            <th style={{ width: 140 }}>작성일</th>
+            <th style={{ width: 100 }}>상태</th>
+            <th style={{ width: 160 }}>액션</th>
+          </tr>
           </thead>
           <tbody>
-            {rows.map((r) => (
-              <tr key={r.id}>
-                <td>{r.id}</td>
-                <td>{r.title}</td>
-                <td>{r.author}</td>
-                <td>{r.rating}</td>
-                <td>{r.date}</td>
-                <td><span className={styles.badge}>{r.status}</span></td>
-                <td>
-                  <div className={styles.actions}>
-                    <button className={styles.btnGhost}>상세</button>
-                    <button className={styles.btn}>{r.status === "게시" ? "숨김" : "해제"}</button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+          {rows.map(r => (
+            <tr key={r.brno}>
+              <td>{r.brno}</td>
+              <td className={styles.ellipsis}>{r.title}</td>
+              <td>{r.writer}</td>
+              <td>{r.writeDate}</td>
+              <td><span className={styles.badge}>{r.visible}</span></td>
+              <td>
+                <div className={styles.actions}>
+                  <button className={styles.btnGhost} disabled>상세</button>
+                  <button
+                    className={styles.btn}
+                    disabled={busy.id === r.brno}
+                    onClick={() => onToggle(r)}
+                  >
+                    {busy.id === r.brno ? "처리중..." : (r.visible === "게시" ? "숨김" : "해제")}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+          {!loading && rows.length === 0 && (
+            <tr><td colSpan={6} className={styles.empty}>데이터가 없습니다.</td></tr>
+          )}
           </tbody>
         </table>
       </div>
 
-      {/* 페이지네이션 (샘플) */}
+      {/* 페이지네이션 */}
       <div className={styles.pagination}>
-        <button className={styles.pageBtn} disabled>이전</button>
-        <button className={`${styles.pageBtn} ${styles.pageCurrent}`} aria-current="page" disabled>
+        <button
+          className={styles.pageBtn}
+          onClick={() => load(page - 1)}
+          disabled={page <= 1 || loading}
+        >이전</button>
+        <button className={`${styles.pageBtn} ${styles.pageCurrent}`} disabled>
           {page}
         </button>
-        <button className={styles.pageBtn} disabled>다음</button>
+        <button
+          className={styles.pageBtn}
+          onClick={() => load(page + 1)}
+          disabled={page >= totalPages || loading}
+        >다음</button>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
-/* === Light (기본) === */
+/* =========================
+   Global Theme Variables
+   ========================= */
 :root {
-  /* 레이아웃 */
+  /* Layout */
   --bg: #f6f9ff;
   --panel: #ffffff;
   --aside-bg: #0f172a;
@@ -8,20 +10,23 @@
   --text: #cbd5e1;
   --text-strong: #fff;
   --active: #334155;
-  --ring: #1f2937;
+  --ring: #e7edf7;      /* 카드/테이블 경계선 */
   --border: #e2e8f0;
 
-  /* 대시보드 공통 */
-  --card: #fff;
+  /* Common */
+  --card: #ffffff;
   --title: #111827;
   --muted: #6b7280;
   --accent: #c4f7dc;
-  --ring-dashboard: #e7edf7;
+
+  /* Action */
+  --primary: #2563eb;
+  --danger:  #ef4444;
 }
 
-/* === Dark === */
+/* Dark Mode */
 :root.dark {
-  /* 레이아웃 */
+  /* Layout */
   --bg: #0b1020;
   --panel: #111827;
   --aside-bg: #0b1224;
@@ -29,18 +34,20 @@
   --text: #94a3b8;
   --text-strong: #f9fafb;
   --active: #1e293b;
-  --ring: #0f172a;
+  --ring: #334155;
   --border: #334155;
 
-  /* 대시보드 공통 */
+  /* Common */
   --card: #1e293b;
   --title: #f1f5f9;
   --muted: #94a3b8;
   --accent: #4ade80;
-  --ring-dashboard: #334155;
+
+  --primary: #2563eb;
+  --danger:  #ef4444;
 }
 
-
+/* 다크 전용 보조(전역 클래스) */
 :root.dark .pageTitle,
 :root.dark .username { color: var(--text-strong); }
 

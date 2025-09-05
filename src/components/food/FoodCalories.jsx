@@ -1,6 +1,6 @@
 export default (nutrientObj) => {
 
-    console.log(nutrientObj);
+    // console.log(nutrientObj);
 
     return(
         <div>

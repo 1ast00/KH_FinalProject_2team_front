@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "../css/HealthDailyLog.module.css";
 
 const pad2 = (n) => String(n).padStart(2, "0");
@@ -8,10 +8,14 @@ const todayStr = () => {
 };
 
 export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
-  // 날짜
-  const [hdate, setHdate] = useState(initial?.hdate?.slice?.(0, 10) || todayStr());
+  // 초기 날짜: hdate(YYYY-MM-DD) -> hdateStr(YYYY.MM.DD → -로 치환) -> 오늘
+  const initialDate = useMemo(() => {
+    if (initial?.hdate) return initial.hdate.slice(0, 10);
+    if (initial?.hdateStr) return initial.hdateStr.replace(/\./g, "-");
+    return todayStr();
+  }, [initial]);
 
-  // 수면시간(시/분) - 플레이스홀더 보이게 기본값은 빈 문자열
+  // 수면시간 초기값
   const initHH = useMemo(
     () => (initial?.sleeptimeStr ? initial.sleeptimeStr.split(":")[0] : ""),
     [initial]
@@ -20,18 +24,30 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
     () => (initial?.sleeptimeStr ? initial.sleeptimeStr.split(":")[1] : ""),
     [initial]
   );
+
+  // 로컬 상태
+  const [hdate, setHdate] = useState(initialDate);
   const [sleepH, setSleepH] = useState(initHH);
   const [sleepM, setSleepM] = useState(initMM);
-
-  // 숫자 필드
   const [weight, setWeight] = useState(initial?.weight ?? "");
   const [wateramount, setWateramount] = useState(initial?.wateramount ?? "");
-
-  // 다중 입력
   const [exercises, setExercises] = useState(
     initial?.exercise ? initial.exercise.split("\n") : [""]
   );
   const [foods, setFoods] = useState(initial?.food ? initial.food.split("\n") : [""]);
+
+  // 0903 수정폼 값 재적재 - 시작
+  // 편집 대상(initial)이 바뀔 때마다 폼 필드 전체를 초기값으로 다시 채운다.
+  useEffect(() => {
+    setHdate(initialDate);
+    setSleepH(initHH);
+    setSleepM(initMM);
+    setWeight(initial?.weight ?? "");
+    setWateramount(initial?.wateramount ?? "");
+    setExercises(initial?.exercise ? initial.exercise.split("\n") : [""]);
+    setFoods(initial?.food ? initial.food.split("\n") : [""]);
+  }, [initial, initialDate, initHH, initMM]);
+  // 0903 수정폼 값 재적재 - 끝
 
   const cleanList = (arr) =>
     arr.map((s) => (s || "").trim()).filter((s) => s.length > 0);
@@ -41,7 +57,6 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
     if (e.key.length === 1 && !ok.includes(e.key)) e.preventDefault();
   };
 
-  // 아래로 추가(append)
   const addExercise = () => setExercises((arr) => [...arr, ""]);
   const changeExercise = (i, v) =>
     setExercises((arr) => arr.map((x, idx) => (idx === i ? v : x)));
@@ -51,8 +66,7 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
 
   const submit = () => {
     if (!hdate) return alert("날짜를 입력해 주세요.");
-    if (weight === "" || isNaN(Number(weight)))
-      return alert("오늘 몸무게를 입력해 주세요.");
+    if (weight === "" || isNaN(Number(weight))) return alert("오늘 몸무게를 입력해 주세요.");
     if (wateramount === "" || isNaN(Number(wateramount)))
       return alert("물 섭취량을 숫자로 입력해 주세요.");
 
@@ -60,7 +74,7 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
     const mm = sleepM === "" ? 0 : Math.max(0, Math.min(59, Number(sleepM)));
     const payload = {
       hdate,
-      sleeptime: `${pad2(hh)}:${pad2(mm)}`,
+      sleeptime: `${pad2(hh)}:${pad2(mm)}`, // ← 백엔드로 항상 HH:MM 포맷 전달
       weight: Number(weight),
       wateramount: Number(wateramount),
       exercise: cleanList(exercises).join("\n") || "-",
@@ -81,7 +95,7 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
         />
       </div>
 
-      {/* 몸무게 (숫자만, 스피너 제거) */}
+      {/* 몸무게 */}
       <div className={styles.formRow}>
         <input
           type="text"
@@ -95,7 +109,7 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
         <span className={styles.unit}>kg</span>
       </div>
 
-      {/* 수면 시간 HH:MM - 같은 행/같은 폭 */}
+      {/* 수면 시간 HH:MM */}
       <div className={styles.formRow}>
         <div className={styles.timeRow}>
           <div className={styles.inputWrap}>
@@ -124,7 +138,7 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
         </div>
       </div>
 
-      {/* 물 (숫자만, 스피너 제거) */}
+      {/* 물 */}
       <div className={styles.formRow}>
         <input
           type="text"
@@ -138,7 +152,7 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
         <span className={styles.unit}>L</span>
       </div>
 
-      {/* 운동 (+버튼: 마지막 입력칸 안쪽 오른쪽 / 아래로 추가) */}
+      {/* 운동 */}
       <div className={styles.formRow}>
         <div className={styles.foodInputBlock}>
           {exercises.map((t, i) => (
@@ -159,7 +173,7 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
         </div>
       </div>
 
-      {/* 식단 (+버튼: 마지막 입력칸 안쪽 오른쪽 / 아래로 추가) */}
+      {/* 식단 */}
       <div className={styles.formRow}>
         <div className={styles.foodInputBlock}>
           {foods.map((f, i) => (

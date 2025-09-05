@@ -13,6 +13,7 @@ import FoodThreeMajorNutrientsTable2 from "../components/food/FoodThreeMajorNutr
 import FoodDetailTable2 from "../components/food/FoodDetailTable2";
 import { useState } from "react";
 
+
 export default () => {
 
     const [query,setQuery] = useState("");
@@ -32,7 +33,7 @@ export default () => {
     //1. FoodSearch에서 { property: "value"}형태로 보내주기
     //2. FoodDetail.jsx에서 const {property} = useLocation();으로 받기
     const {state} = useLocation();
-    // console.log(state);
+    console.log(state);
 
     //nutrient String을 정규식을 이용해 parsing하는 함수 1
     const parseFoodData = (nutrientStr) => {
@@ -155,6 +156,16 @@ export default () => {
             <div>
                 <button onClick={goBack}>뒤로 가기</button>
             </div> */}
+            <div style={{
+                width: "88%",
+                height: "280.72px",
+                overflow: "hidden"
+            }}>
+                <img src="/img/food_banner.jpg" 
+                style={{
+                    width: "1267.2px"
+                }}/>
+            </div>
             {!!nutrientObj?.nutrients?.단백질 && !!nutrientObj?.nutrients?.지방 ? (
 
                 <div>

@@ -34,12 +34,15 @@ export default function AdminDashboard() {
     })();
   }, []);
 
-  //  파이차트 데이터
+  // 파이차트 데이터
   const pieData = [
     { name: "남자", value: genderRatio.M },
     { name: "여자", value: genderRatio.F },
   ];
-  const COLORS = ["#60a5fa", "#f472b6"]; // 파랑, 핑크
+  const COLORS = ["#60a5fa", "#f472b6"]; 
+
+ 
+  const dietsToShow = (recentDiets || []).slice(0, 2);
 
   return (
     <div className={styles.grid}>
@@ -102,11 +105,11 @@ export default function AdminDashboard() {
 
         <div className={styles.listCard}>
           <div className={styles.listHeader}>최근 식단 게시판</div>
-          {(!recentDiets || recentDiets.length === 0) ? (
+          {(!dietsToShow || dietsToShow.length === 0) ? (
             <div className={styles.empty}>데이터가 없습니다.</div>
           ) : (
             <ul className={styles.list}>
-              {recentDiets.map((p, idx) => (
+              {dietsToShow.map((p, idx) => (
                 <li key={p.id}>
                   <span className={styles.no}>{idx + 1}</span>
                   <span className={styles.itemLink}>{p.title}</span>

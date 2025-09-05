@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getAccessToken } from "../util/authUtil";
+import setupInterceptors from "./interceptor";
 const API_BASE_URL = "http://localhost:9999/api/todo/";
 
 const todoApi = axios.create({
@@ -7,20 +8,7 @@ const todoApi = axios.create({
   withCredentials: true,
 });
 
-// 토큰 자동 생성
-todoApi.interceptors.request.use(
-  (config) => {
-    const accessToken = getAccessToken();
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    console.log("accessToken: ", config);
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+setupInterceptors(todoApi);
 
 // 목록
 export const getTodosByDate = async (date) => {
