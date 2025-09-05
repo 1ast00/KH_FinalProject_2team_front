@@ -9,7 +9,6 @@ import FoodResult from "./FoodResult";
 import Pagination from "../Pagination";
 import { useNavigate } from "react-router-dom";
 import ManufacturerCarousel from "./ManufacturerCarousel";
-
 import styles from "../../css/FoodSearch.module.css"
 
 //검색바와 결과를 출력하는 component
@@ -73,7 +72,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
             }
 
             fetchApiData(); 
-            
+
         },[searchTxt,searchTxtSentInFoodDetailPage, currentPage,ManufacturerCarousel])
 
     const handleSearch = () => {
@@ -137,6 +136,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                 currentPage={currentPage}
                 manufacturer={manufacturer}/>
             </div>
+
             <div className={styles.search_bar}>
                 <input type="text" 
                 placeholder="원하시는 식품을 입력하세요." 

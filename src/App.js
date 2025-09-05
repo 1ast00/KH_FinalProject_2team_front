@@ -1,4 +1,5 @@
 // src/App.jsx
+import "./pages/admin/theme.css";
 import "./App.css";
 
 import {

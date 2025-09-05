@@ -47,9 +47,8 @@ export default ({searchTxt,searchTxtSentInFoodDetailPage,currentPage,manufacture
     const navigate= useNavigate();
 
     useEffect(() => {
-
         console.log("manufacturer in ManufacturerCarousel.jsx:",manufacturer);
-
+      
         if(!!searchTxtSentInFoodDetailPage){
             setCarouselText(searchTxtSentInFoodDetailPage);
         } else {

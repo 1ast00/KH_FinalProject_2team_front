@@ -115,7 +115,9 @@ export default function BoardReviewDetail() {
           <button className={styles.btn_heart} onClick={handleAwesomeToggle}>
             {heartIcon} {awesomeCount}
           </button>
+
           <span onClick={handleDanger}>신고</span>
+
         </div>
       </div>
           <p></p>

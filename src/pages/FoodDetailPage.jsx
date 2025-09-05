@@ -17,6 +17,7 @@ import AISearch from "../components/food/AISearch";
 // import styles from "../../src/css/FoodDetailPage.module.css";
 import "../css/FoodDetailPage.css";
 
+
 export default () => {
 
     const [query,setQuery] = useState("");

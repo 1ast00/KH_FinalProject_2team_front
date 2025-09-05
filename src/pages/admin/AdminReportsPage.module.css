@@ -30,5 +30,4 @@
 }
 .statusOpen   { background:#fbbf24; color:#111827; }
 .statusClosed { background:#22c55e; color:#065f46; }
-
 .actions{ display:inline-flex; gap:8px; }
