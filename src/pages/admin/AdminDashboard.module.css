@@ -1,4 +1,4 @@
-:root{
+:root {
   --card:#fff;
   --ring:#e7edf7;
   --title:#111827;
@@ -6,11 +6,19 @@
   --accent:#c4f7dc;
 }
 
+:root.dark {
+  --card:#1e293b;       /* 카드 배경 어두운 톤 */
+  --ring:#334155;       /* 경계선 */
+  --title:#f1f5f9;      /* 텍스트 강조 */
+  --muted:#94a3b8;      /* 보조 텍스트 */
+  --accent:#4ade80;     /* 포인트 */
+}
+
 .grid{
   display:grid;
   grid-template-columns: 520px 1fr;
   gap:28px;
-  align-items:start;            /* 카드 상단 정렬 */
+  align-items:start;
 }
 
 .sectionTitle{
@@ -34,10 +42,12 @@
 .chartBox{
   height:220px; border-radius:10px;
   display:grid; place-items:center;
-  font-size:12px; color:#6b7280;
-  background:#f8fbff; border:1px dashed #cbd5e1;
+  font-size:12px; color:var(--muted);
+  background:var(--card);
+  border:1px dashed var(--ring);
   overflow:hidden;
 }
+
 .line::before{ content:""; width:80%; height:2px; background:#9ec5ff; display:block; }
 .bar::before{ content:""; width:80%; height:70%; background:#8dd08d; display:block; }
 .pie::before{ content:""; width:140px; height:140px; background:conic-gradient(#60a5fa 45%, #34d399 30%, #fbbf24 15%, #ef4444 10%); border-radius:50%; display:block; }
@@ -45,30 +55,35 @@
 .rightCol{ display:grid; gap:18px; align-content:start; }
 
 .listCard{
-  background:#eafff1; border:1px solid #d7f5e3; border-radius:14px; padding:14px;
+  background:var(--card);
+  border:1px solid var(--ring);
+  border-radius:14px; padding:14px;
 }
 
 .listHeader{
   font-size:16px; font-weight:700; text-align:left;
-  color:#0b3b24; margin:8px 0 12px;
+  color:var(--title); margin:8px 0 12px;
 }
 
 .list{ list-style:none; padding:0; margin:0; display:grid; gap:8px; }
 
 .list li{
-  background:#fff; border:1px solid #e6f3eb; border-radius:10px; padding:10px 12px;
-  display:flex; align-items:center; gap:10px; font-size:14px;
+  background:var(--card);
+  border:1px solid var(--ring);
+  border-radius:10px; padding:10px 12px;
+  display:flex; align-items:center; gap:10px; font-size:14px; color:var(--title);
 }
 
 .no{
-  width:22px; height:22px; border-radius:6px; background:#dcfce7; color:#065f46;
+  width:22px; height:22px; border-radius:6px;
+  background:var(--accent); color:#065f46;
   display:inline-grid; place-items:center; font-weight:700; font-size:12px;
 }
 
-.itemLink{                      
+.itemLink{
   flex:1;
-  min-width:0;                 
-  color:#0f172a;
+  min-width:0;
+  color:var(--title);
   text-decoration:none;
   white-space:nowrap;
   overflow:hidden;
@@ -76,12 +91,14 @@
 }
 .itemLink:hover{ text-decoration:underline; }
 
-.meta{ margin-left:auto; color:#6b7280; font-size:12px; }
+.meta{ margin-left:auto; color:var(--muted); font-size:12px; }
 
 .commentBtn{
-  height:76px; border-radius:12px; background:#fff; border:2px solid #bfc8d6;
-  font-size:18px; font-weight:700; color:#0f172a; letter-spacing:.5px;
-  cursor:pointer;
+  height:76px; border-radius:12px;
+  background:var(--card);
+  border:2px solid var(--ring);
+  font-size:18px; font-weight:700; color:var(--title);
+  letter-spacing:.5px; cursor:pointer;
 }
 .commentBtn:hover{ background:#f5f7fb; }
 
