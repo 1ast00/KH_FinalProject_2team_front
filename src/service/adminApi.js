@@ -1,18 +1,15 @@
 import axios from "axios";
 import { getAccessToken } from "../util/authUtil";
+import setupInterceptors from "./interceptor";
 
 const API_BASE_URL = "http://localhost:9999/api";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
+baseURL: API_BASE_URL,
+withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  const token = getAccessToken?.();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+setupInterceptors(api);
 
 /* ----- 대시보드 ----- */
 export const getAdminDashboardSummary = () => api.get("/admin/dashboard/summary");

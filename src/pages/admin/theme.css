@@ -42,7 +42,6 @@
   --title: #f1f5f9;
   --muted: #94a3b8;
   --accent: #4ade80;
-
   --primary: #2563eb;
   --danger:  #ef4444;
 }
@@ -55,4 +54,5 @@
   background: var(--panel);
   border-color: var(--border);
 }
+
 :root.dark .topIcon:hover { background: #1f2937; }

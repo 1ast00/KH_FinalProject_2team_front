@@ -43,7 +43,6 @@ export default function AdminReviewsPage() {
   return (
     <div className={styles.page}>
       <h2 className={styles.title}>리뷰 게시판 관리</h2>
-
       {/* 검색/필터 */}
       <form onSubmit={handleSearch} className={styles.filters}>
         <input
@@ -101,7 +100,6 @@ export default function AdminReviewsPage() {
           </tbody>
         </table>
       </div>
-
       {/* 페이지네이션 */}
       <div className={styles.pagination}>
         <button

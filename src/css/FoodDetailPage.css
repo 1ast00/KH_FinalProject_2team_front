@@ -1,0 +1,184 @@
+.food-detail{
+  --panel: #ffffff;
+  --border: #d4dbe6;   /* 카드 테두리 */
+  --text: #0f172a;     /* 진한 텍스트 */
+  --muted: #64748b;    /* 보조 텍스트 */
+  --ring: rgba(16,24,40,.04);
+
+  width: 1120px;       /* 페이지 폭 */
+  margin: 0 auto 40px;
+  color: var(--text);
+}
+
+/* 상단 배너 */
+.food-detail .hero{
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f8fafc;
+  box-shadow: 0 1px 0 var(--ring);
+}
+.food-detail .hero img{
+  width: 100%;
+  display: block;
+}
+
+/* 2열 카드 레이아웃 */
+.food-detail-grid{
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 560px 540px; /* 좌 560 / 우 540 (피그마 비율) */
+  gap: 18px;
+  align-items: start;
+}
+
+/* 카드 공통 */
+.food-detail-grid > div{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 0 var(--ring);
+}
+
+/* 순서 기반 좌/우 배치 (1~4 = 좌, 5~ = 우) */
+.food-detail-grid > div:nth-child(-n+4){ grid-column: 1; }
+.food-detail-grid > div:nth-child(n+5){ grid-column: 2; }
+
+/* 카드 내 제목 느낌의 문구 */
+.food-detail h3,
+.food-detail .card-title{
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+}
+
+/* ───────────────────────────
+   상단 제품이미지 2장 + 제품명 블록
+   (FoodImgTitle.jsx → .food-title)
+   ─────────────────────────── */
+.food-title ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 260px 260px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.food-title li img{
+  width: 260px;
+  height: 140px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  display: block;
+}
+.food-title li:last-child{
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* ───────────────────────────
+   “칼로리” 말풍선 (좌측 2번째 카드가 FoodCalories)
+   ─────────────────────────── */
+.food-detail-grid > div:nth-child(2) p{
+  margin: 0;
+  display: inline-block;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #f8fafc;
+  font-weight: 600;
+  box-shadow: 0 1px 0 var(--ring) inset;
+}
+
+/* ───────────────────────────
+   표 — 피그마처럼 진한 외곽선
+   (FoodThreeMajorNutrientsTable · FoodDetailTable 계열)
+   ─────────────────────────── */
+.food-detail table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.food-detail thead th,
+.food-detail tbody td{
+  border: 2px solid #0f172a; /* 진한 보더 */
+  padding: 9px 10px;
+  text-align: center;
+}
+.food-detail thead th{
+  background: #f6f7fb;        /* 옅은 회색 헤더 */
+  font-weight: 800;
+}
+
+/* 작은 주석/출처 텍스트(표 카드 하단 li, p 등에 자동 적용되게 톤다운) */
+.food-detail .note,
+.food-detail li:last-child,
+.food-detail p:last-child:has(small){
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ───────────────────────────
+   알레르기/원재료 한 줄 카드
+   ─────────────────────────── */
+.food-detail-grid > div p{
+  margin: 0;
+  line-height: 1.5;
+}
+.food-detail-grid > div:has(p) {
+  /* 가독성 살짝 강조 */
+  background: #fff;
+}
+
+/* ───────────────────────────
+   하단 검색바 + AI 버튼
+   ─────────────────────────── */
+.food-detail .search-bar{
+  width: 720px;
+  margin: 22px auto 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.food-detail .search-bar input{
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 16px;
+  outline: none;
+  background: #fff;
+}
+.food-detail .search-bar input::placeholder{ color: #8fa1b8; }
+.food-detail .search-bar button{
+  width: 44px;
+  height: 44px;
+  border: 1px solid #7ac482;     /* 연한 그린 보더 */
+  border-radius: 50%;
+  background: #b7efc5;           /* 연두색 배경 */
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: transform .06s ease;
+}
+.food-detail .search-bar button::before{ content: "🔍"; font-size: 18px; }
+.food-detail .search-bar button:active{ transform: scale(.98); }
+
+/* AI 한 줄 버튼(바로 아래 div의 버튼 텍스트가 “AI”)도 pill 스타일로 */
+.food-detail .search-bar + div button,
+.food-detail .search-bar + div .ai-btn{
+  width: 56px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #7ac482;
+  background: #b7efc5;
+  font-weight: 700;
+  cursor: pointer;
+}

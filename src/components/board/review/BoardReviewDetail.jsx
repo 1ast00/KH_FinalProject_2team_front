@@ -10,6 +10,7 @@ export default function BoardReviewDetail() {
   const { brno } = useParams();
   const [review, setReview] = useState(null);
   const [awesomeCount, setAwesomeCount] = useState(0); //25.09.03 awesomeCount
+  const [danger, setDanger] = useState(0); //25.09.05 신고
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -73,6 +74,25 @@ export default function BoardReviewDetail() {
 
   const heartIcon = awesomeCount > 0 ? "♥" : "♡";
 
+  const handleDanger = async () =>{
+    if (!loggedInMno) {
+      alert("로그인 후 이용해주세요");
+      navigate("/login");
+      return;
+    }
+    try{
+      const response = await reviewsAPI.patch(`/danger/${brno}`);
+      if (response.data.code === 1) {
+      alert(response.data.msg);
+      } else {
+      alert("신고에 실패했습니다.");
+      }
+    } catch(error){
+      console.error("신고실패", error);
+      alert("신고실패,  다시시도해주세요.");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div>
@@ -95,7 +115,9 @@ export default function BoardReviewDetail() {
           <button className={styles.btn_heart} onClick={handleAwesomeToggle}>
             {heartIcon} {awesomeCount}
           </button>
-          <span>신고</span>
+
+          <span onClick={handleDanger}>신고</span>
+
         </div>
       </div>
           <p></p>

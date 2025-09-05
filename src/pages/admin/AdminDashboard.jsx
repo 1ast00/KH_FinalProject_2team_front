@@ -34,13 +34,14 @@ export default function AdminDashboard() {
     })();
   }, []);
 
+
   // 파이차트 데이터
   const pieData = [
     { name: "남자", value: genderRatio.M },
     { name: "여자", value: genderRatio.F },
   ];
+  
   const COLORS = ["#60a5fa", "#f472b6"]; 
-
  
   const dietsToShow = (recentDiets || []).slice(0, 2);
 

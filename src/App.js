@@ -43,8 +43,8 @@ import AdminLayout from "./layout/AdminLayout"
 import FoodSearchPage from "./pages/FoodSearchPage";
 import FoodDetailPage from "./pages/FoodDetailPage";
 import RecipePage from "./pages/RecipePage";
+import FoodAiPage from "./pages/FoodAiPage";
 import RecipeDetailPage from "./pages/RecipeDetailPage";
-
 
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
@@ -92,6 +92,7 @@ function App() {
             <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
             <Route path="/todoList" element={<TodoListPage />}/>
             <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
+            <Route path="/gemini-ai-food" element={<FoodAiPage />} /> {/* AI 식단 페이지 */}
             <Route path="/recipe" element={<RecipePage />}/>
             <Route path="/recipeDetail/:id" element={<RecipeDetailPage />}/>
 

@@ -156,7 +156,6 @@ export default function AdminReportsPage() {
           </tbody>
         </table>
       </div>
-
       {/* 페이지네이션 */}
       <div className={styles.pagination}>
         <button
