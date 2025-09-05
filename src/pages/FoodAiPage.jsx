@@ -23,7 +23,7 @@ export default () => {
                 <h2>AI 식단 관리사의 답변</h2>
                 <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
-                >{response.response}</ReactMarkdown>
+                >{response.res}</ReactMarkdown>
             </div>    
         }
         </div>

@@ -1,12 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { postToAIFood } from "../../service/authApi";
 import { useNavigate } from "react-router-dom";
 
 export default (item) => {
 
+    const [loading,setLoading] = useState(false);
+
     console.log("item in AISearch: ",item);
 
     const [text,setText] = useState("");
+    const [response,setResponse] = useState(null);
 
     const navigate = useNavigate();
 
@@ -17,6 +20,8 @@ export default (item) => {
     console.log("nutrient in AISearch: ",nutrient);
 
     const handlePrompt = async() => {
+
+        setLoading(true);
 
         let prompt = "";
 
@@ -47,7 +52,6 @@ export default (item) => {
         // 예시: { ... properties: value, ... }
         prompt += "응답 형식도 정해줄게.";
         prompt += "모든 문장에 줄 넘김을 해줘";
-        prompt += "모든 문단은 간격을 세줄씩은 띄워줘.<br>대신 \n으로 줄간격 조절해줘";
         prompt += `영양성분 관련한 질문이 나오면 넌 반드시 ${name}의 영양성분을 표나 그래프처럼 시각적인 수단으로 제시해야 해.`;
         prompt += "다만, 표를 쓸때 내가 markdown도 이용해서 css를 적용한다는 사실을 유념해줘.";
         prompt += "모든 질문에는 영양학적으로 어울리는 음식을 list 형식으로 보여줘야 해.";
@@ -56,10 +60,11 @@ export default (item) => {
 
         prompt += "현재 topP와 temperature값도 마지막에 명시해줘";
 
-        const response = await postToAIFood(prompt);
+        const res = await postToAIFood(prompt);
+        setResponse(res);
 
         navigate("/gemini-ai-food",{
-            state: {response}
+            state: {res}
         })
     }
 
@@ -67,6 +72,11 @@ export default (item) => {
         <div>
             <textarea value={text} onChange={e=>{setText(e.target.value)}}/>
             <button onClick={handlePrompt}>AI</button>
+            {loading && (
+                <div>
+                    <p>⏳ AI가 식단을 분석 중입니다...</p>
+                </div>
+            )}
         </div>
     )
 }

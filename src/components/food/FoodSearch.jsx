@@ -27,7 +27,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
     };
 
     //input에 입력하는 값을 상태값으로 관리할 변수를 하나 만듬: query
-    const [query,setQuery] = useState("");
+    const [query,setQuery] = useState(searchTxtSentInFoodDetailPage || "");
     
     //query를 상태값으로 저장할 변수를 하나 만듬: searchTxt
     //query를 useEffect에 사용시 매번 요청을 하여 시스템 성능저하와 호출량 제한에 걸릴 수 있음
