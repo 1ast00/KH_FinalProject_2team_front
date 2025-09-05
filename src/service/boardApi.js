@@ -14,13 +14,16 @@ setupInterceptors(reviewsAPI);
 
 
 export const getPostBoardList = async () => {
-  // GET /api/editors
   const response = await reviewsAPI.get("/list");
   return response.data;
 };
 
 export const getPostBoardDetail = async (brno) => {
-  // GET /api/reviews/detail/{brno}로 요청을 보냅니다.
   const response = await reviewsAPI.get(`/detail/${brno}`);
+  return response.data;
+};
+
+export const postBoardWrite = async (reviewData) => {
+  const response = await reviewsAPI.post("write", reviewData);
   return response.data;
 };

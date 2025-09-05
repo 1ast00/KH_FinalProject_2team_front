@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/toastui-editor.css";
 import styles from "../../../css/board/BoardReviewWrite.module.css";
-import axios from "axios";
+//import axios from "axios";
+import { reviewsAPI } from "../../../service/boardApi";
 
-// EditorNomarl 컴포넌트를 이 파일 내부에 정의
 const EditorNomarl = ({ editorRef }) => {
-  const imageApiUrl = "/api/uploadImage";
+  const imageApiUrl = "/api/reviews/uploadImage";
 
   const onBeforeAddImage = (file, callback) => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", file); // axios 대신 reviewsAPI 사용
 
-    axios
+    reviewsAPI
       .post(imageApiUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
@@ -22,8 +22,8 @@ const EditorNomarl = ({ editorRef }) => {
         callback(imageUrl, "이미지 설명");
       })
       .catch((error) => {
-        console.error("이미지 업로드 실패", error);
-        alert("이미지 업로드에 실패했습니다.");
+        console.error("이미지 업로드 실패:", error.response || error);
+        alert("이미지 업로드에 실패했습니다. 로그인 상태를 확인해 주세요.");
       });
   };
 
@@ -55,24 +55,26 @@ export default () => {
   const handleAddWrite = async () => {
     try {
       const editorInstance = editorRef.current.getInstance();
-      const content = editorInstance.getMarkdown(); // 에디터의 최종 마크다운 콘텐츠를 가져옴
+      const content = editorInstance.getMarkdown();
 
       if (!title.trim()) {
         alert("제목을 입력해주세요");
         return;
       }
 
-      // JSON만 백엔드 전송, 이미지는 토스트UI 훅으로 업로드 콘텐츠에 이미지 URL 포함.
-      const response = await axios.post("/api/reviews/write/no-file", {
+      const reviewData = {
         brtitle: title,
         brcontent: content,
-      });
+      }; // reviewsAPI를 사용하여 글 작성 요청
 
-      console.log("글작성 성공", response.data);
-      navigate("/boardAllview");
+      const response = await reviewsAPI.post("/write", reviewData);
+
+      console.log("글 작성 성공", response.data);
+      alert("게시글이 성공적으로 작성되었습니다.");
+      navigate("/board/review");
     } catch (error) {
-      console.log("글작성 실패", error);
-      alert("글 작성에 실패했습니다. 관리자에게 문의하세요.");
+      console.error("글 작성 실패:", error.response || error);
+      alert("글 작성에 실패했습니다. 로그인 상태를 확인해 주세요.");
     }
   };
 
@@ -81,15 +83,19 @@ export default () => {
       <div className={styles.btn_gap}>
         <div>
           <button className={styles.btn_addwrite} onClick={handleAddWrite}>
-            + 작성완료
+             + 작성완료 
           </button>
+          
         </div>
+        
         <div>
+          
           <button className={styles.btn_back} onClick={() => navigate(-1)}>
-            {`<`} 뒤로가기
+            {`<`} 뒤로가기 
           </button>
         </div>
       </div>
+      
       <input
         type="text"
         placeholder="제목"
@@ -97,9 +103,11 @@ export default () => {
         onChange={(e) => setTitle(e.target.value)}
         className={styles.titleInput}
       />
+      
       <div className={styles.contentArea}>
-        <EditorNomarl editorRef={editorRef} />
+         <EditorNomarl editorRef={editorRef} />
       </div>
+      
     </div>
   );
 };

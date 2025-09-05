@@ -13,9 +13,10 @@ root.render(
   // </Provider>
 
   //테스트 용 입니다.
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  // <React.StrictMode>
+  //   <App />
+  // </React.StrictMode> 25.09.04
+  <App />
 );
 
 // If you want to start measuring performance in your app, pass a function
