@@ -83,16 +83,14 @@ export default function BoardReviewDetail() {
         <div className={styles.brwriter}>
           <span className={styles.nickname}>{review.nickname}</span>
           <span className={styles.date}>
-            {new Date(review.brwrite_date).toLocaleDateString()}
+            작성일: {new Date(review.brwrite_date).toLocaleDateString()}
           </span>
           {review.brwrite_update && (
             <span className={styles.updatedDate}>
-              {" "}
-              (수정: {new Date(review.brwrite_update).toLocaleDateString()})
+              수정일: {new Date(review.brwrite_update).toLocaleDateString()}
             </span>
           )}
         </div>
-
         <div className={styles.actions}>
           <button className={styles.btn_heart} onClick={handleAwesomeToggle}>
             {heartIcon} {awesomeCount}
@@ -100,7 +98,7 @@ export default function BoardReviewDetail() {
           <span>신고</span>
         </div>
       </div>
-
+          <p></p>
       <div className={styles.brcontent}>
         <Viewer initialValue={review.brcontent} />
       </div>

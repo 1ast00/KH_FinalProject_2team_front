@@ -26,7 +26,7 @@ const EditorNomarl = ({ editorRef }) => {
         alert("이미지 업로드에 실패했습니다. 로그인 상태를 확인해 주세요.");
       });
   };
-
+  
   return (
     <Editor
       ref={editorRef}
