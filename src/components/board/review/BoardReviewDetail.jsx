@@ -9,25 +9,28 @@ export default function BoardReviewDetail() {
   const navigate = useNavigate();
   const { brno } = useParams();
   const [review, setReview] = useState(null);
-  const [awesomeCount, setAwesomeCount] = useState(0); //25.09.03 awesomeCount
-  const [danger, setDanger] = useState(0); //25.09.05 신고
+  const [awesomeCount, setAwesomeCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const userData = getUserData();
   const loggedInNickname = userData ? userData.nickname : "";
-  const loggedInMno = userData ? userData.mno : null; // 로그인한 회원의 mno 가져오기
+  const loggedInMno = userData ? userData.mno : null;
   const [awesomeMemberIds, setAwesomeMemberIds] = useState([]);
+  const [isAuthor, setIsAuthor] = useState(false);
 
   useEffect(() => {
     const fetchReviewDetail = async () => {
       try {
-        // console.log("brno:", brno);
-        console.log("API 요청 시작"); // 이 메시지가 두 번 출력되면 조회수 2증가
         const response = await reviewsAPI.get(`/detail/${brno}`);
-        setReview(response.data.review); // 'review' 키로 데이터에 접근
+        setReview(response.data.review);
         setAwesomeCount(response.data.awesomeCount);
         setAwesomeMemberIds(response.data.awesomeMemberIds);
+
+        if (response.data.review.mno === loggedInMno) {
+          setIsAuthor(true);
+        }
+
         setLoading(false);
       } catch (err) {
         setError(err);
@@ -35,36 +38,39 @@ export default function BoardReviewDetail() {
       }
     };
     fetchReviewDetail();
-  }, [brno]);
+  }, [brno, loggedInMno]);
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
+  const handleEdit = () => {
+    navigate(`/board/review/write/${brno}`, { state: { review } });
+  };
 
-  if (error) {
-    return <div>오류가 발생했습니다: {error.message}</div>;
-  }
+  const handleDelete = async () => {
+    if (window.confirm("정말 게시글을 삭제하시겠습니까?")) {
+      try {
+        const response = await reviewsAPI.delete(`/${brno}`);
+        alert(response.data.msg);
+        if (response.data.code === 1) {
+          navigate("/board/review");
+        }
+      } catch (error) {
+        console.error("게시글 삭제 실패:", error);
+        alert("삭제 중 오류가 발생했습니다.");
+      }
+    }
+  };
 
-  if (!review) {
-    return <div>게시글을 찾을 수 없습니다.</div>;
-  }
-
-  
   const handleAwesomeToggle = async () => {
     if (!loggedInMno) {
       alert("로그인 후 이용해주세요");
       navigate("/login");
       return;
     }
-
     try {
       const response = await reviewsAPI.post(`/awesome`, {
         brno: brno,
         mno: loggedInMno,
       });
-
-      setAwesomeCount(response.data.awesomeCount); 
-      
+      setAwesomeCount(response.data.awesomeCount);
       alert(response.data.msg);
     } catch (error) {
       console.error("좋아요 토글 실패:", error);
@@ -74,24 +80,41 @@ export default function BoardReviewDetail() {
 
   const heartIcon = awesomeCount > 0 ? "♥" : "♡";
 
-  const handleDanger = async () =>{
+  const handleDanger = async () => {
     if (!loggedInMno) {
       alert("로그인 후 이용해주세요");
       navigate("/login");
       return;
     }
-    try{
+    try {
       const response = await reviewsAPI.patch(`/danger/${brno}`);
       if (response.data.code === 1) {
-      alert(response.data.msg);
+        alert(response.data.msg);
+        navigate("/board/review");
       } else {
-      alert("신고에 실패했습니다.");
+        alert("신고에 실패했습니다.");
       }
-    } catch(error){
+    } catch (error) {
       console.error("신고실패", error);
-      alert("신고실패,  다시시도해주세요.");
+      alert("신고실패, 다시시도해주세요.");
     }
   };
+
+  // 렌더링 전 조건부 처리 로직을 한 곳으로 통합합니다.
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+  if (error) {
+    return <div>오류가 발생했습니다: {error.message}</div>;
+  }
+  if (!review) {
+    return <div>게시글을 찾을 수 없습니다.</div>;
+  }
+
+  // 게시글 상태가 '신고' 상태일 때 
+  if (review.brdanger >= 10) {
+    return <div>이 게시글은 신고 누적으로 인해 볼 수 없습니다.</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -112,23 +135,24 @@ export default function BoardReviewDetail() {
           )}
         </div>
         <div className={styles.actions}>
+          {isAuthor && (
+            <>
+              <span onClick={handleEdit}>수정</span>
+              <span onClick={handleDelete}>삭제</span>
+            </>
+          )}
           <button className={styles.btn_heart} onClick={handleAwesomeToggle}>
             {heartIcon} {awesomeCount}
           </button>
-
           <span onClick={handleDanger}>신고</span>
-
         </div>
       </div>
-          <p></p>
+      <p></p>
       <div className={styles.brcontent}>
         <Viewer initialValue={review.brcontent} />
       </div>
-
       <hr className={styles.divider} />
-      {/* 댓글 영역 (추후 추가할 공간) */}
       <div className={styles.commentSection}>
-        {/* 로그인한 회원 아이디 (예시) */}
         <div className={styles.commentInputBox}>
           <span className={styles.loggedInUser}>{loggedInNickname}</span>
           <textarea
@@ -138,9 +162,7 @@ export default function BoardReviewDetail() {
           />
           <button className={styles.commentSubmitBtn}>등록</button>
         </div>
-        <div className={styles.commentList}>
-          {/* 댓글 목록이 들어갈 자리 */}
-        </div>
+        <div className={styles.commentList}></div>
       </div>
     </div>
   );
