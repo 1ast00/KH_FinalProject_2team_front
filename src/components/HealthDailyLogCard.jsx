@@ -11,8 +11,16 @@ export default function HealthDailyLogCard({ item, onEdit, onDelete }) {
   const foodDisplay = hasFood ? item.food.replace(/\n/g, ", ") : "❌";
   // 0903 표시 문자열 정리(, 로 이어주고 툴팁 제공) - 끝
 
+  // 0906 카드 배경색 반영 - 시작
+  // palette에서 저장된 색은 Page에서 item.bgcolor로 내려옴.
+  // 없으면 기본 스타일 유지(white).
+  const cardStyle = item?.bgcolor ? { background: item.bgcolor } : undefined;
+  // 0906 카드 배경색 반영 - 끝
+
   return (
-    <div className={styles.card}>
+    // 0906 카드 배경색 반영 - 시작
+    <div className={styles.card} style={cardStyle}>
+    {/* 0906 카드 배경색 반영 - 끝 */}
       <div className={styles.cardDate}>{item.hdateStr}</div>
 
       <div className={styles.row}>
