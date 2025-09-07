@@ -1,0 +1,57 @@
+.slider-container {
+  /* border: 2px solid brown; */
+  width: 85%;
+  max-width: 100%;
+  margin: auto auto;
+  overflow: visible;
+}
+
+/* .slick-list {
+  border: 4px solid yellowgreen;
+} */
+
+/* .slick-track {
+  border: 1px solid purple;
+} */
+
+.slider-container .slick-slider{
+  /* border: 2px solid blue; */
+  width: 100%;      /* 또는 900px 같은 고정값 */
+  box-sizing: border-box;
+  margin: 0 auto;   /* 가로 중앙 */
+}
+
+.slick-slide > div {
+  /* border: 2px solid red; */
+  width: 80%;     /* 원하는 고정 크기 */
+  height: auto;
+  display: flex !important;
+  align-items: center !important;   /* 세로 중앙 */
+  justify-content: center !important; /* 가로 중앙 */
+  margin: 0 auto;
+}
+
+/* 슬라이드 안 이미지 */
+.slick-slide img {
+    border-radius: 20px;
+    width: 100%;      
+    height: auto;     
+    object-fit: contain; /* 비율 유지 */
+    max-height: 300px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #A1DF80;   /* 기본은 투명하거나 회색이라 안 보일 수 있음 */
+  font-size: 60px;
+  opacity: 1;
+}
+
+.slick-prev {
+  z-index: 2;
+  left: -70px;
+}
+
+.slick-next {
+  z-index: 2;
+}

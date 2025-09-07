@@ -15,7 +15,6 @@
 
 /* 배너 아래 아이콘 바 */
 .actionBar { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin: 6px 0 10px; }
-/* 버튼 클릭 시 크기 커지기 + 부드러운 전환 */
 .iconBtn {
   border: 1px solid #ddd; background:#fff; border-radius: 0px; padding: 6px 10px; cursor:pointer;
   transition: transform .12s ease;
@@ -33,7 +32,7 @@
 .cols4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
 .cols2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
 
-/* 카드(포스트잇 느낌 + 고정 높이 + 버튼 하단 고정) */
+/* 카드 */
 .card {
   background: #fff;
   border: 1px solid #e9e9e9;
@@ -45,10 +44,7 @@
   position: relative;
   transition: transform .18s ease, box-shadow .18s ease;
 }
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.10), 0 16px 28px rgba(0,0,0,0.08);
-}
+.card:hover { transform: translateY(-6px); box-shadow: 0 6px 12px rgba(0,0,0,0.10), 0 16px 28px rgba(0,0,0,0.08); }
 
 .cardDate { font-weight: 700; margin-bottom: 8px; }
 
@@ -60,7 +56,7 @@
 /* 단어 쪼개짐 방지 + 줄수 제한 */
 .keepWords { word-break: keep-all; }
 
-/* 0903 한 항목만 매우 길어도 말줄임 보장 - 시작 */
+/* 말줄임 */
 .limit2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -68,10 +64,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.limit2.keepWords { overflow-wrap: anywhere; } /* 아주 긴 단어에도 줄바꿈 여지 부여 */
-/* 0903 한 항목만 매우 길어도 말줄임 보장 - 끝 */
+.limit2.keepWords { overflow-wrap: anywhere; }
 
-/* 식단 표시(여유 줄수, 넘치면 말줄임 + 툴팁) */
+/* 식단 표시 */
 .foodInline {
   display: -webkit-box;
   -webkit-line-clamp: 6;
@@ -79,14 +74,11 @@
   overflow: hidden;
   white-space: normal;
   overflow-wrap: anywhere;
-  text-overflow: ellipsis; /* 0903 말줄임 보강 */
+  text-overflow: ellipsis;
 }
 
-/* 카드 하단 동작(항상 우하단 고정) */
-.cardActions {
-  position: absolute; right: 12px; bottom: 12px;
-  display:flex; gap:12px;
-}
+/* 카드 하단 동작 */
+.cardActions { position: absolute; right: 12px; bottom: 12px; display:flex; gap:12px; }
 .linkBtn {
   background:none; border:none; color:#666; cursor:pointer; padding:0;
   transition: color .12s ease, text-decoration-color .12s ease;
@@ -102,7 +94,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 18px rgba(0,0,0,0.06);
 }
 
-/* 폼 열고/닫기 부드럽게(collapsible) */
+/* 폼 열고/닫기 부드럽게 */
 .collapsible { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .28s ease, opacity .28s ease; }
 .collapsible.open { max-height: 900px; opacity: 1; }
 
@@ -121,7 +113,7 @@
 .inputWrap { position: relative; flex: 1; }
 .inputWithAddon { padding-right: 36px; }
 
-/* +버튼 클릭 시 크기 커지기 */
+/* +버튼 */
 .insidePlus {
   position:absolute; right:6px; top:50%; transform: translateY(-50%);
   border:0; background:transparent; font-size:20px; cursor:pointer; line-height:1;
@@ -137,9 +129,24 @@ input[type=number] { -moz-appearance: textfield; }
 /* 동적 입력 */
 .foodInputBlock { display:flex; flex-direction:column; gap:6px; flex:1; }
 
-.formActions { display:flex; justify-content: space-between; gap:10px; margin-top: 16px; }
+/* 하단 영역 */
+.formActions { display:flex; justify-content: space-between; align-items:center; gap:10px; margin-top: 16px; }
 .outlineBtn { border:1px solid #6DC82A; background:#fff; border-radius:0px; padding:10px 14px; cursor:pointer; color:#6DC82A; }
 .primaryBtn { border:none; background:#50AC58; color:#fff; border-radius:0px; padding:10px 14px; cursor:pointer; }
+
+/* 0906 팔레트 2행×3열(등록버튼 왼쪽) - 시작 */
+.actionRight { display:flex; align-items:center; gap:12px; }
+.paletteWrap {
+  display: grid;
+  grid-template-columns: repeat(3, 18px); /* 3열 */
+  grid-template-rows: repeat(2, 18px);    /* 2행 */
+  gap: 6px;
+  padding: 4px 2px;
+  background: #fff;
+}
+.swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid #d0d0d0; cursor: pointer; }
+.swatchSel { outline: 2px solid #50AC58; outline-offset: 1px; }
+/* 0906 팔레트 2행×3열(등록버튼 왼쪽) - 끝 */
 
 .loading { text-align:center; color:#666; padding:12px 0; }
 .sentinel { height: 1px; }

@@ -18,6 +18,7 @@ padding: 0px;
     font-family: 'Arial', sans-serif;
     color: #595959;
     font-size: 14px;
+    table-layout: fixed;
 }
 
 .boardTable th, .boardTable td {
@@ -25,51 +26,39 @@ padding: 0px;
     text-align: left;
     border-bottom: 1px solid #C4EEAE;
 }
-
+.col_brno { width: 8%; }
+.col_brtitle { width: 44%; } /* 제목 영역을 넓게 조정 */
+.col_nickname { width: 12%; }
+.col_date { width: 12%; }
+.col_viewcount { width: 8%; }
+.col_likes { width: 8%; }
 .boardTable th {
     background-color: #C4EEAE;
     font-weight: bold;
     text-align: center;
 }
-
 .boardTable td {
     text-align: center;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; /* 내용넘치면...*/
 }
-
-.column_brno {
-    width: 8%;
+.boardTable td.col_brtitle {  /*제목 왼쪽정렬 맘에 안들면 변경하자*/
+    text-align: left; 
 }
-
-.column_brtitle {
-    width: 54%;
-    text-align: left; /* 제목은 왼쪽 정렬 */
+.row {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-
-.column_mname {
-    width: 12%;
+.row:hover {
+    background-color: #f0f0f0;
 }
-
-.column_date {
-    width: 10%;
-}
-
-.column_viewcount {
-    width: 8%;
-}
-
-.column_likes {
-    width: 8%;
-}
-
-.boardRow a {
+.row a {
     text-decoration: none;
     color: inherit;
     transition: color 0.2s;
 }
 
-.boardRow a:hover {
+.row a:hover {
     color: #555;
 }

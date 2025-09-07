@@ -22,5 +22,4 @@
 .table thead th{ font-weight:700; text-align:left; color:var(--title); }
 .table tbody tr:nth-child(even){ background: color-mix(in srgb, var(--card) 92%, var(--ring)); }
 .table tbody tr:hover{ background: color-mix(in srgb, var(--card) 85%, var(--ring)); }
-
 .actions{ display:inline-flex; gap:8px; }
