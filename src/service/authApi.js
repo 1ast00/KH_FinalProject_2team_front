@@ -189,4 +189,3 @@ export const postToAIHealthDailyLog = async (prompt) => {
   }
 };
 // 0907 건강일지 전용 AI에게 피드백 요청 보내는 함수 - 끝
-

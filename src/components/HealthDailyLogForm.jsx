@@ -42,14 +42,22 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
 
   // 팔레트
   const palette = [
-    { key: "default", color: "#f6f6f6", title: "기본" },
-    { key: "red",     color: "#FFE5E5", title: "연한빨강" },
-    { key: "yellow",  color: "#FFF6CC", title: "연한노랑" },
-    { key: "green",   color: "#C4EEAE", title: "연한초록" },
-    { key: "pink",    color: "#FFE3EF", title: "연한핑크" },
-    { key: "blue",    color: "#E0EEFF", title: "연한파랑" },
+    { key: "default", color: "#fff", title: "기본" },
+    { key: "gray",     color: "#E8E8E8", title: "연한회색" },
+    { key: "yellow",   color: "#FFF6CC", title: "연한노랑" },
+    { key: "green",    color: "#C4EEAE", title: "연한초록" },
+    { key: "pink",     color: "#FFE3EF", title: "연한핑크" },
+    { key: "blue",     color: "#E0EEFF", title: "연한파랑" },
   ];
   const [selectedColor, setSelectedColor] = useState(palette[0].key);
+
+  /* 0908 기존 색상 복원 - 시작 */
+  const keyFromHex = (hex) => {
+    if (!hex) return palette[0].key;
+    const found = palette.find(p => (p.color || "").toLowerCase() === (hex || "").toLowerCase());
+    return found ? found.key : palette[0].key;
+  };
+  /* 0908 기존 색상 복원 - 끝 */
 
   // 0906 폼 재초기화 - 시작
   useEffect(() => {
@@ -60,6 +68,10 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
     setWateramount(initial?.wateramount ?? "");
     setExercises(initial?.exercise ? initial.exercise.split("\n") : [""]);
     setFoods(initial?.food ? initial.food.split("\n") : [""]);
+
+    /* 0908 기존 색상 복원 - 시작 */
+    setSelectedColor(keyFromHex(initial?.bgcolor));
+    /* 0908 기존 색상 복원 - 끝 */
   }, [initial, initialDate, initHH, initMM]);
   // 0906 폼 재초기화 - 끝
 
@@ -135,14 +147,13 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
     return [
       "당신은 다정한 건강 코치입니다. 항상 칭찬모드로 간단·긍정적으로 피드백하세요.",
       "출력 형식:",
-      "- 3줄 요약(칭찬 위주 + 부드러운 개선 1가지)",
-      "- 한국어 자료 링크 3개(각 줄: 간단 제목 - URL)",
+      "3줄 요약(칭찬 위주 + 부드러운 개선 1가지)",
+      "개선 1가지와 관련한 다이어트 정보도 200자이내로 주세요",
       "",
       `기록: 날짜 ${hdate}, 몸무게 ${weight ?? "-"}kg, 수면 ${sleeptime}, 물 ${wateramount ?? "-"}L,`,
       `운동: ${exercise},`,
       `식단: ${foods.join(", ") || "-"}`,
       "",
-      "링크는 국내 기사/블로그/유튜브 등 신뢰 가능한 자료로, 너무 길지 않게 주세요."
     ].join("\n");
   };
   // 0907 AI 프롬프트 조립 - 끝

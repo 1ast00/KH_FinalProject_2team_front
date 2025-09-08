@@ -154,17 +154,17 @@ input[type=number] { -moz-appearance: textfield; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  width: 86px; height: 28px;
+  width: 100px; height: 28px;
   border: 1px solid #d0d0d0; background:#f7f7f7; border-radius: 999px;
   cursor: pointer; padding: 2px 8px 2px 2px;
 }
 .aiSwitchOn { background: #dff3e1; border-color:#b7e0bc; }
 .aiKnob {
-  position: absolute; left: 2px; top: 2px;
+  position: absolute; left: 0px; top: 0px;
   width: 24px; height: 24px; border-radius: 50%; background:#fff; border: 1px solid #d0d0d0;
   transition: transform .15s ease;
 }
-.aiSwitchOn .aiKnob { transform: translateX(56px); }
+.aiSwitchOn .aiKnob { transform: translateX(73px); }
 .aiLabel { margin-left: 34px; font-size: 12px; color:#333; user-select:none; }
 /* 0907 AI 스위치 스타일 추가 - 끝 */
 
