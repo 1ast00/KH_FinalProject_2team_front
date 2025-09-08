@@ -8,37 +8,50 @@ import styles from "../../../css/board/BoardReviewDetail.module.css";
 export default function BoardReviewDetail() {
   const navigate = useNavigate();
   const { brno } = useParams();
+
+  // 상태(State) 선언
   const [review, setReview] = useState(null);
   const [awesomeCount, setAwesomeCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAuthor, setIsAuthor] = useState(false);
 
+  // 댓글 관련 상태
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
+  const [editingComment, setEditingComment] = useState(null);
+
+  // 로그인 사용자 정보
   const userData = getUserData();
   const loggedInNickname = userData ? userData.nickname : "";
   const loggedInMno = userData ? userData.mno : null;
-  const [awesomeMemberIds, setAwesomeMemberIds] = useState([]);
-  const [isAuthor, setIsAuthor] = useState(false);
 
-  useEffect(() => {
-    const fetchReviewDetail = async () => {
-      try {
-        const response = await reviewsAPI.get(`/detail/${brno}`);
-        setReview(response.data.review);
-        setAwesomeCount(response.data.awesomeCount);
-        setAwesomeMemberIds(response.data.awesomeMemberIds);
-
-        if (response.data.review.mno === loggedInMno) {
-          setIsAuthor(true);
-        }
-
-        setLoading(false);
-      } catch (err) {
-        setError(err);
-        setLoading(false);
+  // 함수(API 호출 및 이벤트 핸들러) 정의
+  const fetchReviewDetail = async () => {
+    try {
+      const response = await reviewsAPI.get(`/detail/${brno}`);
+      const reviewData = response.data.review;
+      setReview(reviewData);
+      setAwesomeCount(response.data.awesomeCount);
+      // 작성자 여부 확인
+      if (reviewData && reviewData.mno === loggedInMno) {
+        setIsAuthor(true);
       }
-    };
-    fetchReviewDetail();
-  }, [brno, loggedInMno]);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchComments = async () => {
+    try {
+      const response = await reviewsAPI.get(`/comment/${brno}`);
+      setComments(response.data);
+    } catch (error) {
+      console.error("댓글 목록을 불러오는데 실패했습니다.", error);
+    }
+  };
 
   const handleEdit = () => {
     navigate(`/board/review/write/${brno}`, { state: { review } });
@@ -66,10 +79,7 @@ export default function BoardReviewDetail() {
       return;
     }
     try {
-      const response = await reviewsAPI.post(`/awesome`, {
-        brno: brno,
-        mno: loggedInMno,
-      });
+      const response = await reviewsAPI.post(`/awesome`, { brno: brno });
       setAwesomeCount(response.data.awesomeCount);
       alert(response.data.msg);
     } catch (error) {
@@ -77,8 +87,6 @@ export default function BoardReviewDetail() {
       alert("오류가 발생하였습니다. 다시 시도해 주세요.");
     }
   };
-
-  const heartIcon = awesomeCount > 0 ? "♥" : "♡";
 
   const handleDanger = async () => {
     if (!loggedInMno) {
@@ -95,33 +103,132 @@ export default function BoardReviewDetail() {
         alert("신고에 실패했습니다.");
       }
     } catch (error) {
-      console.error("신고실패", error);
-      alert("신고실패, 다시시도해주세요.");
+      console.error("신고 실패", error);
+      alert("신고 실패, 다시 시도해주세요.");
     }
   };
 
-  // 렌더링 전 조건부 처리 로직을 한 곳으로 통합합니다.
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
-  if (error) {
-    return <div>오류가 발생했습니다: {error.message}</div>;
-  }
-  if (!review) {
-    return <div>게시글을 찾을 수 없습니다.</div>;
-  }
+  const handleCommentSubmit = async () => {
+    if (!loggedInMno) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
+      return;
+    }
+    if (!commentText.trim()) {
+      alert("댓글 내용을 입력해주세요.");
+      return;
+    }
+    try {
+      await reviewsAPI.post("/comment", {
+        brno: brno,
+        brccontent: commentText,
+      });
+      alert("댓글이 등록되었습니다.");
+      setCommentText("");
+      fetchComments();
+    } catch (error) {
+      console.error("댓글 등록에 실패했습니다.", error);
+      alert("댓글 등록에 실패했습니다.");
+    }
+  };
 
-  // 게시글 상태가 '신고' 상태일 때 
-  if (review.brdanger >= 10) {
+  const handleCommentUpdateStart = (comment) => {
+    setEditingComment(comment);
+    setCommentText(comment.brccontent);
+  };
+
+  const handleCommentUpdate = async () => {
+    if (!commentText.trim()) {
+      alert("댓글 내용을 입력해주세요.");
+      return;
+    }
+    const updatedComment = {
+      brcno: editingComment.brcno,
+      brccontent: commentText,
+    };
+    try {
+      await reviewsAPI.patch("/comment", updatedComment);
+      alert("댓글이 수정되었습니다.");
+      setEditingComment(null);
+      setCommentText("");
+      fetchComments();
+    } catch (error) {
+      console.error("댓글 수정에 실패했습니다.", error);
+      alert("댓글 수정에 실패했습니다.");
+    }
+  };
+
+  const handleCommentDelete = async (brcno) => {
+    if (window.confirm("정말로 댓글을 삭제하시겠습니까?")) {
+      try {
+        await reviewsAPI.delete(`/comment/${brcno}`);
+        alert("댓글이 삭제되었습니다.");
+        fetchComments();
+      } catch (error) {
+        console.error("댓글 삭제에 실패했습니다.", error);
+        alert("댓글 삭제에 실패했습니다.");
+      }
+    }
+  };
+
+  const toggleCommentAwesome = async (brcno) => {
+    if (!loggedInMno) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
+      return;
+    }
+    try {
+      const response = await reviewsAPI.post(`/comment/awesome/${brcno}`);
+      alert(response.data.msg);
+      fetchComments();
+    } catch (error) {
+      console.error("댓글 좋아요 토글 실패:", error);
+      alert("오류가 발생하였습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  const handleCommentReport = async (brcno) => {
+    if (!loggedInMno) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
+      return;
+    }
+    if (window.confirm("정말로 이 댓글을 신고하시겠습니까?")) {
+      try {
+        const response = await reviewsAPI.patch(`/comment/danger/${brcno}`);
+        if (response.data.code === 1) {
+          alert(response.data.msg);
+        } else {
+          alert("신고 접수에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("댓글 신고 실패:", error);
+        alert("신고 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchReviewDetail();
+    fetchComments();
+  }, [brno]);
+
+  
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>오류가 발생했습니다: {error.message}</div>;
+  if (!review) return <div>게시글을 찾을 수 없습니다.</div>;
+  if (review.brdanger >= 10)
     return <div>이 게시글은 신고 누적으로 인해 볼 수 없습니다.</div>;
-  }
 
   return (
     <div className={styles.container}>
+      {/* 게시글 제목 */}
       <div>
         <h2 className={styles.brtitle}>{review.brtitle}</h2>
         <hr className={styles.divider} />
       </div>
+
+      {/* 게시글 정보 및 버튼 */}
       <div className={styles.brinfo}>
         <div className={styles.brwriter}>
           <span className={styles.nickname}>{review.nickname}</span>
@@ -142,27 +249,102 @@ export default function BoardReviewDetail() {
             </>
           )}
           <button className={styles.btn_heart} onClick={handleAwesomeToggle}>
-            {heartIcon} {awesomeCount}
+            {awesomeCount > 0 ? "♥" : "♡"} {awesomeCount}
           </button>
           <span onClick={handleDanger}>신고</span>
         </div>
       </div>
-      <p></p>
+
+      {/* 게시글 내용 */}
       <div className={styles.brcontent}>
         <Viewer initialValue={review.brcontent} />
       </div>
       <hr className={styles.divider} />
+
+      {/* 댓글 쓰기 */}
       <div className={styles.commentSection}>
         <div className={styles.commentInputBox}>
           <span className={styles.loggedInUser}>{loggedInNickname}</span>
           <textarea
             className={styles.commentInput}
             placeholder="댓글을 남겨주세요."
-            rows="3"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
           />
-          <button className={styles.commentSubmitBtn}>등록</button>
+          {editingComment ? (
+            <button
+              className={styles.commentSubmitBtn}
+              onClick={handleCommentUpdate}
+            >
+              수정 완료
+            </button>
+          ) : (
+            <button
+              className={styles.commentSubmitBtn}
+              onClick={handleCommentSubmit}
+            >
+              등록
+            </button>
+          )}
         </div>
-        <div className={styles.commentList}></div>
+
+        {/* 댓글 목록 */}
+        <div className={styles.commentList}>
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <div key={comment.brcno} className={styles.commentItem}>
+                <div className={styles.commentInfoLine}>
+                  <div className={styles.commentHeader}>
+                    <span className={styles.commentAuthor}>
+                      {comment.nickname}
+                    </span>
+                    <span className={styles.commentDate}>
+                      {new Date(comment.brcwrite_date).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div className={styles.commentActions}>
+
+                    <button onClick={() => toggleCommentAwesome(comment.brcno)}>
+                      <span className={styles.heartIcon}>
+                        {comment.awesomeCount > 0 ? "♥" : "♡"}
+                      </span>
+                      {comment.awesomeCount}
+                    </button>
+
+                    {loggedInMno && loggedInMno === comment.mno && (
+                      <>
+                        <button
+                          onClick={() => handleCommentUpdateStart(comment)}
+                        >
+                          수정
+                        </button>
+                        <button
+                          onClick={() => handleCommentDelete(comment.brcno)}
+                        >
+                          삭제
+                        </button>
+                      </>
+                    )}
+
+                    {/* 신고 버튼: 내가 쓴 댓글이 아닐 때만 보임 */}
+                    {loggedInMno && loggedInMno !== comment.mno && (
+                      <button
+                        onClick={() => handleCommentReport(comment.brcno)}
+                      >
+                        신고
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className={styles.commentContent}>
+                  {comment.brccontent}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>현재 댓글이 없습니다.</p>
+          )}
+        </div>
       </div>
     </div>
   );
