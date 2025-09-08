@@ -51,10 +51,12 @@ export default ({searchTxtSentInFoodDetailPage}) => {
 
         // console.log("searchTxt: ",searchTxt);
         // console.log("searchTxtSentInFoodDetailPage: ",searchTxtSentInFoodDetailPage)
+        console.log("foodData: ",foodData);
     
-        if((!searchTxt || searchTxt.trim() === "") && 
-        (!searchTxtSentInFoodDetailPage || searchTxtSentInFoodDetailPage.trim() === "")) 
-        return;
+        if((!query || query.trim() === "") && 
+        (!searchTxtSentInFoodDetailPage || searchTxtSentInFoodDetailPage.trim() === "")){
+            return;
+        } 
     
             {/* 2. searchTxt값을 api를 받는 controller에 연결해서 넘겨줌*/}
             {/*closure: 바깥에 있는 변수를 참조*/}
@@ -82,9 +84,16 @@ export default ({searchTxtSentInFoodDetailPage}) => {
         //따라서 렌더링 후 실행되는 useEffect를 이용해 다시금 렌더링 해보는 방법을 고안
         setSearchTxt(query);
         setCurrentPage(1);
-        setSearchPerformed(true);
-        
-    }
+        setSearchPerformed(true); 
+
+        if ((!query || query.trim() === "") && 
+        (!searchTxtSentInFoodDetailPage || searchTxtSentInFoodDetailPage.trim() === "")) {
+    
+            // 둘 다 빈 경우
+            alert("올바른 검색어를 입력해주십시오");
+            return;
+        }
+        }
 
     //영양성분 nutrient의 string으로 부터 영양성분을 추출하는 함수
     const parseNutrients = (nutrientStr) => {
@@ -145,7 +154,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                 <button onClick={handleSearch}><img src="/img/search_icon.png" alt="search_icon"/></button>
             </div>
             <div className={styles.result}>
-            {/* 검색 결과 출력 */}
+
             { !foodData && <p>검색 결과가 없습니다.</p>}
             { !!foodData && foodData?.data?.map((item,index) => {
                     return(
@@ -157,8 +166,8 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                     )
                 })
                 }
-                <div>
-                    {/* 페이지 이동 바 */}
+                { foodData?.data?.length > 0 && 
+                    <div>
                     <Pagination
                         currentPage={currentPage}
                         dataLength={foodData?.data?.length}
@@ -168,6 +177,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                         totalCount={foodData?.data?.[0]?.totalCount}
                     />
                 </div>
+                }
             { !!foodData && foodData?.data?.length && (
                 <div className={styles.caution}>
                     <p>{"*"} 한국식품안전관리인증원(HACCP)에 등록되어 있지 않은 경우 결과에 나타나지 않을수도 있습니다.</p>

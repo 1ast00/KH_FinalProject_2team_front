@@ -154,111 +154,135 @@ export default () => {
     const nutrientObj3 = state?.item? parseFoodData3(state.item.nutrient) : null;
 
     return(
-        <div className="food-detail">
+        <div className="total-container">
             {/* Zustand로 관리
             <div>
                 <button onClick={goBack}>뒤로 가기</button>
             </div> */}
-            <div style={{
-                width: "88%",
-                height: "280.72px",
-                overflow: "hidden"
+            <div 
+            style={{
+                width: "100%",
+                height: "auto",
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center", // 가로 중앙
+                alignItems: "center"      // 세로 중앙 (선택)
             }}>
                 <img src="/img/food_banner.png" 
                 style={{
-                    width: "1267.2px"
+                    width: "40%"
                 }}/>
             </div>
             {!!nutrientObj?.nutrients?.단백질 && !!nutrientObj?.nutrients?.지방 ? (
-
-                <div 
-                // className="hero"
-                // className={styles.totalContainer}
+                <div
+                className="food-detail-flex"
                 >
                     <div
-                    className="food-detail-grid"
-                    //  className={styles.leftContainer}
+                    className="food-detail-card"
                      >
-                        <FoodImgTitle item={state.item}/>
-                        <FoodCalories nutrientObj={nutrientObj}/>
-                        <FoodThreeMajorNutrientsTable nutrientObj={nutrientObj}/>
-                        <Foodallergy item={state.item}/>
+                        <FoodImgTitle 
+                        item={state.item}/>
+                        <FoodCalories 
+                        nutrientObj={nutrientObj}/>
+                        <FoodThreeMajorNutrientsTable 
+                        nutrientObj={nutrientObj}/>
                     </div>
-                    <div 
-                    className="food-detail-grid"
-                    // className={styles.rightContainer}
+                    <div
+                    className="food-detail-card" 
                     >
-                        <FoodProductGb item={state.item}/>
-                        <FoodServing nutrientObj={nutrientObj}/>
-                        <FoodManufacture item={state.item}/>
-                        <FoodDetailTable nutrientObj={nutrientObj} nutrientObj2={nutrientObj2} item={state.item}/>
-                        <FoodRawMtrl item={state.item}/>
+                        <Foodallergy   
+                        item={state.item}/>
+                        <FoodProductGb 
+                        item={state.item}/>
+                        <FoodServing 
+                        nutrientObj={nutrientObj}/>
+                        <FoodManufacture 
+                        item={state.item}/>
+                        <FoodDetailTable 
+                        nutrientObj={nutrientObj} 
+                        nutrientObj2={nutrientObj2}
+                         item={state.item}/>
+                        <FoodRawMtrl 
+                        item={state.item}/>
                     </div>
                 </div>
             ):(
                 <div 
-                // className={styles.totalContainer}
                 >
-                    {!!nutrientObj2?.nutrients?.열량 ? (<div>
-                        <div 
-                        className="food-detail-grid"
-                            // className={styles.leftContainer}
-                            >
-                            <FoodImgTitle item={state.item}/>
-                            <FoodCalories2 nutrientObj={nutrientObj2}/>
-                            <FoodThreeMajorNutrientsTable2 nutrientObj={nutrientObj2}/>
-                            <Foodallergy item={state.item}/>
-                            </div>
-                        <div 
-                        className="food-detail-grid"
-                        // className={styles.rightContainer}
+                    {!!nutrientObj2?.nutrients?.열량 ? (
+                        <div
+                        className="food-detail-flex"
                         >
-                            <FoodProductGb item={state.item}/>
-                            <FoodServing nutrientObj={nutrientObj2}/>
-                            <FoodManufacture item={state.item}/>
-                            <FoodDetailTable2 nutrientObj={nutrientObj2} />
-                            <FoodRawMtrl item={state.item}/>
+                        <div
+                        className="food-detail-card"
+                        >
+                            <FoodImgTitle 
+                            item={state.item}/>
+                            <FoodCalories2 
+                            nutrientObj={nutrientObj2}/>
+                            <FoodThreeMajorNutrientsTable2 
+                            nutrientObj={nutrientObj2}/>
                         </div>
-                    </div>): (<div 
-                    // className={styles.totalContainer}
+                        <div
+                        className="food-detail-card"
+                        >
+                            <Foodallergy   
+                            item={state.item}/>
+                            <FoodProductGb 
+                            item={state.item}/>
+                            <FoodServing 
+                            nutrientObj={nutrientObj2}/>
+                            <FoodManufacture 
+                            item={state.item}/>
+                            <FoodDetailTable2 
+                            nutrientObj={nutrientObj2} />
+                            <FoodRawMtrl 
+                            item={state.item}/>
+                        </div>
+                    </div>): (
+                    <div
+                    className="food-detail-flex"
                     >
-                        <div 
-                        className="food-detail-grid"
-                        // className={styles.leftContainer}
+                        <div
+                        className="food-detail-card"
                         >
-                            <FoodImgTitle item={state.item}/>
-                            <FoodCalories nutrientObj={nutrientObj3}/>
-                            <FoodThreeMajorNutrientsTable nutrientObj={nutrientObj3}/>
-                            <Foodallergy item={state.item}/>
+                            <FoodImgTitle 
+                            item={state.item}/>
+                            <FoodCalories 
+                            nutrientObj={nutrientObj3}/>
+                            <FoodThreeMajorNutrientsTable
+                            nutrientObj={nutrientObj3}/>
                         </div>
-                        <div 
-                        className="food-detail-grid"
-                        // className={styles.rightContainer}
+                        <div
+                        className="food-detail-card"
                         >
-                            <FoodProductGb item={state.item}/>
-                            <FoodServing nutrientObj={nutrientObj3}/>
-                            <FoodManufacture item={state.item}/>
-                            <FoodDetailTable nutrientObj={nutrientObj3} />
-                            <FoodRawMtrl item={state.item}/>
+                            <Foodallergy   
+                            item={state.item}/>
+                            <FoodProductGb
+                            item={state.item}/>
+                            <FoodServing 
+                            nutrientObj={nutrientObj3}/>
+                            <FoodManufacture 
+                            item={state.item}/>
+                            <FoodDetailTable 
+                            nutrientObj={nutrientObj3} />
+                            <FoodRawMtrl 
+                            item={state.item}/>
                         </div>
                     </div>)}
                 </div>) 
             }
             <div 
             className="search-bar"
-            // className={styles.foodSearchBar}
             >
                 {/* input + button, input값을 상태값으로 관리하고 FoodSearch에 넘겨주기 */}
                 <input type="text" 
                 placeholder="원하시는 식품을 입력하세요." 
                 value={query} 
                 onChange={e=>{setQuery(e.target.value)}}/>
-                <button onClick={handleSearch}>검색</button>
+                <button onClick={handleSearch}><img src="/img/search_icon.png" alt="search_icon"/></button>
             </div>
-            <div 
-            className="search-bar"
-            // className={styles.AISearchBar}
-            >
+            <div>
                 <AISearch item = {state.item}/>
             </div>
         </div>
