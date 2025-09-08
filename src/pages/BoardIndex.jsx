@@ -83,7 +83,7 @@ function BoardIndex() {
             <Route index element={<BoardReviewAllview />} />
             <Route path="review" element={<BoardReviewAllview />} />
             <Route path="review/:brno" element={<BoardReviewDetail />} />
-            <Route path="review/write" element={<BoardReviewWrite />} />
+            <Route path="review/write/:brno?" element={<BoardReviewWrite />} />
             <Route path="meals" element={<BoardMealsAllview />} />
             <Route path="meals/:bmno" element={<BoardMealsDetail />} />
             <Route path="meals/write" element={<BoardMealsWrite />} />

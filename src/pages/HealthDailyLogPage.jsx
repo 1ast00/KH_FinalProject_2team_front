@@ -6,8 +6,26 @@ import {
   apiFetchHealthDailyLogList,
   apiUpdateHealthDailyLog,
 } from "../service/healthDailyLogApi";
+/* 0907 이름 변경 - 시작 (postToAIHDL → postToAIHealthDailyLog) */
+import { postToAIHealthDailyLog } from "../service/authApi";
+/* 0907 이름 변경 - 끝 */
 import HealthDailyLogCard from "../components/HealthDailyLogCard";
+/* 0907 이름 변경 - 시작 (AiFeedbackModal → HealthDailyLogModal) */
+import HealthDailyLogModal from "../components/HealthDailyLogModal";
+/* 0907 이름 변경 - 끝 */
 import HealthDailyLogForm from "../components/HealthDailyLogForm";
+
+const LS_KEY = "hdl_card_colors";
+const readColors = () => {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch { return {}; }
+};
+const getColor = (hno) => readColors()[hno];
+const setColor = (hno, color) => {
+  if (!hno || !color) return;
+  const m = readColors();
+  m[hno] = color;
+  localStorage.setItem(LS_KEY, JSON.stringify(m));
+};
 
 export default function HealthDailyLogPage() {
   const [items, setItems] = useState([]);
@@ -18,17 +36,28 @@ export default function HealthDailyLogPage() {
   const [dateFilter, setDateFilter] = useState("");
   const observerRef = useRef(null);
 
-  const load = async ({ reset = false, cursor = 0, date = "" } = {}) => {
+  /* 0906 새 글 폼 완전 초기화를 위한 시드 - 시작 */
+  const [formSeed, setFormSeed] = useState(0);
+  /* 0906 새 글 폼 완전 초기화를 위한 시드 - 끝 */
+
+  /* 0907 AI 모달 상태 - 시작 */
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiText, setAiText] = useState("");
+  /* 0907 AI 모달 상태 - 끝 */
+
+  const decorate = (arr) => arr.map((it) => ({ ...it, bgcolor: getColor(it.hno) || it.bgcolor }));
+
+  /* 내부 공용 로더: 필요 시 limit 강제 지정 */
+  const load = async ({ reset = false, cursor = 0, date = "", forceLimit = null } = {}) => {
     if (loading) return;
     setLoading(true);
     try {
-      const data = await apiFetchHealthDailyLogList({
-        cursor,
-        limit: formOpen ? 8 : 12,
-        date,
-      });
-      if (reset) setItems(data.items);
-      else setItems((prev) => [...prev, ...data.items]);
+      const limit = forceLimit ?? (formOpen ? 8 : 12);
+      const data = await apiFetchHealthDailyLogList({ cursor, limit, date });
+      const decorated = decorate(data.items);
+      if (reset) setItems(decorated);
+      else setItems((prev) => [...prev, ...decorated]);
       setNextCursor(data.nextCursor ?? null);
     } finally {
       setLoading(false);
@@ -57,29 +86,89 @@ export default function HealthDailyLogPage() {
     return () => el && observerRef.current.unobserve(el);
   }, [nextCursor, dateFilter, formOpen]);
 
+  const pickColorFromPayload = (p) => {
+    if (!p) return "";
+    const cand =
+      p.cardColor ||
+      p.paletteColor ||
+      p.selectedColor ||
+      p.noteColor ||
+      p.colorCode ||
+      p.bgcolor ||
+      p.backgroundColor ||
+      p.background ||
+      p.color ||
+      p.theme ||
+      p.themeColor ||
+      p.bg;
+    if (typeof cand === "string" && cand.trim()) return cand.trim();
+    return "";
+  };
+
+  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 + AI 피드백 - 시작 */
   const handleCreate = async (payload) => {
     const res = await apiCreateHealthDailyLog(payload);
     if (res.code === 1) {
-      alert("등록되었습니다.");
+      const picked = pickColorFromPayload(payload);
+      if (picked) setColor(res.hno, picked);
+
+      // 새 아이템 즉시 붙이기
+      const added = {
+        hno: res.hno,
+        hdateStr: (payload.hdate || "").replace(/-/g, "."),
+        hdate: payload.hdate,
+        sleeptimeStr: payload.sleeptime,
+        hweight: payload.weight,
+        weight: payload.weight,
+        wateramount: payload.wateramount,
+        exercise: payload.exercise || "-",
+        food: (payload.foods && payload.foods.length ? payload.foods.join("\n") : "-"),
+        bgcolor: picked || getColor(res.hno),
+      };
+      setItems((prev) => [added, ...prev]);
+
+      // 폼 닫고 초기화
       setFormOpen(false);
       setEditTarget(null);
-      setItems([]);
-      load({ reset: true, cursor: 0, date: dateFilter });
+      load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
+
+      // 0907 AI ON이면 모달 열고 호출
+      if (payload.aiOn) {
+        setAiOpen(true);
+        setAiLoading(true);
+        setAiText("");
+        try {
+          /* 0907 이름 변경 - 시작 (postToAIHDL → postToAIHealthDailyLog) */
+          const txt = await postToAIHealthDailyLog(payload.aiPrompt || "");
+          /* 0907 이름 변경 - 끝 */
+          setAiText(txt || "간단 피드백을 가져오지 못했습니다.");
+        } catch {
+          setAiText("AI 연결에 실패했습니다.");
+        } finally {
+          setAiLoading(false);
+        }
+      }
+
+      alert("등록되었습니다.");
     } else if (res.code === 3) {
       alert("같은 날짜의 건강일지가 이미 있습니다.");
     } else {
       alert(res.msg || "등록 실패");
     }
   };
+  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 + AI 피드백 - 끝 */
 
   const handleUpdate = async (hno, payload) => {
     const res = await apiUpdateHealthDailyLog(hno, payload);
     if (res.code === 1) {
-      alert("수정되었습니다.");
+      const picked = pickColorFromPayload(payload);
+      if (picked) setColor(hno, picked);
+
+      await load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
+
       setFormOpen(false);
       setEditTarget(null);
-      setItems([]);
-      load({ reset: true, cursor: 0, date: dateFilter });
+      alert("수정되었습니다.");
     } else {
       alert("수정 실패");
     }
@@ -89,9 +178,9 @@ export default function HealthDailyLogPage() {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     const res = await apiDeleteHealthDailyLog(item.hno);
     if (res.code === 1) {
-      alert("삭제되었습니다.");
       setItems((prev) => prev.filter((x) => x.hno !== item.hno));
-      load({ reset: true, cursor: 0, date: dateFilter });
+      await load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
+      alert("삭제되었습니다.");
     } else {
       alert("삭제 실패");
     }
@@ -108,15 +197,12 @@ export default function HealthDailyLogPage() {
     if (hidden) hidden.showPicker ? hidden.showPicker() : hidden.click();
   };
 
-  // 0903 작성 버튼 토글 안정화 - 시작
-  const toggleFormOpen = () => {
-    setFormOpen((prev) => {
-      const next = !prev;
-      if (!next) setEditTarget(null);
-      return next;
-    });
+  const openNewForm = () => {
+    setEditTarget(null);
+    setFormSeed((s) => s + 1);
+    setFormOpen(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  // 0903 작성 버튼 토글 안정화 - 끝
 
   return (
     <div className={styles.page}>
@@ -124,13 +210,10 @@ export default function HealthDailyLogPage() {
       <div className={styles.heroWrap}>
         <div
           className={styles.hero}
-          onClick={toggleFormOpen}
+          onClick={openNewForm}
           title="새 건강일지 작성하기"
         >
           <img src="/img/healthdailylog_hero.jpg" alt="hero" />
-          <div className={styles.heroOverlay}>
-            <span>새 건강일지 작성하기</span>
-          </div>
         </div>
 
         {/* 배너 아래 오른쪽: 📆 🖋 */}
@@ -143,7 +226,7 @@ export default function HealthDailyLogPage() {
             className={styles.hiddenDate}
           />
           <button className={styles.iconBtn} title="날짜로 검색" onClick={triggerDate}>📆</button>
-          <button className={styles.iconBtn} title="작성하기" onClick={toggleFormOpen}>🖋</button>
+          <button className={styles.iconBtn} title="작성하기" onClick={openNewForm}>🖋</button>
         </div>
       </div>
 
@@ -176,9 +259,7 @@ export default function HealthDailyLogPage() {
           <div className={styles.formWrap}>
             <div className={`${styles.collapsible} ${formOpen ? styles.open : ""}`}>
               <HealthDailyLogForm
-                /* 0903 수정폼 초기값 고정: edit 대상 바뀔 때 재마운트 - 시작 */
-                key={editTarget ? `edit-${editTarget.hno}` : "new"}
-                /* 0903 수정폼 초기값 고정 - 끝 */
+                key={editTarget ? `edit-${editTarget.hno}` : `new-${formSeed}`}
                 initial={editTarget}
                 onCancel={() => {
                   setFormOpen(false);
@@ -192,6 +273,15 @@ export default function HealthDailyLogPage() {
           </div>
         </div>
       </div>
+
+      {/* 0907 이름 변경 - 시작 (AiFeedbackModal → HealthDailyLogModal) */}
+      <HealthDailyLogModal
+        open={aiOpen}
+        loading={aiLoading}
+        text={aiText}
+        onClose={() => setAiOpen(false)}
+      />
+      {/* 0907 이름 변경 - 끝 */}
     </div>
   );
 }

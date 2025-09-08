@@ -50,6 +50,7 @@
 .actions {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 .btn_heart{
  color: red; 
@@ -57,7 +58,7 @@
  border: none; 
  outline: none; 
  cursor: pointer; 
- padding: 0; 
+ padding: 0px 0px 0px 10px; 
  font-size: 14px; 
 }
 .actions span {
