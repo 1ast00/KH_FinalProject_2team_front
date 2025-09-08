@@ -15,17 +15,9 @@ import HealthDailyLogModal from "../components/HealthDailyLogModal";
 /* 0907 이름 변경 - 끝 */
 import HealthDailyLogForm from "../components/HealthDailyLogForm";
 
-const LS_KEY = "hdl_card_colors";
-const readColors = () => {
-  try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch { return {}; }
-};
-const getColor = (hno) => readColors()[hno];
-const setColor = (hno, color) => {
-  if (!hno || !color) return;
-  const m = readColors();
-  m[hno] = color;
-  localStorage.setItem(LS_KEY, JSON.stringify(m));
-};
+/* 0908 DB 색상 저장 전환 - 시작
+   localStorage 유틸 전부 제거 (DB 컬럼 CARD_COLOR 사용) */
+/* 0908 DB 색상 저장 전환 - 끝 */
 
 export default function HealthDailyLogPage() {
   const [items, setItems] = useState([]);
@@ -46,23 +38,22 @@ export default function HealthDailyLogPage() {
   const [aiText, setAiText] = useState("");
   /* 0907 AI 모달 상태 - 끝 */
 
-  const decorate = (arr) => arr.map((it) => ({ ...it, bgcolor: getColor(it.hno) || it.bgcolor }));
-
-  /* 내부 공용 로더: 필요 시 limit 강제 지정 */
+  /* 0908 DB 색상 저장 전환 - 시작
+     더 이상 decorate로 색 주입하지 않음(서버가 bgcolor 내려줌) */
   const load = async ({ reset = false, cursor = 0, date = "", forceLimit = null } = {}) => {
     if (loading) return;
     setLoading(true);
     try {
       const limit = forceLimit ?? (formOpen ? 8 : 12);
       const data = await apiFetchHealthDailyLogList({ cursor, limit, date });
-      const decorated = decorate(data.items);
-      if (reset) setItems(decorated);
-      else setItems((prev) => [...prev, ...decorated]);
+      if (reset) setItems(data.items);
+      else setItems((prev) => [...prev, ...data.items]);
       setNextCursor(data.nextCursor ?? null);
     } finally {
       setLoading(false);
     }
   };
+  /* 0908 DB 색상 저장 전환 - 끝 */
 
   useEffect(() => {
     setItems([]);
@@ -86,6 +77,9 @@ export default function HealthDailyLogPage() {
     return () => el && observerRef.current.unobserve(el);
   }, [nextCursor, dateFilter, formOpen]);
 
+  /* 0908 DB 색상 저장 전환 - 시작
+     payload에서 넘어온 색상(cardColor)을 즉시 아이템.bgcolor에만 써서
+     사용자에게 즉시 반영. (localStorage 저장 제거) */
   const pickColorFromPayload = (p) => {
     if (!p) return "";
     const cand =
@@ -104,15 +98,15 @@ export default function HealthDailyLogPage() {
     if (typeof cand === "string" && cand.trim()) return cand.trim();
     return "";
   };
+  /* 0908 DB 색상 저장 전환 - 끝 */
 
-  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 + AI 피드백 - 시작 */
+  /* 0906 연속목록 노출 + 팔레트 색 적용 + AI 피드백 - 시작 */
   const handleCreate = async (payload) => {
     const res = await apiCreateHealthDailyLog(payload);
     if (res.code === 1) {
       const picked = pickColorFromPayload(payload);
-      if (picked) setColor(res.hno, picked);
 
-      // 새 아이템 즉시 붙이기
+      // 새 아이템 즉시 붙이기 (bgcolor = payload.cardColor)
       const added = {
         hno: res.hno,
         hdateStr: (payload.hdate || "").replace(/-/g, "."),
@@ -123,24 +117,24 @@ export default function HealthDailyLogPage() {
         wateramount: payload.wateramount,
         exercise: payload.exercise || "-",
         food: (payload.foods && payload.foods.length ? payload.foods.join("\n") : "-"),
-        bgcolor: picked || getColor(res.hno),
+        /* 0908 DB 색상 저장 전환 - 시작 */
+        bgcolor: picked || null,
+        /* 0908 DB 색상 저장 전환 - 끝 */
       };
       setItems((prev) => [added, ...prev]);
 
-      // 폼 닫고 초기화
+      // 폼 닫고 초기화 + 첫 페이지 동기화
       setFormOpen(false);
       setEditTarget(null);
       load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
 
-      // 0907 AI ON이면 모달 열고 호출
+      // AI 피드백
       if (payload.aiOn) {
         setAiOpen(true);
         setAiLoading(true);
         setAiText("");
         try {
-          /* 0907 이름 변경 - 시작 (postToAIHDL → postToAIHealthDailyLog) */
           const txt = await postToAIHealthDailyLog(payload.aiPrompt || "");
-          /* 0907 이름 변경 - 끝 */
           setAiText(txt || "간단 피드백을 가져오지 못했습니다.");
         } catch {
           setAiText("AI 연결에 실패했습니다.");
@@ -156,14 +150,11 @@ export default function HealthDailyLogPage() {
       alert(res.msg || "등록 실패");
     }
   };
-  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 + AI 피드백 - 끝 */
+  /* 0906 연속목록 노출 + 팔레트 색 적용 + AI 피드백 - 끝 */
 
   const handleUpdate = async (hno, payload) => {
     const res = await apiUpdateHealthDailyLog(hno, payload);
     if (res.code === 1) {
-      const picked = pickColorFromPayload(payload);
-      if (picked) setColor(hno, picked);
-
       await load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
 
       setFormOpen(false);
@@ -274,14 +265,13 @@ export default function HealthDailyLogPage() {
         </div>
       </div>
 
-      {/* 0907 이름 변경 - 시작 (AiFeedbackModal → HealthDailyLogModal) */}
+      {/* AI 모달 */}
       <HealthDailyLogModal
         open={aiOpen}
         loading={aiLoading}
         text={aiText}
         onClose={() => setAiOpen(false)}
       />
-      {/* 0907 이름 변경 - 끝 */}
     </div>
   );
 }
