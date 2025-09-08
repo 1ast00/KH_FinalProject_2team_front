@@ -1,17 +1,7 @@
-:root{
-  --bg: #f6f9ff;
-  --panel: #ffffff;
-  --aside-bg: #0f172a;     /* dark */
-  --aside-bg-hover: #0b1224;
-  --text: #cbd5e1;         /* slate-300 */
-  --text-strong: #fff;
-  --active: #334155;       /* slate-700 */
-  --ring: #1f2937;         /* slate-800 */
-  --border: #e2e8f0;
-}
+/* 전역 변수는 theme.css에만 선언. 여기서는 사용만! */
 
 .shell{
-  display:grid;
+  display: grid;
   grid-template-columns: auto 1fr; /* aside width에 따라 */
   min-height: 100vh;
   background: var(--bg);
@@ -81,24 +71,50 @@
   padding: 14px 18px;
   display:flex; align-items:center; justify-content:space-between;
 }
-.pageTitle{ margin:0; font-size:18px; font-weight:800; color:#0f172a; }
+.pageTitle{ margin:0; font-size:18px; font-weight:800; color: var(--title); }
 
 .topRight{ display:flex; align-items:center; gap:12px; }
 .topIcon{
   width:36px; height:36px; border-radius:10px;
-  border:1px solid var(--border); background: #fff;
+  border:1px solid var(--border); background: var(--card);
   display:grid; place-items:center; cursor:pointer;
 }
-.topIcon:hover{ background:#f1f5f9; }
-.username{ font-weight:700; color:#0f172a; }
+.topIcon:hover{
+  background: color-mix(in srgb, var(--card) 85%, var(--ring));
+}
+.username{ font-weight:700; color: var(--title); }
 
 /* 콘텐츠 래퍼 */
-.content{
-  padding: 20px;
-}
+.content{ padding: 20px; }
 
 /* 반응형 */
 @media (max-width: 1200px){
   .sidebar{ width: 56px; }
   .sidebar:hover{ width: 220px; }
+}
+
+/* ===== 다크모드 세트 ===== */
+:root.dark{
+  --bg: #0b1020;
+  --panel: #111827;
+  --aside-bg: #0b1224;
+  --aside-bg-hover: #0a0f1f;
+  --text: #94a3b8;
+  --text-strong: #f9fafb;
+  --active: #1e293b;
+  --ring: #0f172a;
+  --border: #334155;
+}
+
+:root.dark .pageTitle,
+:root.dark .username{
+  color: var(--text-strong);
+}
+
+:root.dark .topIcon{
+  background: var(--panel);
+  border-color: var(--border);
+}
+:root.dark .topIcon:hover{
+  background: #1f2937;
 }

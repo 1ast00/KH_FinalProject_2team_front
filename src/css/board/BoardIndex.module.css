@@ -1,0 +1,100 @@
+* {
+  margin: 0px ;
+  padding: 0px;
+}
+.container{
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  width: 1440px;
+}
+/* @media screen and (max-width: 768px) {
+.container{
+  width: 100%;
+} 
+} 토스트UI - 크기조절이슈*/
+.boardtop{
+  background-color: #f8f9fa; 
+  background-image: url('../../../public/img/BoardIndex.jpg');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  width: 1200px;
+  height: 150px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+/*.boardbox{ 
+} 안써요 */ 
+.menuGroup{
+  display: flex; 
+  justify-content: space-between; /* 왼쪽 정렬 */
+  flex-wrap: nowrap;
+  width: 824px;   /* 토스트와 너비맞춤 add.25.09.01*/
+  margin-top: 20px;
+  border:  1px solid  #5EAC24;
+  border-radius: 20px 20px 0px 0px ;
+}
+/*.menuLeft{
+} 안써요 */
+.menuRight{
+padding-top: 5px;
+padding-right: 20px;
+}
+.btn_tapreview{
+  width: 130px;
+  height: 45px;
+  font-size: 18px;
+  background-color: white;
+  border: 1px solid #5EAC24;
+  border-radius: 20px 20px 0px 0px;
+  color: #5EAC24;
+  align-items: flex-end;
+}
+.btn_tapreview:hover{
+  background-color: #6DC82A;
+  border: 1px solid #6DC82A;
+  color: white;
+  cursor: pointer
+}
+.btn_tapreview_active{
+  width: 130px;
+  height: 45px;
+  font-size: 18px;
+  background-color: #5EAC24;
+  border: 1px solid #5EAC24;
+  border-radius: 20px 20px 0px 0px;
+  color: white;
+  align-items: flex-end;
+}
+.btn_tapreview_active:hover{
+  background-color: #6DC82A; /* 색변경없음 */
+  border: 1px solid #6DC82A;
+  color: white;
+  cursor: pointer
+}
+.btn_addword{
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background-color: white;
+  border: 2px solid #5EAC24;
+  border-radius: 30px;
+  color: #5EAC24;
+  align-items: center;
+  cursor: pointer
+}
+.btn_moveback{
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background-color: white;
+  border: 2px solid #5EAC24;
+  border-radius: 30px;
+  color: #5EAC24;
+  cursor: pointer
+}

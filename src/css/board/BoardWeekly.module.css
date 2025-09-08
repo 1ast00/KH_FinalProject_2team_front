@@ -1,0 +1,88 @@
+* {
+  margin: 0px ;
+  padding: 0px;
+}
+.container{
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 1440px;
+  color: #5EAC24;
+  size: 20px;
+}
+@media screen and (max-width: 768px) {
+.container{
+  width: 100%;
+}
+}
+.cheer{
+  padding-top: 20px;
+  height: 60px;
+  font-size: 25px;
+  font-weight: bold; 
+}
+.bestline{  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.bestbox{
+display: flex;
+flex-direction: row;
+justify-content: center;
+gap: 20px 20px; 
+padding-left: 200px;
+/* border: 1px dotted red; 가이드*/
+}
+.best{
+  width: 200px;
+  height: 100px;
+  padding: 10px 10px;
+  border: 1px solid #5EAC24;
+  border-radius: 10px;
+  color: #595959; 
+}
+.best_btnbox{
+  justify-content: flex-en;
+  margin-top: auto; 
+  /*border: 1px solid #595959; 가이드 add25.08.29*/
+}
+.btn_getin{
+  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  background-color: #5EAC24;
+  border: 1px solid #5EAC24;
+  border-radius: 40px;
+  margin-right: 10px;
+  cursor: pointer;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn_expand{
+  width: 130px;
+  justify-content: flex-start;
+  padding-left: 15px;
+}
+.btn_plus{
+  font-weight: bold;
+/*  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  background-color: #5EAC24;
+  border: 1px solid #5EAC24;
+  border-radius: 40px;
+  margin-right: 10px;
+  cursor: pointer;   */
+}
+.btn_plus:hover{
+  cursor: pointer;
+}

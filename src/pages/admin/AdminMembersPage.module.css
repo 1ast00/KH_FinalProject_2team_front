@@ -1,0 +1,83 @@
+/* ===== 기본 레이아웃 ===== */
+.page { display: grid; gap: 16px; }
+
+.header {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: center; justify-content: space-between;
+}
+
+.title { margin: 0; font-size: 20px; font-weight: 800; color: var(--title); }
+
+/* ===== 필터 ===== */
+.filters { display: flex; gap: 8px; align-items: center; width: 100%; }
+
+.input, .select {
+  height: 38px; padding: 0 12px; border: 1px solid var(--ring);
+  background: var(--card); color: var(--title); border-radius: 10px; min-width: 0;
+}
+.input::placeholder { color: var(--muted); }
+
+.btn, .btnGhost, .btnDanger {
+  height: 38px; padding: 0 12px; border-radius: 10px;
+  border: 1px solid var(--ring);
+  background: var(--card); color: var(--title);
+  cursor: pointer;
+}
+.btn:hover, .btnGhost:hover {
+  background: color-mix(in srgb, var(--card) 85%, var(--ring));
+}
+.btnGhost { background: transparent; }
+.btnDanger { background: #ef4444; border-color: #ef4444; color: #fff; }
+
+/* ===== 카드/테이블 ===== */
+.card { background: var(--card); border: 1px solid var(--ring); border-radius: 14px; overflow: hidden; }
+
+.table {
+  width: 100%; border-collapse: collapse;
+  color: var(--title); background: var(--card);
+}
+.table th, .table td {
+  padding: 12px 14px; border-bottom: 1px solid var(--ring); vertical-align: middle;
+}
+.table thead th { font-weight: 700; color: var(--title); text-align: left; }
+.table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--card) 92%, var(--ring));
+}
+.table tbody tr:hover {
+  background: color-mix(in srgb, var(--card) 85%, var(--ring));
+}
+
+/* ===== 배지/액션 ===== */
+.badge {
+  padding: 4px 10px; border-radius: 999px; font-size: 12px; line-height: 1;
+  background: color-mix(in srgb, var(--card) 85%, var(--ring));
+  color: var(--title); border: 1px solid var(--ring);
+}
+.actions { display: inline-flex; gap: 8px; }
+
+/* ===== 페이지네이션 ===== */
+.pagination { display: flex; gap: 8px; padding: 12px 0; }
+
+.pageBtn {
+  min-width: 40px; height: 32px; border-radius: 10px;
+  border: 1px solid var(--ring);
+  background: var(--card); color: var(--title);
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.pageBtn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--card) 85%, var(--ring));
+}
+.pageBtn:disabled { opacity: .6; cursor: default; }
+
+/* 현재 페이지 버튼만 강조 */
+.pageCurrent {
+  background: var(--ring);   /* 라이트/다크 공통 기본 강조 */
+  color: #fff;
+  font-weight: 700;
+  border-color: var(--ring);
+}
+:root.dark .pageCurrent {
+  background: #2563eb;       /* 다크 모드에서 더 또렷하게 */
+  color: #fff;
+}

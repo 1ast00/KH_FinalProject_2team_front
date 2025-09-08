@@ -1,4 +1,5 @@
 // src/App.jsx
+import "./pages/admin/theme.css";
 import "./App.css";
 
 import {
@@ -23,13 +24,13 @@ import MyPage from "./pages/MyPage";
 import FindIDPage from "./pages/FindIDPage";
 import FindPWPage from "./pages/FindPWPage";
 import ResetPWPage from "./pages/ResetPWPage";
-import FoodSearch from "./components/FoodSearch";
 import TodoListPage from "./pages/TodoListPage";
 import HealthDailyLogPage from "./pages/HealthDailyLogPage";
 
 // 추천 운동
 import ExerciseListPage from "./pages/ExerciseListPage";
 import ExerciseDetailPage from "./pages/ExerciseDetailPage";
+import Gemini from "./pages/Gemini"; // AI 코치
 
 // 관리자 페이지들
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -39,6 +40,11 @@ import AdminReviewsPage from "./pages/admin/AdminReviewsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
 
 import AdminLayout from "./layout/AdminLayout"
+import FoodSearchPage from "./pages/FoodSearchPage";
+import FoodDetailPage from "./pages/FoodDetailPage";
+import RecipePage from "./pages/RecipePage";
+import FoodAiPage from "./pages/FoodAiPage";
+import RecipeDetailPage from "./pages/RecipeDetailPage";
 
 function AdminRoute() {
   if (!isAuthenticated()) return <Navigate to="/login" replace />;
@@ -77,13 +83,19 @@ function App() {
           <Route path="/exercise" element={<ExerciseListPage />} />
           <Route path="/exercise/:exerciseName" element={<ExerciseDetailPage />} />
 
-          <Route path="/food/search" element={<FoodSearch/>}/>
+          <Route path="/food/search" element={<FoodSearchPage/>}/>
+          <Route path="/food/search/detail/:prdlstNm" element={<FoodDetailPage/>}/>
 
           {/* 비공개 라우트 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
             <Route path="/todoList" element={<TodoListPage />}/>
+            <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
+            <Route path="/gemini-ai-food" element={<FoodAiPage />} /> {/* AI 식단 페이지 */}
+            <Route path="/recipe" element={<RecipePage />}/>
+            <Route path="/recipeDetail/:id" element={<RecipeDetailPage />}/>
+
           </Route>
 
           {/* 관리자 라우트 */}

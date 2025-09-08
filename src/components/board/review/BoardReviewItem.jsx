@@ -1,9 +1,20 @@
-export default () => {
+import React from "react";
+import { Link } from "react-router-dom";
+import styles from "../../../css/board/BoardReviewAllview.module.css";
+
+export default ({ review, displayNo }) => {
   return (
-    <div>
-      <p>리뷰 목록의 개별 항목(한 줄) 컴포넌트 (재사용 목적)
-        페이지만 있는 곳입니다.
-      </p>
-    </div>
+    <>
+      <td className={styles.col_brno}>{displayNo}</td>
+      <td className={styles.col_brtitle}>
+        <Link to={`/board/review/${review.brno}`}>{review.brtitle}</Link>
+      </td>
+      <td className={styles.col_nickname}>{review.nickname}</td>
+      <td className={styles.col_date}>
+        {new Date(review.brwrite_date).toLocaleDateString()}
+      </td>
+      <td className={styles.col_viewcount}>{review.brviewcount}</td>
+      <td className={styles.col_likes}>❤️</td>
+    </>
   );
 };

@@ -1,0 +1,129 @@
+*{
+  margin: 0px;
+  padding: 0px;
+}
+.container{
+  margin: 0 auto;
+  padding: 10PX;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  width: 804px;
+  border: 1px solid #5EAC24;
+  border-top: none;
+  font-family: 'Arial', sans-serif;
+  color: #595959;
+}
+
+.brtitle {
+    padding: 10px 0px 10px 0px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #595959;
+    text-align: center;
+}
+
+.brinfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px 0px 0px; /*위오아왼*/
+}
+
+.brwriter {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #595959;
+}
+
+.nickname {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.date, .updatedDate {
+    color: #888;
+    margin-left: 20px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.btn_heart{
+ color: red; 
+ background-color: transparent; 
+ border: none; 
+ outline: none; 
+ cursor: pointer; 
+ padding: 0px 0px 0px 10px; 
+ font-size: 14px; 
+}
+.actions span {
+    margin-left: 15px;
+    font-size: 14px;
+    color: #888;
+    cursor: pointer;
+}
+
+.actions span:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: #6DC82A; /* hr 색상을 밝은 초록색으로 변경 */
+    margin: 10px 0;
+}
+
+.brcontent {
+    margin: 20px 0;
+    line-height: 1.6;
+    font-size: 15px;
+     white-space: pre-wrap; /*줄바꿈*/
+}
+
+.commentSection {
+    margin-top: 30px;
+}
+
+.commentInputBox {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.loggedInUser {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.commentInput {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    resize: vertical;
+}
+
+.commentSubmitBtn {
+    background-color: #5EAC24;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.commentSubmitBtn:hover {
+    background-color: #4b8a1c;
+}
+
+.commentList {
+    background-color: #e9e9e9;
+}

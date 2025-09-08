@@ -18,6 +18,14 @@ export default () => {
     }
   };
 
+  const handleGoHealthDailyLog = (e, navigate, isAuthed) => {
+    if (!isAuthed) {
+      e.preventDefault();
+      alert("로그인 후 이용 가능합니다.");
+      navigate("/login");
+    }
+  };
+
   return (
     <nav className={header.Header}>
       <ul className={header.hul}>
@@ -28,7 +36,10 @@ export default () => {
         </li>
         <div className={header.tp_menu}>
           <li className={header.hli}>
-            <Link to="/healthdailylog">
+            <Link
+              to="/healthdailylog"
+              onClick={(e) => handleGoHealthDailyLog(e, navigate, isAuthenticated())}
+            >
               <p>건강일지</p>
             </Link>
           </li>
@@ -48,7 +59,7 @@ export default () => {
             </Link>
           </li>
           <li className={header.hli}>
-            <Link>
+            <Link to={"/Gemini-ai"}>
               <p>AI질문</p>
             </Link>
           </li>
