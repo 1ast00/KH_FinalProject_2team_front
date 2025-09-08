@@ -26,7 +26,7 @@ export default ({item, parseNutrients, parseNutrients2}) => {
                 />
                 <div className={styles.nutrient_container}>
                     <div className={styles.nameAndCalories}>
-                        <h2>{item.prdlstNm}</h2>
+                        <h3>{item.prdlstNm}</h3>
                         <p>
                         열량: {nutrientObj?.열량?.value ?? nutrientObj2?.열량?.value ?? "-"}{" "}
                         {nutrientObj?.열량?.unit ?? nutrientObj2?.열량?.unit ?? ""}

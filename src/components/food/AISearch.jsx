@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { postToAIFood } from "../../service/authApi";
 import { useNavigate } from "react-router-dom";
 
+import styles from "../../css/AISearch.module.css"
+
 export default (item) => {
 
     const [loading,setLoading] = useState(false);
@@ -53,7 +55,7 @@ export default (item) => {
         prompt += "응답 형식도 정해줄게.";
         prompt += "모든 문장에 줄 넘김을 해줘";
         prompt += `영양성분 관련한 질문이 나오면 넌 반드시 ${name}의 영양성분을 표나 그래프처럼 시각적인 수단으로 제시해야 해.`;
-        prompt += "다만, 표를 쓸때 내가 markdown도 이용해서 css를 적용한다는 사실을 유념해줘.";
+        prompt += "다만, 표를 쓸때 내가 ReactMarkdown도 이용해서 css를 적용한다는 사실을 유념해줘.";
         prompt += "모든 질문에는 영양학적으로 어울리는 음식을 list 형식으로 보여줘야 해.";
         prompt += "또한 전문성이 있는 답변을 하므로 비유나 시각화를 통해 이해를 다른 사람들을 이해시켜야겠지.";
         prompt += "마지막으로, 모든 질문에는 해당 음식의 영양학적인 장. 단점을 일상적인 언어로, 그리고 ordered list 형태로 출력해줘.";
@@ -69,9 +71,9 @@ export default (item) => {
     }
 
     return(
-        <div>
-            <textarea value={text} onChange={e=>{setText(e.target.value)}}/>
-            <button onClick={handlePrompt}>AI</button>
+        <div className={styles.aiSearch}>
+            {/* <textarea value={text} onChange={e=>{setText(e.target.value)}}/> */}
+            <button onClick={handlePrompt}><img src="/img/AISearch4.png" alt="AI 검색 아이콘"/></button>
             {loading && (
                 <div>
                     <p>⏳ AI가 식단을 분석 중입니다...</p>
