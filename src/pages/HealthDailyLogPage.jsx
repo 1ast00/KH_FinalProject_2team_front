@@ -6,10 +6,15 @@ import {
   apiFetchHealthDailyLogList,
   apiUpdateHealthDailyLog,
 } from "../service/healthDailyLogApi";
+/* 0907 이름 변경 - 시작 (postToAIHDL → postToAIHealthDailyLog) */
+import { postToAIHealthDailyLog } from "../service/authApi";
+/* 0907 이름 변경 - 끝 */
 import HealthDailyLogCard from "../components/HealthDailyLogCard";
+/* 0907 이름 변경 - 시작 (AiFeedbackModal → HealthDailyLogModal) */
+import HealthDailyLogModal from "../components/HealthDailyLogModal";
+/* 0907 이름 변경 - 끝 */
 import HealthDailyLogForm from "../components/HealthDailyLogForm";
 
-/* 0906 팔레트 색 저장 유틸 - 시작 */
 const LS_KEY = "hdl_card_colors";
 const readColors = () => {
   try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch { return {}; }
@@ -21,7 +26,6 @@ const setColor = (hno, color) => {
   m[hno] = color;
   localStorage.setItem(LS_KEY, JSON.stringify(m));
 };
-/* 0906 팔레트 색 저장 유틸 - 끝 */
 
 export default function HealthDailyLogPage() {
   const [items, setItems] = useState([]);
@@ -35,6 +39,12 @@ export default function HealthDailyLogPage() {
   /* 0906 새 글 폼 완전 초기화를 위한 시드 - 시작 */
   const [formSeed, setFormSeed] = useState(0);
   /* 0906 새 글 폼 완전 초기화를 위한 시드 - 끝 */
+
+  /* 0907 AI 모달 상태 - 시작 */
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiText, setAiText] = useState("");
+  /* 0907 AI 모달 상태 - 끝 */
 
   const decorate = (arr) => arr.map((it) => ({ ...it, bgcolor: getColor(it.hno) || it.bgcolor }));
 
@@ -76,10 +86,8 @@ export default function HealthDailyLogPage() {
     return () => el && observerRef.current.unobserve(el);
   }, [nextCursor, dateFilter, formOpen]);
 
-  /* 0906 폼에서 넘어온 payload에서 색상 안전 추출 - 시작 */
   const pickColorFromPayload = (p) => {
     if (!p) return "";
-    // 가능한 모든 키를 받아들여서 실수 방지
     const cand =
       p.cardColor ||
       p.paletteColor ||
@@ -96,22 +104,20 @@ export default function HealthDailyLogPage() {
     if (typeof cand === "string" && cand.trim()) return cand.trim();
     return "";
   };
-  /* 0906 폼에서 넘어온 payload에서 색상 안전 추출 - 끝 */
 
-  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 - 시작 */
+  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 + AI 피드백 - 시작 */
   const handleCreate = async (payload) => {
     const res = await apiCreateHealthDailyLog(payload);
     if (res.code === 1) {
-      // 폼에서 넘어온 색상 추출 (키 이름이 달라도 수용)
       const picked = pickColorFromPayload(payload);
       if (picked) setColor(res.hno, picked);
 
-      // 새로고침 없이 리스트 맨 위에 1개 즉시 추가
+      // 새 아이템 즉시 붙이기
       const added = {
         hno: res.hno,
         hdateStr: (payload.hdate || "").replace(/-/g, "."),
         hdate: payload.hdate,
-        sleeptimeStr: payload.sleeptime,              // "HH:MM"
+        sleeptimeStr: payload.sleeptime,
         hweight: payload.weight,
         weight: payload.weight,
         wateramount: payload.wateramount,
@@ -119,14 +125,29 @@ export default function HealthDailyLogPage() {
         food: (payload.foods && payload.foods.length ? payload.foods.join("\n") : "-"),
         bgcolor: picked || getColor(res.hno),
       };
-      setItems((prev) => [added, ...prev]);          // 즉시 1개 증가
+      setItems((prev) => [added, ...prev]);
 
-      // 폼 닫고 상태 초기화
+      // 폼 닫고 초기화
       setFormOpen(false);
       setEditTarget(null);
-
-      // 백엔드 정합 위해 첫 페이지 최신화(비동기)
       load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
+
+      // 0907 AI ON이면 모달 열고 호출
+      if (payload.aiOn) {
+        setAiOpen(true);
+        setAiLoading(true);
+        setAiText("");
+        try {
+          /* 0907 이름 변경 - 시작 (postToAIHDL → postToAIHealthDailyLog) */
+          const txt = await postToAIHealthDailyLog(payload.aiPrompt || "");
+          /* 0907 이름 변경 - 끝 */
+          setAiText(txt || "간단 피드백을 가져오지 못했습니다.");
+        } catch {
+          setAiText("AI 연결에 실패했습니다.");
+        } finally {
+          setAiLoading(false);
+        }
+      }
 
       alert("등록되었습니다.");
     } else if (res.code === 3) {
@@ -135,7 +156,7 @@ export default function HealthDailyLogPage() {
       alert(res.msg || "등록 실패");
     }
   };
-  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 - 끝 */
+  /* 0906 연속목록 노출(등록 직후 바로 1개 붙이기) + 팔레트 색 적용 + AI 피드백 - 끝 */
 
   const handleUpdate = async (hno, payload) => {
     const res = await apiUpdateHealthDailyLog(hno, payload);
@@ -143,7 +164,6 @@ export default function HealthDailyLogPage() {
       const picked = pickColorFromPayload(payload);
       if (picked) setColor(hno, picked);
 
-      // 수정 후 전체 새로 로드로 동기화
       await load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
 
       setFormOpen(false);
@@ -177,23 +197,12 @@ export default function HealthDailyLogPage() {
     if (hidden) hidden.showPicker ? hidden.showPicker() : hidden.click();
   };
 
-  // 기존 토글(유지)
-  const toggleFormOpen = () => {
-    setFormOpen((prev) => {
-      const next = !prev;
-      if (!next) setEditTarget(null);
-      return next;
-    });
-  };
-
-  /* 0906 새 글 쓰기 버튼: 폼을 ‘완전 초기화’하여 열기 - 시작 */
   const openNewForm = () => {
     setEditTarget(null);
-    setFormSeed((s) => s + 1);       // key 변경 → 컴포넌트 재마운트 → 이전 값 완전 초기화
+    setFormSeed((s) => s + 1);
     setFormOpen(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  /* 0906 새 글 쓰기 버튼: 폼을 ‘완전 초기화’하여 열기 - 끝 */
 
   return (
     <div className={styles.page}>
@@ -201,9 +210,7 @@ export default function HealthDailyLogPage() {
       <div className={styles.heroWrap}>
         <div
           className={styles.hero}
-          /* 0906 작성폼 닫는방법 추가 - 시작 */
           onClick={openNewForm}
-          /* 0906 작성폼 닫는방법 추가 - 끝 */
           title="새 건강일지 작성하기"
         >
           <img src="/img/healthdailylog_hero.jpg" alt="hero" />
@@ -219,9 +226,7 @@ export default function HealthDailyLogPage() {
             className={styles.hiddenDate}
           />
           <button className={styles.iconBtn} title="날짜로 검색" onClick={triggerDate}>📆</button>
-          {/* 0906 새 글 폼 완전 초기화하여 열기 - 시작 */}
           <button className={styles.iconBtn} title="작성하기" onClick={openNewForm}>🖋</button>
-          {/* 0906 새 글 폼 완전 초기화하여 열기 - 끝 */}
         </div>
       </div>
 
@@ -254,9 +259,7 @@ export default function HealthDailyLogPage() {
           <div className={styles.formWrap}>
             <div className={`${styles.collapsible} ${formOpen ? styles.open : ""}`}>
               <HealthDailyLogForm
-                /* 0906 작성폼 닫는방법 추가 - 시작 */
                 key={editTarget ? `edit-${editTarget.hno}` : `new-${formSeed}`}
-                /* 0906 작성폼 닫는방법 추가 - 끝 */
                 initial={editTarget}
                 onCancel={() => {
                   setFormOpen(false);
@@ -270,6 +273,15 @@ export default function HealthDailyLogPage() {
           </div>
         </div>
       </div>
+
+      {/* 0907 이름 변경 - 시작 (AiFeedbackModal → HealthDailyLogModal) */}
+      <HealthDailyLogModal
+        open={aiOpen}
+        loading={aiLoading}
+        text={aiText}
+        onClose={() => setAiOpen(false)}
+      />
+      {/* 0907 이름 변경 - 끝 */}
     </div>
   );
 }
