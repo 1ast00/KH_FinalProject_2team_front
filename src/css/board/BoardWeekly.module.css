@@ -45,7 +45,8 @@ color: #5EAC24;
   padding: 20px 10px 0px 10px;
   border: 1px solid #5EAC24;
   border-radius: 10px;
-  color: #595959; 
+  color: #6dc82a; 
+  font-weight: bold;
   text-align: center;
 }
 .best_btnbox{
@@ -88,4 +89,19 @@ color: #5EAC24;
 }
 .btn_plus:hover{
   cursor: pointer;
+}
+.btn_cancel {
+    width: 130px;
+    height: 45px;
+    font-size: 16px;
+    background-color: #888;
+    border: 1px solid #888;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn_cancel:hover {
+    background-color: #666;
 }
