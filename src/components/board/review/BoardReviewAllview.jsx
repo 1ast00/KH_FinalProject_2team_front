@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BoardReviewItem from "./BoardReviewItem";
 import styles from "../../../css/board/BoardReviewAllview.module.css";
-import { getPostBoardList } from "../../../service/boardApi";
+import { getReviewList } from "../../../service/boardApi";
 import { isAuthenticated } from "../../../util/authUtil"; 
 
 export default () => {
@@ -21,7 +21,7 @@ export default () => {
     const fetchReviews = async () => {
       try {
         console.log("시작");
-        const response = await getPostBoardList();
+        const response = await getReviewList();
         console.log(response);
         setReviews(response.reviewList);
       } catch (error) {
