@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getAccessToken } from "../util/authUtil";
 import setupInterceptors from "./interceptor";
 
 const API_BASE_URL = "http://localhost:9999/api";

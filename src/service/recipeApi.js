@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getAccessToken } from "../util/authUtil";
 import setupInterceptors from "./interceptor";
 
 const API_BASE_URL = "http://localhost:9999/api/recipe/";
@@ -18,5 +17,16 @@ export const getRecipeList = async () => {
     return response.data;
   } catch (error) {
     console.log("getRecipeList: ", error);
+  }
+};
+
+export const naverSearch = async (search) => {
+  try {
+    const response = await recipeApi.get(`naverSearch`,{
+      params: {search},
+    });
+    return response.data;
+  } catch (error) {
+    console.log("naverSearch: ", error);
   }
 };

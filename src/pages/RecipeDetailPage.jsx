@@ -2,11 +2,25 @@ import { useParams } from "react-router-dom";
 import RecipeList from "../components/RecipeList";
 import styles from "../css/RecipeDetail.module.css";
 import { isAuthenticated } from "../util/authUtil";
+import { naverSearch } from "../service/recipeApi";
+import { useEffect, useState } from "react";
 
 export default () => {
     const {id} = useParams();
     const {recipeList} = isAuthenticated() ? RecipeList() : { recipeList: [] };
     const recipe = recipeList.find((item) => String(item.recipe_id) === id);
+    const [naverResult, setNaverResult] = useState(null);
+
+    useEffect(() => {
+        const fetchNaverSearch = async () => {
+            if (recipe) {
+                const search = recipe.recipe_nm_ko + " 레시피";
+                const response = await naverSearch(search);
+                setNaverResult(response);
+            }
+        }
+        fetchNaverSearch();
+    }, [recipe]);
 
     if (!recipe) {
         return (
@@ -65,7 +79,21 @@ export default () => {
                         </div>
                     )}
                 </div>
+            {naverResult && (
+                <div className={styles.naverResult}>
+                    <h3>네이버 검색 결과</h3>
+                    {naverResult.items.map((item, index) => (
+                        <div key={index} className={styles.resultItem}>
+                            <a href={item.link} target="_blank" rel="noopener noreferrer">
+                                <h4 dangerouslySetInnerHTML={{ __html: item.title }} />
+                            </a>
+                            <p dangerouslySetInnerHTML={{ __html: item.description }} />
+                        </div>
+                    ))}
+                </div>
+            )}
             </div>
+
         </div>
     );
 };
