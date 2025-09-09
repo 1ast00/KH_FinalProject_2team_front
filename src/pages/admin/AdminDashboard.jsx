@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import styles from "./AdminDashboard.module.css";
-import adminApi from "../../service/adminApi";
-
+import adminApi, {
+  getAdminReports, // 총 신고수 보강용
+} from "../../service/adminApi";
 import {
   ResponsiveContainer,
   PieChart, Pie, Cell, Legend, Tooltip,
 } from "recharts";
 
 export default function AdminDashboard() {
-  const [summary, setSummary] = useState({ totalMembers: 0 });
+  const [summary, setSummary] = useState({ totalMembers: 0, totalReports: 0 });
   const [genderRatio, setGenderRatio] = useState({ M: 0, F: 0 });
   const [recentReviews, setRecentReviews] = useState([]);
   const [recentDiets, setRecentDiets] = useState([]);
@@ -17,11 +18,25 @@ export default function AdminDashboard() {
   useEffect(() => {
     (async () => {
       try {
+        // 요약
         const s = await adminApi.getAdminDashboardSummary();
-        setSummary(s.data?.summary || { totalMembers: 0 });
+        const sum = s.data?.summary || { totalMembers: 0, totalReports: 0 };
+        setSummary(sum);
+
+        // 총 신고수가 요약에 없으면 페이징 API로 보강
+        if (sum.totalReports == null) {
+          try {
+            const rep = await getAdminReports({ p: 1, size: 1 });
+            const total = rep.data?.paging?.totalCount ?? 0;
+            setSummary(prev => ({ ...prev, totalReports: total }));
+          } catch (_) { /* noop */ }
+        }
+
+        // 성별
         const gr = s.data?.genderRatio || { M: 0, F: 0, ETC: 0 };
         setGenderRatio({ M: gr.M || 0, F: gr.F || 0 });
 
+        // 최근 목록
         const [rv, dt] = await Promise.all([
           adminApi.getAdminRecentReviews(5).catch(() => ({ data: [] })),
           adminApi.getAdminRecentDiets(5).catch(() => ({ data: [] })),
@@ -34,12 +49,12 @@ export default function AdminDashboard() {
     })();
   }, []);
 
-  //  파이차트 데이터
   const pieData = [
     { name: "남자", value: genderRatio.M },
     { name: "여자", value: genderRatio.F },
   ];
-  const COLORS = ["#60a5fa", "#f472b6"]; // 파랑, 핑크
+  const COLORS = ["#60a5fa", "#f472b6"];
+  const dietsToShow = (recentDiets || []).slice(0, 2);
 
   return (
     <div className={styles.grid}>
@@ -47,7 +62,6 @@ export default function AdminDashboard() {
       <section className={styles.chartCol} aria-label="대시보드 요약">
         <h2 className={styles.sectionTitle}>관리자 대시보드</h2>
 
-        {/* 총 이용자 수 */}
         <div className={styles.card}>
           <div className={styles.cardTitle}>총 이용자 수</div>
           <div className={styles.statBox}>
@@ -55,22 +69,23 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* 성별 분포 (파이차트) */}
+        {/* 총 신고 수 */}
+        <div className={styles.card}>
+          <div className={styles.cardTitle}>총 신고 수</div>
+          <div className={styles.statBox}>
+            {loading ? "로딩..." : summary.totalReports?.toLocaleString?.() ?? 0}
+          </div>
+        </div>
+
+        {/* 성별 분포 */}
         <div className={styles.card}>
           <div className={styles.cardTitle}>성별 분포(M/F)</div>
           <div className={styles.chartBox}>
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  dataKey="value"
-                  label
-                >
+                <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label>
                   {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Legend />
@@ -102,11 +117,11 @@ export default function AdminDashboard() {
 
         <div className={styles.listCard}>
           <div className={styles.listHeader}>최근 식단 게시판</div>
-          {(!recentDiets || recentDiets.length === 0) ? (
+          {(!dietsToShow || dietsToShow.length === 0) ? (
             <div className={styles.empty}>데이터가 없습니다.</div>
           ) : (
             <ul className={styles.list}>
-              {recentDiets.map((p, idx) => (
+              {dietsToShow.map((p, idx) => (
                 <li key={p.id}>
                   <span className={styles.no}>{idx + 1}</span>
                   <span className={styles.itemLink}>{p.title}</span>

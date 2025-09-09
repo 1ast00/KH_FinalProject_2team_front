@@ -1,10 +1,4 @@
-:root {
-  --card:#fff;
-  --ring:#e7edf7;
-  --title:#111827;
-  --muted:#6b7280;
-  --accent:#c4f7dc;
-}
+/* 전역 변수는 theme.css에만 선언. 여기서는 사용만! */
 
 :root.dark {
   --card:#1e293b;       /* 카드 배경 어두운 톤 */
@@ -48,10 +42,6 @@
   overflow:hidden;
 }
 
-.line::before{ content:""; width:80%; height:2px; background:#9ec5ff; display:block; }
-.bar::before{ content:""; width:80%; height:70%; background:#8dd08d; display:block; }
-.pie::before{ content:""; width:140px; height:140px; background:conic-gradient(#60a5fa 45%, #34d399 30%, #fbbf24 15%, #ef4444 10%); border-radius:50%; display:block; }
-
 .rightCol{ display:grid; gap:18px; align-content:start; }
 
 .listCard{
@@ -93,14 +83,10 @@
 
 .meta{ margin-left:auto; color:var(--muted); font-size:12px; }
 
-.commentBtn{
-  height:76px; border-radius:12px;
-  background:var(--card);
-  border:2px solid var(--ring);
-  font-size:18px; font-weight:700; color:var(--title);
-  letter-spacing:.5px; cursor:pointer;
+.empty{
+  padding: 10px 12px;
+  color: var(--muted);
 }
-.commentBtn:hover{ background:#f5f7fb; }
 
 @media (max-width: 1200px){
   .grid{ grid-template-columns: 1fr; }

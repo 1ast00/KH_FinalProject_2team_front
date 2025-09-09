@@ -1,0 +1,36 @@
+.buttonBar{
+    /* border: 2px solid red; */
+    width: 100%;
+    /* height: 5vw; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.buttonBar > button{
+    width: 5%;
+    aspect-ratio: 1 / 1;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.buttonBar > button:hover{
+    cursor: pointer;
+}
+
+.butttonsAtBothEnd{
+    background-color: #A1DF80;
+    border: none;
+}
+
+.buttonsAround{
+    background-color: #C4EEAE;
+    border: none;
+}
+
+.currentPage{
+    background-color: white;
+    border: 1px solid black;
+}

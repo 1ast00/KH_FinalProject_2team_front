@@ -1,0 +1,163 @@
+/* src/css/ExerciseAiChat.module.css */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modalContent {
+  position: relative;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.4s ease-out;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #888;
+  line-height: 1;
+}
+
+.closeButton:hover {
+  color: #333;
+}
+
+.modalContent h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.modalContent p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box; 
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.textarea:focus {
+  border-color: #f0b400;
+  box-shadow: 0 0 0 3px rgba(240, 180, 0, 0.25);
+  outline: none;
+}
+
+.button {
+  padding: 0.8rem 2rem;
+  border: none;
+  background-color: #f0b400;
+  color: #333;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  width: auto;
+  align-self: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease-out;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2),
+              inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2),
+              inset 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.loading {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #7c6000;
+  font-weight: bold;
+  animation: goldenPulse 1.8s infinite ease-in-out;
+}
+
+.responseCard {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-left: 5px solid #f0b400;
+  border-radius: 8px;
+  animation: slideInUp 0.5s ease-out forwards;
+}
+
+.responseCard h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.responseText {
+  white-space: pre-wrap;
+  color: #444;
+  line-height: 1.7;
+}
+
+/* --- 애니메이션 정의 --- */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* [수정] 황금색 테마에 맞춘 로딩 애니메이션 */
+@keyframes goldenPulse {
+  0%, 100% {
+    color: #7c6000; /* 어두운 황금색 */
+    transform: scale(1);
+  }
+  50% {
+    color: #f0b400; /* 밝은 황금색 */
+    transform: scale(1.02);
+  }
+}
