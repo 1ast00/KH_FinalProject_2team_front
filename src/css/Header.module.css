@@ -1,0 +1,92 @@
+.Header * {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .Header ul {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tp_menu li,
+  .tp_btn_menu li {
+    padding: 5px 0;
+  }
+}
+
+.Logo {
+  width: 80px;
+  height: 80px;
+}
+
+.hli {
+  list-style: none;
+}
+
+.Header {
+  display: flex;
+  padding: 0 20px; /* 양쪽 여백 추가 */
+}
+
+.hul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  max-width: 1400px; /* 최대 너비 늘림 */
+  margin: 0 auto;
+}
+
+/* 로고 영역 */
+.hul > li:first-child {
+  flex-shrink: 0; /* 로고 크기 고정 */
+}
+
+.Header ul li a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.Header ul li a:hover {
+  transition: color 0.1s ease;
+  color: grey;
+}
+
+/* 메뉴 영역 - 절대 중앙 배치 */
+.tp_menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.tp_menu li {
+  margin: 0 25px; /* 메뉴 간격 늘림 */
+}
+
+/* 버튼 영역 */
+.tp_btn_menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.tp_btn_menu li {
+  margin: 0 5px;
+}
+
+.hbtn {
+  width: 80px;
+  height: 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}

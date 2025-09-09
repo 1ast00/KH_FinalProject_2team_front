@@ -1,0 +1,206 @@
+/* 페이지 */
+.page { max-width: 1200px; margin: 0 auto; padding: 0 12px 40px; box-sizing: border-box; }
+
+/* 히어로 */
+.heroWrap { position: relative; margin: 16px 0 4px; }
+.hero { position: relative; height: 180px; border-radius: 0; overflow: hidden; cursor: pointer; }
+.hero img { width: 100%; height: 100%; object-fit: cover; display: block; filter: none; }
+.heroOverlay {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: rgba(0,0,0,0); color: rgba(255,255,255,0);
+  font-size: 28px; font-weight: 700; letter-spacing: .02em;
+  transition: background .25s ease, color .25s ease;
+}
+.hero:hover .heroOverlay { background: rgba(0,0,0,.45); color: rgba(255,255,255,.95); }
+
+/* 배너 아래 아이콘 바 */
+.actionBar { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin: 6px 0 10px; }
+.iconBtn {
+  border: 1px solid #ddd; background:#fff; border-radius: 0px; padding: 6px 10px; cursor:pointer;
+  transition: transform .12s ease;
+}
+.iconBtn:active { transform: scale(1.08); }
+.hiddenDate { position: absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+
+/* 2분할 */
+.split { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.split.open { grid-template-columns: 1fr 1fr; }
+
+/* 좌측 리스트 */
+.leftPane { min-height: 200px; }
+.grid { display: grid; gap: 12px; }
+.cols4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+.cols2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+/* 카드 */
+.card {
+  background: #fff;
+  border: 1px solid #e9e9e9;
+  border-radius: 0px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 18px rgba(0,0,0,0.06);
+  padding: 14px 14px 48px;
+  height: 240px;
+  display: flex; flex-direction: column;
+  position: relative;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.card:hover { transform: translateY(-6px); box-shadow: 0 6px 12px rgba(0,0,0,0.10), 0 16px 28px rgba(0,0,0,0.08); }
+
+.cardDate { font-weight: 700; margin-bottom: 8px; }
+
+.row { margin: 4px 0; display:flex; gap:6px; align-items: baseline; }
+.label { color:#666; min-width: 56px; font-size: 11px; }
+.row span:not(.label) { font-size: 13px; }
+.cross { color: #e53935; }
+
+/* 단어 쪼개짐 방지 + 줄수 제한 */
+.keepWords { word-break: keep-all; }
+
+/* 말줄임 */
+.limit2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.limit2.keepWords { overflow-wrap: anywhere; }
+
+/* 식단 표시 */
+.foodInline {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+}
+
+/* 카드 하단 동작 */
+.cardActions { position: absolute; right: 12px; bottom: 12px; display:flex; gap:12px; }
+.linkBtn {
+  background:none; border:none; color:#666; cursor:pointer; padding:0;
+  transition: color .12s ease, text-decoration-color .12s ease;
+}
+.linkBtn:hover { color:#000; text-decoration: underline; }
+
+/* 우측 폼 */
+.rightPane { position: relative; }
+.formWrap { position: sticky; top: 12px; height: auto; }
+.form {
+  background:#fff; border:1px solid #e9e9e9; border-radius:0px; padding:14px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 18px rgba(0,0,0,0.06);
+}
+
+/* 폼 열고/닫기 부드럽게 */
+.collapsible { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .28s ease, opacity .28s ease; }
+.collapsible.open { max-height: 900px; opacity: 1; }
+
+@keyframes slideIn { from { transform: translateX(12px); opacity:0; } to { transform: translateX(0); opacity:1; } }
+
+.formRow { position: relative; margin-bottom:10px; }
+.input, .inputRight {
+  width: 100%; border:1px solid #e9e9e9; border-radius:0px; padding:10px 12px; outline:none; box-sizing: border-box;
+}
+.inputRight { padding-right: 36px; }
+.unit { position:absolute; right:10px; top:50%; transform: translateY(-50%); color:#888; }
+
+/* 수면시간: 같은 행, 같은 폭(50:50) */
+.timeRow { display: flex; align-items: center; gap: 8px; }
+.timeSep { color:#666; }
+.inputWrap { position: relative; flex: 1; }
+.inputWithAddon { padding-right: 36px; }
+
+/* +버튼 */
+.insidePlus {
+  position:absolute; right:6px; top:50%; transform: translateY(-50%);
+  border:0; background:transparent; font-size:20px; cursor:pointer; line-height:1;
+  transition: transform .12s ease;
+}
+.insidePlus:active { transform: translateY(-50%) scale(1.1); }
+
+/* number 스피너 제거 */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+/* 동적 입력 */
+.foodInputBlock { display:flex; flex-direction:column; gap:6px; flex:1; }
+
+/* 하단 영역 */
+.formActions { display:flex; justify-content: space-between; align-items:center; gap:10px; margin-top: 16px; }
+.outlineBtn { border:1px solid #6DC82A; background:#fff; border-radius:0px; padding:10px 14px; cursor:pointer; color:#6DC82A; }
+.primaryBtn { border:none; background:#50AC58; color:#fff; border-radius:0px; padding:10px 14px; cursor:pointer; }
+
+/* 0906 팔레트 2행×3열(등록버튼 왼쪽) - 시작 */
+.actionRight { display:flex; align-items:center; gap:12px; }
+.paletteWrap {
+  display: grid;
+  grid-template-columns: repeat(3, 18px); /* 3열 */
+  grid-template-rows: repeat(2, 18px);    /* 2행 */
+  gap: 6px;
+  padding: 4px 2px;
+  background: #fff;
+}
+.swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid #d0d0d0; cursor: pointer; }
+.swatchSel { outline: 2px solid #50AC58; outline-offset: 1px; }
+/* 0906 팔레트 2행×3열(등록버튼 왼쪽) - 끝 */
+
+/* 0907 AI 스위치 스타일 추가 - 시작 */
+.aiSwitch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100px; height: 28px;
+  border: 1px solid #d0d0d0; background:#f7f7f7; border-radius: 999px;
+  cursor: pointer; padding: 2px 8px 2px 2px;
+}
+.aiSwitchOn { background: #dff3e1; border-color:#b7e0bc; }
+.aiKnob {
+  position: absolute; left: 0px; top: 0px;
+  width: 24px; height: 24px; border-radius: 50%; background:#fff; border: 1px solid #d0d0d0;
+  transition: transform .15s ease;
+}
+.aiSwitchOn .aiKnob { transform: translateX(73px); }
+.aiLabel { margin-left: 34px; font-size: 12px; color:#333; user-select:none; }
+/* 0907 AI 스위치 스타일 추가 - 끝 */
+
+/* 0907 모달 스타일 추가 - 시작 */
+.modalBack {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.35);
+  display: grid; place-items: center;
+  z-index: 9999;
+}
+.modalBox {
+  width: min(750px, 92vw);
+  background: #fff; border: 1px solid #e9e9e9; border-radius: 0px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+  overflow: hidden;
+}
+.modalTitle { padding: 12px 16px; font-weight: 700; border-bottom: 1px solid #eee; }
+.modalBody { padding: 14px 16px; max-height: 55vh; overflow:auto; }
+.modalText { white-space: pre-wrap; line-height: 1.5; color:#222; }
+.modalLoading { color:#666; }
+.modalActions { padding: 12px 16px; border-top: 1px solid #eee; display:flex; justify-content:flex-end; }
+/* 0907 모달 스타일 추가 - 끝 */
+
+.loading { text-align:center; color:#666; padding:12px 0; }
+.sentinel { height: 1px; }
+
+/* 날짜 입력 달력 아이콘 포인터 */
+.input[type="date"] { cursor: text; }
+.input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+.input[type="date"]::-moz-focus-inner { cursor: pointer; }
+
+/* 빈 상태 뷰 */
+.empty {
+  border: 1px dashed #e0e0e0; background: #fafafa; border-radius: 0px;
+  display:grid; place-items:center; padding: 48px; color:#333; text-align:center;
+}
+.emptyTitle { font-size: 32px; font-weight: 800; letter-spacing: .02em; color:#50AC58; }
+.emptySub { margin-top: 8px; font-size: 14px; color:#666; }
+.emptyEmoji { font-size: 56px; margin-bottom: 12px; }

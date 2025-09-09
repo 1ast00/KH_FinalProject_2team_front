@@ -1,0 +1,305 @@
+/* 전체 컨테이너 스타일 */
+.todoContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 10px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 헤더 이미지 영역 - 컨테이너 밖으로 이동 */
+.todoHeader {
+  text-align: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.todoHeader img {
+  margin-top: 20px;
+  width: 1230px;
+  height: 140px;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.todoTitle {
+  color: #6DC82A;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* 입력 폼 스타일 */
+.todoInputForm {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  height: 50px;
+}
+
+.todoInputForm input[type="text"] {
+  flex: 1;
+  padding: 18px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  min-height: 15px;
+  transition: border-color 0.2s ease;
+}
+
+.todoInputForm input[type="text"]:focus {
+  border-color: #6DC82A;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.todoInputForm input[type="date"] {
+  padding: 18px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  min-height: 15px;
+  min-width: 180px;
+  transition: border-color 0.2s ease;
+}
+
+.todoInputForm input[type="date"]:focus {
+  border-color: #6DC82A;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.todoInputForm button {
+  padding: 18px 30px;
+  background: #6DC82A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  min-height: 10px;
+  min-width: 50px;
+  transition: background-color 0.2s ease;
+}
+
+.todoInputForm button:hover {
+  background: #5EAC24;
+  transform: translateY(-1px);
+}
+
+/* 섹션 헤더 */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sectionHeader.pending {
+  color: #5EAC24; 
+}
+
+.sectionHeader.completed {
+  color: #50AC58;
+}
+
+/* 할 일 목록 컨테이너 */
+.todoListContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* 할 일 목록 스타일 */
+.todoList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todoItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  margin-bottom: 8px;
+  border-radius: 0;
+  border-left: 4px solid transparent;
+  border-bottom: 1px solid #f1f3f5;
+  background: transparent;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.todoItem:last-child {
+  border-bottom: none;
+}
+
+/* 미완료 항목 (연한 초록색) */
+.todoItem.pending {
+  border-left-color: #C4EEAE;
+  background: linear-gradient(to right, #C4EEAE10, white);
+}
+
+/* 완료 항목 (진한 초록색) */
+.todoItem.completed {
+  border-left-color: #A1DF80;
+  background: linear-gradient(to right, #A1DF8020, white);
+}
+
+/* 체크박스 커스터마이징 */
+.todoCheckbox {
+  margin-left: 20px;
+  width: 20px;
+  height: 20px;
+  accent-color: #28a745;
+  cursor: pointer;
+}
+
+/* 할 일 텍스트 */
+.todoText {
+  flex: 1;
+  font-size: 16px;
+  line-height: 1.4;
+  transition: all 0.2s ease;
+}
+
+.todoText.completed {
+  text-decoration: line-through;
+  color: #6c757d;
+  opacity: 0.7;
+}
+
+/* 수정 입력창 */
+.todoEditInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #f8f9ff;
+}
+
+/* 버튼 스타일 */
+.todoBtn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.todoBtn.edit {
+  background: #6DC82A;
+  color: white;
+}
+
+.todoBtn.edit:hover {
+  background: #5EAC24;
+  color: white;
+}
+
+.todoBtn.save {
+  background: #5EAC24;
+  color: white;
+}
+
+.todoBtn.save:hover {
+  background: #50AC58;
+  color: white;
+}
+
+.todoBtn.delete {
+  background: #dc3545;
+  color: white;
+}
+
+.todoBtn.delete:hover {
+  background: #c82333;
+}
+
+/* 액션 버튼들 */
+.todoActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
+
+.actionBtn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveBtn {
+  background: #6DC82A;
+  color: white;
+}
+
+.saveBtn:hover {
+  background: #5EAC24;
+}
+
+.clearBtn {
+  background: #6c757d;
+  color: white;
+}
+
+.clearBtn:hover {
+  background: #545b62;
+}
+
+.emptyMessage {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .todoContainer {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  .todoInputForm {
+    flex-direction: column;
+  }
+  
+  .todoInputForm input[type="text"],
+  .todoInputForm input[type="date"],
+  .todoInputForm button {
+    width: 100%;
+  }
+  
+  .todoItem {
+    padding: 12px;
+  }
+  
+  .todoActions {
+    flex-direction: column;
+  }
+  
+  .actionBtn {
+    width: 100%;
+  }
+}

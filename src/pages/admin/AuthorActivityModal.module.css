@@ -1,0 +1,85 @@
+/* AuthorActivityModal.module.css, ReviewDetailModal.module.css (동일) */
+
+.backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: saturate(120%) blur(2px);
+  display:flex; align-items:center; justify-content:center;
+  z-index: 999;
+}
+
+.modal{
+  /* 🔴 이 변수들이 아래 모든 var()에 진하게 적용됩니다 */
+  --panel: #ffffff;
+  --text: #0a0f1c;
+  --text-strong: #0a0f1c;
+  --text-muted: #334155;
+  --border: #9aa6b2;   /* 더 진한 보더 */
+  --bg: #e4ecff;       /* 더 진한 박스/헤더 배경 */
+
+  width: min(1000px, calc(100vw - 48px));
+  max-height: min(80vh, 900px);
+  overflow:auto;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(0,0,0,.28);
+  padding: 20px;
+}
+
+.header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom: 14px;
+}
+
+.close{
+  border:1px solid var(--border);
+  background: #f1f5f9;
+  padding: 6px 10px; border-radius: 10px;
+  color: var(--text);
+  font-weight:700;
+  cursor: pointer;
+}
+.close:hover{ background:#e7edf5; }
+
+.section{ margin-top: 16px; }
+
+.kv{
+  display:grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+.kv > div{
+  display:flex; gap:8px; align-items:center;
+  padding:10px 12px;
+  background: var(--bg);
+  border:1px solid var(--border);
+  border-radius: 10px;
+}
+.kv b{
+  font-weight:800;
+  width:120px;
+  color: var(--text-strong);
+}
+
+.tableWrap{
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background: var(--panel);
+}
+.table{ width:100%; border-collapse: collapse; font-size:14px; }
+.table th, .table td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--border);
+}
+.table thead th{
+  position:sticky; top:0;
+  background: var(--bg);
+  color: var(--text);
+  font-weight:800;
+  z-index:1;
+}
+
+.empty{ text-align:center; padding:24px; color: var(--text-muted); }
+.ellipsis{ max-width:360px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
