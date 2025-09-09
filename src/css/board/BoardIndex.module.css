@@ -86,7 +86,7 @@ padding-right: 20px;
   border-radius: 30px;
   color: #5EAC24;
   align-items: center;
-  cursor: pointer
+  cursor: pointer;
 }
 .btn_moveback{
   width: 40px;
@@ -96,5 +96,12 @@ padding-right: 20px;
   border: 2px solid #5EAC24;
   border-radius: 30px;
   color: #5EAC24;
-  cursor: pointer
+  cursor: pointer;
+}
+.btn_moveback:hover,
+.btn_addword:hover{
+  background-color: #6DC82A;
+  border: 1px solid #6DC82A;
+  color: white;
+  cursor: pointer;
 }
