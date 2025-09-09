@@ -176,8 +176,8 @@ input[type=number] { -moz-appearance: textfield; }
   z-index: 9999;
 }
 .modalBox {
-  width: min(560px, 92vw);
-  background: #fff; border: 1px solid #e9e9e9; border-radius: 8px;
+  width: min(750px, 92vw);
+  background: #fff; border: 1px solid #e9e9e9; border-radius: 0px;
   box-shadow: 0 12px 28px rgba(0,0,0,.12);
   overflow: hidden;
 }
@@ -198,7 +198,7 @@ input[type=number] { -moz-appearance: textfield; }
 
 /* 빈 상태 뷰 */
 .empty {
-  border: 1px dashed #e0e0e0; background: #fafafa; border-radius: 12px;
+  border: 1px dashed #e0e0e0; background: #fafafa; border-radius: 0px;
   display:grid; place-items:center; padding: 48px; color:#333; text-align:center;
 }
 .emptyTitle { font-size: 32px; font-weight: 800; letter-spacing: .02em; color:#50AC58; }
