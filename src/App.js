@@ -86,12 +86,13 @@ function App() {
           <Route path="/food/search" element={<FoodSearchPage/>}/>
           <Route path="/food/search/detail/:prdlstNm" element={<FoodDetailPage/>}/>
 
+          <Route path="/gemini-ai" element={<Gemini />} />
+
           {/* 비공개 라우트 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/healthdailylog" element={<HealthDailyLogPage />} />
             <Route path="/todoList" element={<TodoListPage />}/>
-            <Route path="/Gemini-ai" element={<Gemini />} /> {/* AI 코치 페이지 */}
             <Route path="/gemini-ai-food" element={<FoodAiPage />} /> {/* AI 식단 페이지 */}
             <Route path="/recipe" element={<RecipePage />}/>
             <Route path="/recipeDetail/:id" element={<RecipeDetailPage />}/>

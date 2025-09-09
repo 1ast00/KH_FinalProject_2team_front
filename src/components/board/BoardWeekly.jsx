@@ -7,11 +7,11 @@ const JoinButton = () => {
 
   return (
     <button
-      className={`${styles.btn_getin} ${isHovered ? styles.btn_expand : ''}`}
+      className={`${styles.btn_getin} ${isHovered ? styles.btn_expand : ""}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {isHovered ? '+ 참여하기' : <span className={styles.btn_plus}>+</span>}
+      {isHovered ? "＋ 참여하기" : <span className={styles.btn_plus}>＋</span>}
     </button>
   );
 };

@@ -9,31 +9,26 @@ export default function BoardReviewDetail() {
   const navigate = useNavigate();
   const { brno } = useParams();
 
-  // 상태(State) 선언
   const [review, setReview] = useState(null);
   const [awesomeCount, setAwesomeCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthor, setIsAuthor] = useState(false);
 
-  // 댓글 관련 상태
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [editingComment, setEditingComment] = useState(null);
 
-  // 로그인 사용자 정보
   const userData = getUserData();
   const loggedInNickname = userData ? userData.nickname : "";
   const loggedInMno = userData ? userData.mno : null;
 
-  // 함수(API 호출 및 이벤트 핸들러) 정의
   const fetchReviewDetail = async () => {
     try {
       const response = await reviewsAPI.get(`/detail/${brno}`);
       const reviewData = response.data.review;
       setReview(reviewData);
       setAwesomeCount(response.data.awesomeCount);
-      // 작성자 여부 확인
       if (reviewData && reviewData.mno === loggedInMno) {
         setIsAuthor(true);
       }
@@ -98,7 +93,7 @@ export default function BoardReviewDetail() {
       const response = await reviewsAPI.patch(`/danger/${brno}`);
       if (response.data.code === 1) {
         alert(response.data.msg);
-        navigate("/board/review");
+        navigate("/board/review"); // 경로 수정
       } else {
         alert("신고에 실패했습니다.");
       }
@@ -110,13 +105,8 @@ export default function BoardReviewDetail() {
 
   const handleCommentSubmit = async () => {
     if (!loggedInMno) {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login");
-      return;
     }
     if (!commentText.trim()) {
-      alert("댓글 내용을 입력해주세요.");
-      return;
     }
     try {
       await reviewsAPI.post("/comment", {
@@ -139,8 +129,6 @@ export default function BoardReviewDetail() {
 
   const handleCommentUpdate = async () => {
     if (!commentText.trim()) {
-      alert("댓글 내용을 입력해주세요.");
-      return;
     }
     const updatedComment = {
       brcno: editingComment.brcno,
@@ -165,33 +153,26 @@ export default function BoardReviewDetail() {
         alert("댓글이 삭제되었습니다.");
         fetchComments();
       } catch (error) {
-        console.error("댓글 삭제에 실패했습니다.", error);
-        alert("댓글 삭제에 실패했습니다.");
+        /* ... */
       }
     }
   };
 
   const toggleCommentAwesome = async (brcno) => {
     if (!loggedInMno) {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login");
-      return;
+      /* ... */
     }
     try {
       const response = await reviewsAPI.post(`/comment/awesome/${brcno}`);
       alert(response.data.msg);
       fetchComments();
     } catch (error) {
-      console.error("댓글 좋아요 토글 실패:", error);
-      alert("오류가 발생하였습니다. 다시 시도해 주세요.");
+      /* ... */
     }
   };
 
   const handleCommentReport = async (brcno) => {
     if (!loggedInMno) {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login");
-      return;
     }
     if (window.confirm("정말로 이 댓글을 신고하시겠습니까?")) {
       try {
@@ -202,8 +183,6 @@ export default function BoardReviewDetail() {
           alert("신고 접수에 실패했습니다.");
         }
       } catch (error) {
-        console.error("댓글 신고 실패:", error);
-        alert("신고 중 오류가 발생했습니다. 다시 시도해 주세요.");
       }
     }
   };
@@ -213,7 +192,7 @@ export default function BoardReviewDetail() {
     fetchComments();
   }, [brno]);
 
-  
+  //렌더링
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>오류가 발생했습니다: {error.message}</div>;
   if (!review) return <div>게시글을 찾을 수 없습니다.</div>;
@@ -222,13 +201,10 @@ export default function BoardReviewDetail() {
 
   return (
     <div className={styles.container}>
-      {/* 게시글 제목 */}
       <div>
         <h2 className={styles.brtitle}>{review.brtitle}</h2>
         <hr className={styles.divider} />
       </div>
-
-      {/* 게시글 정보 및 버튼 */}
       <div className={styles.brinfo}>
         <div className={styles.brwriter}>
           <span className={styles.nickname}>{review.nickname}</span>
@@ -254,14 +230,10 @@ export default function BoardReviewDetail() {
           <span onClick={handleDanger}>신고</span>
         </div>
       </div>
-
-      {/* 게시글 내용 */}
       <div className={styles.brcontent}>
         <Viewer initialValue={review.brcontent} />
       </div>
       <hr className={styles.divider} />
-
-      {/* 댓글 쓰기 */}
       <div className={styles.commentSection}>
         <div className={styles.commentInputBox}>
           <span className={styles.loggedInUser}>{loggedInNickname}</span>
@@ -287,13 +259,12 @@ export default function BoardReviewDetail() {
             </button>
           )}
         </div>
-
-        {/* 댓글 목록 */}
         <div className={styles.commentList}>
           {comments.length > 0 ? (
             comments.map((comment) => (
               <div key={comment.brcno} className={styles.commentItem}>
                 <div className={styles.commentInfoLine}>
+                  
                   <div className={styles.commentHeader}>
                     <span className={styles.commentAuthor}>
                       {comment.nickname}
@@ -303,14 +274,12 @@ export default function BoardReviewDetail() {
                     </span>
                   </div>
                   <div className={styles.commentActions}>
-
                     <button onClick={() => toggleCommentAwesome(comment.brcno)}>
                       <span className={styles.heartIcon}>
                         {comment.awesomeCount > 0 ? "♥" : "♡"}
                       </span>
                       {comment.awesomeCount}
                     </button>
-
                     {loggedInMno && loggedInMno === comment.mno && (
                       <>
                         <button
@@ -325,8 +294,6 @@ export default function BoardReviewDetail() {
                         </button>
                       </>
                     )}
-
-                    {/* 신고 버튼: 내가 쓴 댓글이 아닐 때만 보임 */}
                     {loggedInMno && loggedInMno !== comment.mno && (
                       <button
                         onClick={() => handleCommentReport(comment.brcno)}

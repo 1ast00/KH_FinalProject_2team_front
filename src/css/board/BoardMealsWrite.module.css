@@ -31,6 +31,9 @@
   border-right: none;
   padding-left: 20px;
 }
+.titleInput:focus{
+  outline: none;
+}
 .editorContents {
   color: #333333 !important;
   background-color: #C4EEAE;
@@ -47,16 +50,30 @@
   color: white;
   margin: 10px 10px;
 }
+.btn_addwrite:hover{
+  background-color: #6DC82A;
+  border: 1px solid #6DC82A;
+  color: white;
+  cursor: pointer;
+}
 .btn_back{
   width: 130px;
   height: 45px;
   font-size: 18px;
-  background-color: #5EAC24;
-  border: 1px solid #5EAC24;
+  background-color: #C4EEAE;
+  border: 1px solid #C4EEAE;
   border-radius: 30px;
   color: white;
   margin: 10px 10px;
+  cursor: pointer
 }
+.btn_back:hover{
+  background-color: #6DC82A;
+  border: 1px solid #6DC82A;
+  color: white;
+  cursor: pointer;
+}
+
 .contentArea{
   display: flex;
   justify-content: center;

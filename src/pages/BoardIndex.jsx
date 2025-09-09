@@ -7,12 +7,10 @@ import {
 } from "react-router-dom";
 import BoardReviewAllview from "../components/board/review/BoardReviewAllview";
 import BoardReviewDetail from "../components/board/review/BoardReviewDetail";
-import BoardReviewWrite from "../components/board/review/BoardReviewWrite ";
-import BoardReviewItem from "../components/board/review/BoardReviewItem";
+import BoardReviewWrite from "../components/board/review/BoardReviewWrite";
 import BoardMealsAllview from "../components/board/meals/BoardMealsAllview";
 import BoardMealsDetail from "../components/board/meals/BoardMealsDetail";
 import BoardMealsWrite from "../components/board/meals/BoardMealsWrite";
-import BoardMealsItem from "../components/board/meals/BoardMealsItem";
 import BoardWeekly from "../components/board/BoardWeekly";
 import styles from "../css/board/BoardIndex.module.css";
 
@@ -66,13 +64,13 @@ function BoardIndex() {
             <div className={styles.menuRight}>
               <Link to={writepath}>
                 {/* 아래 + 글작성버튼 클릭후 content출력후 화면안보여야 함  boardreviewWrite로 이동. */}
-                <button className={styles.btn_addword}> + </button>
+                <button className={styles.btn_addword}>＋</button>
               </Link>
               <button
                 className={styles.btn_moveback}
                 onClick={() => navigate(-1)}
               >
-                {`<`}
+                {`＜`}
               </button>
             </div>
           </div>
@@ -86,7 +84,7 @@ function BoardIndex() {
             <Route path="review/write/:brno?" element={<BoardReviewWrite />} />
             <Route path="meals" element={<BoardMealsAllview />} />
             <Route path="meals/:bmno" element={<BoardMealsDetail />} />
-            <Route path="meals/write" element={<BoardMealsWrite />} />
+            <Route path="meals/write/:bmno?" element={<BoardMealsWrite />} />
           </Routes>
         </div>
       </div>
