@@ -39,7 +39,7 @@ export default function ExerciseAiChat({ exerciseName, onClose }) {
       {/* 모달 컨텐츠 */}
       <div className={styles.modalContent} onClick={handleModalContentClick}>
         <button className={styles.closeButton} onClick={onClose}>×</button>
-        <h2>{exerciseName} AI 코치 💬</h2>
+        <h2>{exerciseName} AI 코치 💪🏻</h2>
         <p>'{exerciseName}'에 대해 궁금한 모든 것을 물어보세요!</p>
 
         {/* 질문 입력 폼 */}

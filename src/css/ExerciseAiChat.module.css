@@ -20,7 +20,7 @@
   padding: 2rem;
   border-radius: 12px;
   width: 90%;
-  max-width: 600px;
+  max-width: 700px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.25);
   max-height: 80vh;
   overflow-y: auto;
@@ -68,43 +68,63 @@
   font-size: 1rem;
   resize: vertical;
   box-sizing: border-box; 
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.textarea:focus {
+  border-color: #f0b400;
+  box-shadow: 0 0 0 3px rgba(240, 180, 0, 0.25);
+  outline: none;
 }
 
 .button {
-  padding: 0.8rem 2rem; 
+  padding: 0.8rem 2rem;
   border: none;
-  background-color: #50AC58; 
-  color: #ffffff; 
-  border-radius: 25px; 
+  background-color: #f0b400;
+  color: #333;
+  border-radius: 25px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.2s;
-  width: auto; 
-  align-self: center; 
+  font-weight: bold;
+  width: auto;
+  align-self: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease-out;
 }
 
 .button:hover:not(:disabled) {
-  background-color: #5EAC24; 
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2),
+              inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2),
+              inset 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .button:disabled {
   background-color: #ccc;
+  color: #666;
   cursor: not-allowed;
 }
-
 
 .loading {
   text-align: center;
   margin: 1.5rem 0;
-  color: #555;
+  color: #7c6000;
+  font-weight: bold;
+  animation: goldenPulse 1.8s infinite ease-in-out;
 }
 
 .responseCard {
   margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-left: 4px solid #007bff;
-  border-radius: 4px;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-left: 5px solid #f0b400;
+  border-radius: 8px;
+  animation: slideInUp 0.5s ease-out forwards;
 }
 
 .responseCard h3 {
@@ -113,10 +133,12 @@
 }
 
 .responseText {
-  white-space: pre-wrap; /* 줄바꿈과 공백을 그대로 표시 */
+  white-space: pre-wrap;
   color: #444;
-  line-height: 1.6;
+  line-height: 1.7;
 }
+
+/* --- 애니메이션 정의 --- */
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -126,4 +148,16 @@
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* [수정] 황금색 테마에 맞춘 로딩 애니메이션 */
+@keyframes goldenPulse {
+  0%, 100% {
+    color: #7c6000; /* 어두운 황금색 */
+    transform: scale(1);
+  }
+  50% {
+    color: #f0b400; /* 밝은 황금색 */
+    transform: scale(1.02);
+  }
 }
