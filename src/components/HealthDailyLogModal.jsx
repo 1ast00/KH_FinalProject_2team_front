@@ -2,7 +2,6 @@
 import React from "react";
 import styles from "../css/HealthDailyLog.module.css";
 
-/* 0907 이름 변경 - 시작 (AiFeedbackModal → HealthDailyLogModal) */
 export default function HealthDailyLogModal({ open, loading, text, onClose }) {
   if (!open) return null;
 
@@ -25,7 +24,7 @@ export default function HealthDailyLogModal({ open, loading, text, onClose }) {
         <div className={styles.modalTitle}>AI 피드백</div>
         <div className={styles.modalBody}>
           {loading ? (
-            <div className={styles.modalLoading}>피드백 생성 중...</div>
+            <div className={styles.modalLoading}>AI 피드백 생성 중...</div>
           ) : (
             <div className={styles.modalText}>{linkify(text)}</div>
           )}
@@ -37,4 +36,3 @@ export default function HealthDailyLogModal({ open, loading, text, onClose }) {
     </div>
   );
 }
-/* 0907 이름 변경 - 끝 */

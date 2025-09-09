@@ -139,24 +139,16 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
   const colorHexFromKey = (key) => (palette.find((p) => p.key === key) || palette[0]).color;
   // 0906 팔레트 HEX 전송 - 끝
 
-  // 0907 AI 프롬프트 조립 - 시작
+  /* 0909 프롬프트 압축 + 링크/수평선 금지 - 시작 */
   const buildAiPrompt = (payload) => {
-    const {
-      hdate, sleeptime, weight, wateramount, exercise, foods = []
-    } = payload;
+    const { hdate, sleeptime, weight, wateramount, exercise, foods = [] } = payload;
     return [
-      "당신은 다정한 건강 코치입니다. 항상 칭찬모드로 간단·긍정적으로 피드백하세요.",
-      "출력 형식:",
-      "3줄 요약(칭찬 위주 + 부드러운 개선 1가지)",
-      "개선 1가지와 관련한 다이어트 정보도 200자이내로 주세요",
-      "",
-      `기록: 날짜 ${hdate}, 몸무게 ${weight ?? "-"}kg, 수면 ${sleeptime}, 물 ${wateramount ?? "-"}L,`,
-      `운동: ${exercise},`,
-      `식단: ${foods.join(", ") || "-"}`,
-      "",
+      "당신은 다정한 건강 코치입니다.",
+      "형식: 3줄 요약(칭찬 위주) + 보완 1가지, 링크·수평선(---)·목록 기호(-,*) 없이, 400자 이내의 간결한 한국어.",
+      `기록: 날짜 ${hdate}, 몸무게 ${weight ?? "-"}kg, 수면 ${sleeptime}, 물 ${wateramount ?? "-"}L, 운동 ${exercise}, 식단 ${foods.join(", ") || "-"}.`,
     ].join("\n");
   };
-  // 0907 AI 프롬프트 조립 - 끝
+  /* 0909 프롬프트 압축 + 링크/수평선 금지 - 끝 */
 
   const submit = () => {
     if (!hdate) return alert("날짜를 입력해 주세요.");
