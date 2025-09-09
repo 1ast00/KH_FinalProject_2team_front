@@ -6,7 +6,10 @@ export default ({ response }) => {
   return (
     <div className={styles.responseCard}>
       <h2>맞춤형 다이어트 간단 플랜</h2>
-      <ReactMarkdown style={{ whiteSpace: "pre-wrap" }}>{response}</ReactMarkdown>
+      <br/><br/>
+      <div className={styles.markdown}>
+        <ReactMarkdown>{response}</ReactMarkdown>
+      </div>
     </div>
   );
 };
