@@ -28,14 +28,12 @@
   border-bottom: 1px solid #c4eeae;
 }
 
-/* === 클래스명 변경 === */
 .col_bmno {
   width: 8%;
 }
 .col_bmtitle {
   width: 44%;
 }
-/* ==================== */
 
 .col_nickname {
   width: 12%;
@@ -61,12 +59,9 @@
   text-overflow: ellipsis; /* 내용넘치면...*/
 }
 
-/* === 클래스명 변경 === */
 .boardTable td.col_bmtitle {
-  /*제목 왼쪽정렬 맘에 안들면 변경하자*/
   text-align: left;
 }
-/* ==================== */
 
 .row {
   cursor: pointer;
