@@ -25,20 +25,35 @@ export default () => {
       </div>
       <div className={styles.bestline}>
         <div className={styles.bestbox}>
-          <div className={styles.best}>Boardweekly: 출력 best1</div>
-          <div className={styles.best}>Boardweekly: 출력 best2</div>
-          <div className={styles.best}>Boardweekly: 출력 best3</div>
-          <div className={styles.best}>Boardweekly: 출력 best4</div>
-        
-        <div className={styles.best_btnbox}>
-        {/*} <button className={styles.btn_getin}>
+          <div className={styles.best}>
+            Mudi <br />
+            BMI 0.01%
+            <br /> 목표체중55KG 10대
+          </div>
+          <div className={styles.best}>
+            Terrier <br />
+            BMI 2.15% <br />
+            목표체중85kg 20대
+          </div>
+          <div className={styles.best}>
+            Kooikerhondje
+            <br /> BMI 5.09% <br />
+            목표체중119KG 30대
+          </div>
+          <div className={styles.best}>
+            Foresttree
+            <br /> BMI 5.09% <br />
+            목표체중 42kg 40대이상
+          </div>
+
+          <div className={styles.best_btnbox}>
+            {/*} <button className={styles.btn_getin}>
             <label className={styles.btn_plus}>+</label>참여하기
           </button> */}
-        <JoinButton />
-        </div>
+            <JoinButton />
+          </div>
         </div>
       </div>
     </div>
-
   );
 };
