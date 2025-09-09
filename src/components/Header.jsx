@@ -58,11 +58,27 @@ export default () => {
               <p>게시판</p>
             </Link>
           </li>
-          <li className={header.hli}>
-            <Link to={"/Gemini-ai"}>
-              <p>AI질문</p>
-            </Link>
-          </li>
+            {isAuthenticated() ? (
+              <>
+                <li className={header.hli}>
+                  <Link to={"/todoList"}>
+                    <p>TodoList</p>
+                  </Link>
+                </li>
+                <li className={header.hli}>
+                  <Link to={"/gemini-ai"}>
+                    <p>AI 플래너</p>
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <li className={header.hli}>
+                <Link to={"/gemini-ai"}>
+                  <p>AI 플래너</p>
+                </Link>
+              </li>
+            )}
+          
         </div>
         <div className={header.tp_btn_menu}>
           {isAuthenticated() && getUserData() ? (

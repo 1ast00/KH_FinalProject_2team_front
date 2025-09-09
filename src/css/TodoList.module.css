@@ -2,7 +2,7 @@
 .todoContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 30px 10px;
   background: #f8f9fa;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -16,7 +16,8 @@
 }
 
 .todoHeader img {
-  width: 1200px;
+  margin-top: 20px;
+  width: 1230px;
   height: 140px;
   max-width: 100%;
   object-fit: cover;
@@ -161,6 +162,7 @@
 
 /* 체크박스 커스터마이징 */
 .todoCheckbox {
+  margin-left: 20px;
   width: 20px;
   height: 20px;
   accent-color: #28a745;
