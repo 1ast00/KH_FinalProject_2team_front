@@ -36,16 +36,28 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
   );
   const [foods, setFoods] = useState(initial?.food ? initial.food.split("\n") : [""]);
 
+  // 0907 AI 피드백 스위치 상태 추가 - 시작
+  const [aiOn, setAiOn] = useState(false);
+  // 0907 AI 피드백 스위치 상태 추가 - 끝
+
   // 팔레트
   const palette = [
-    { key: "default", color: "#f6f6f6", title: "기본" },
-    { key: "red",     color: "#FFE5E5", title: "연한빨강" },
-    { key: "yellow",  color: "#FFF6CC", title: "연한노랑" },
-    { key: "green",   color: "#C4EEAE", title: "연한초록" },
-    { key: "pink",    color: "#FFE3EF", title: "연한핑크" },
-    { key: "blue",    color: "#E0EEFF", title: "연한파랑" },
+    { key: "default", color: "#fff", title: "기본" },
+    { key: "gray",     color: "#E8E8E8", title: "연한회색" },
+    { key: "yellow",   color: "#FFF6CC", title: "연한노랑" },
+    { key: "green",    color: "#C4EEAE", title: "연한초록" },
+    { key: "pink",     color: "#FFE3EF", title: "연한핑크" },
+    { key: "blue",     color: "#E0EEFF", title: "연한파랑" },
   ];
   const [selectedColor, setSelectedColor] = useState(palette[0].key);
+
+  /* 0908 기존 색상 복원 - 시작 */
+  const keyFromHex = (hex) => {
+    if (!hex) return palette[0].key;
+    const found = palette.find(p => (p.color || "").toLowerCase() === (hex || "").toLowerCase());
+    return found ? found.key : palette[0].key;
+  };
+  /* 0908 기존 색상 복원 - 끝 */
 
   // 0906 폼 재초기화 - 시작
   useEffect(() => {
@@ -56,6 +68,10 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
     setWateramount(initial?.wateramount ?? "");
     setExercises(initial?.exercise ? initial.exercise.split("\n") : [""]);
     setFoods(initial?.food ? initial.food.split("\n") : [""]);
+
+    /* 0908 기존 색상 복원 - 시작 */
+    setSelectedColor(keyFromHex(initial?.bgcolor));
+    /* 0908 기존 색상 복원 - 끝 */
   }, [initial, initialDate, initHH, initMM]);
   // 0906 폼 재초기화 - 끝
 
@@ -123,6 +139,25 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
   const colorHexFromKey = (key) => (palette.find((p) => p.key === key) || palette[0]).color;
   // 0906 팔레트 HEX 전송 - 끝
 
+  // 0907 AI 프롬프트 조립 - 시작
+  const buildAiPrompt = (payload) => {
+    const {
+      hdate, sleeptime, weight, wateramount, exercise, foods = []
+    } = payload;
+    return [
+      "당신은 다정한 건강 코치입니다. 항상 칭찬모드로 간단·긍정적으로 피드백하세요.",
+      "출력 형식:",
+      "3줄 요약(칭찬 위주 + 부드러운 개선 1가지)",
+      "개선 1가지와 관련한 다이어트 정보도 200자이내로 주세요",
+      "",
+      `기록: 날짜 ${hdate}, 몸무게 ${weight ?? "-"}kg, 수면 ${sleeptime}, 물 ${wateramount ?? "-"}L,`,
+      `운동: ${exercise},`,
+      `식단: ${foods.join(", ") || "-"}`,
+      "",
+    ].join("\n");
+  };
+  // 0907 AI 프롬프트 조립 - 끝
+
   const submit = () => {
     if (!hdate) return alert("날짜를 입력해 주세요.");
 
@@ -144,7 +179,17 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
       // 0906 팔레트 HEX 전송(여기가 핵심) - 시작
       cardColor: colorHexFromKey(selectedColor),
       // 0906 팔레트 HEX 전송 - 끝
-      // (참고) colorKey는 보내도 되고 안 보내도 됩니다. Page는 cardColor(HEX)만 봅니다.
+      // 0907 AI ON/OFF + 프롬프트 전달 - 시작
+      aiOn,
+      aiPrompt: buildAiPrompt({
+        hdate,
+        sleeptime: `${pad2(hh)}:${pad2(mm)}`,
+        weight: weight === "" ? null : Number(weight),
+        wateramount: wateramount === "" ? null : Number(wateramount),
+        exercise: exerciseSafe || "-",
+        foods: foodsSafe,
+      }),
+      // 0907 AI ON/OFF + 프롬프트 전달 - 끝
     };
     onSubmit(payload);
   };
@@ -258,11 +303,23 @@ export default function HealthDailyLogForm({ initial, onCancel, onSubmit }) {
         </div>
       </div>
 
-      {/* 하단: 뒤로가기 + 팔레트 + 등록 */}
+      {/* 하단: 뒤로가기 + (AI스위치 + 팔레트) + 등록 */}
       <div className={styles.formActions}>
         <button onClick={onCancel} className={styles.outlineBtn}>뒤로가기</button>
 
         <div className={styles.actionRight}>
+          {/* 0907 AI 스위치 추가 - 시작 */}
+          <button
+            type="button"
+            className={`${styles.aiSwitch} ${aiOn ? styles.aiSwitchOn : ""}`}
+            onClick={() => setAiOn((v) => !v)}
+            title="AI 피드백"
+          >
+            <span className={styles.aiKnob} />
+            <span className={styles.aiLabel}>AI 피드백</span>
+          </button>
+          {/* 0907 AI 스위치 추가 - 끝 */}
+
           <div className={styles.paletteWrap} aria-label="색상 팔레트">
             {palette.map((p) => (
               <button

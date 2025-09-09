@@ -6,6 +6,7 @@ export default ({currentPage,dataLength,pageSize,onPageChange,searchPerformed,to
     // console.log("dataLength in Pagination.jsx",dataLength);
     // console.log("pageSize in Pagination.jsx",pageSize);
     // console.log("onPageChange in Pagination.jsx",onPageChange);
+    console.log("searchPerformed in Pagination.jsx",searchPerformed);
 
     const hasNext = dataLength === pageSize;
     const hasPrev = currentPage > 1;

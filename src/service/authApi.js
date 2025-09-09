@@ -177,3 +177,15 @@ export const postToAIFood = async (prompt) => {
     return "죄송합니다, AI 코치와 연결하는 데 문제가 발생했어요.";
   }
 };
+
+// 0907 건강일지 전용 AI에게 피드백 요청 보내는 함수 - 시작
+export const postToAIHealthDailyLog = async (prompt) => {
+  try {
+    const response = await authApi.post("/ai/healthdailylogchat", { prompt });
+    return response.data.response;
+  } catch (e) {
+    console.error("HealthDailyLog AI 피드백 오류:", e);
+    return "HealthDailyLog AI 피드백 연결에 문제가 발생했습니다.";
+  }
+};
+// 0907 건강일지 전용 AI에게 피드백 요청 보내는 함수 - 끝
