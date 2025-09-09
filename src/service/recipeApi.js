@@ -19,3 +19,14 @@ export const getRecipeList = async () => {
     console.log("getRecipeList: ", error);
   }
 };
+
+export const naverSearch = async (search) => {
+  try {
+    const response = await recipeApi.get(`naverSearch`,{
+      params: {search},
+    });
+    return response.data;
+  } catch (error) {
+    console.log("naverSearch: ", error);
+  }
+};
