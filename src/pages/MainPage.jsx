@@ -119,7 +119,7 @@ export default () => {
                     navigation={true}
                     pagination={{ 
                       clickable: true,
-                      // el: `.${styles.customPagination}`,
+                      el: `.${styles.customPagination}`,
                       bulletClass: styles.customBullet,
                       bulletActiveClass: styles.customBulletActive
                     }}
