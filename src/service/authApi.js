@@ -164,6 +164,18 @@ export const postToAI = async (prompt) => {
   }
 };
 
+// [추가] ExerciseDetailPage의 AI에게 요청 보내는 함수
+export const postToAIForExercise = async (prompt) => {
+  try {
+    const response = await authApi.post("/ai/ExerciseChat", { prompt: prompt });
+    return response.data.response;
+  } catch (error) {
+    console.error("운동 AI 코치 응답을 가져오는 중 오류 발생:", error);
+    return "죄송합니다, 운동 전문 AI 코치와 연결하는 데 문제가 발생했어요.";
+  }
+};
+
+
 // AI에게 요청 보내는 함수:food
 export const postToAIFood = async (prompt) => {
 
