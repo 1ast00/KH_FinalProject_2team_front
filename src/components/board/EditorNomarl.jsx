@@ -23,3 +23,4 @@ const EditorNomarl = forwardRef((props, ref) => {
 });
 
 export default EditorNomarl;
+

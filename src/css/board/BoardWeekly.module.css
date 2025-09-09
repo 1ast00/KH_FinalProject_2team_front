@@ -33,17 +33,20 @@
 display: flex;
 flex-direction: row;
 justify-content: center;
+align-items: center;
 gap: 20px 20px; 
 padding-left: 200px;
+color: #5EAC24;
 /* border: 1px dotted red; 가이드*/
 }
 .best{
   width: 200px;
   height: 100px;
-  padding: 10px 10px;
+  padding: 20px 10px 0px 10px;
   border: 1px solid #5EAC24;
   border-radius: 10px;
   color: #595959; 
+  text-align: center;
 }
 .best_btnbox{
   justify-content: flex-en;

@@ -6,8 +6,8 @@
 .banner_image{
     position: relative;
     top: 36px;
-    width: 73.3%;
-    height: 250px;
+    width: 50%;
+    aspect-ratio: 6 / 1;
     overflow: hidden;
     margin: 0 auto;
 }
