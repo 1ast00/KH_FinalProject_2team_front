@@ -98,7 +98,6 @@
   margin-top: 5px;
 }
 
-
 .inputGroup label {
   display: block;
   margin-bottom: 5px;
@@ -180,19 +179,34 @@
   font-size: 1.5rem;
 }
 
+.backLinkContainer {
+  position: relative;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  width: 85%;  
+  margin-top: 10px;
+}
+
 .backLink {
   position: relative;
   display: inline-block;
-  margin-top: 10px;
   text-decoration: none;
   color: #fff;
+  font-size: 0.95rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
 }
 
-.backLinkContainer {
-  position: relative;
-  text-align: right;
-  width: 100%; 
+.aiButton {
+  background: none;   
+  border: none;       
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  display: inline-block;
+  padding: 0;         
 }
 
 .messageContainer {
