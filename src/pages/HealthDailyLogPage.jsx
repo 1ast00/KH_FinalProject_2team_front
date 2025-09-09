@@ -38,6 +38,10 @@ export default function HealthDailyLogPage() {
   const [aiText, setAiText] = useState("");
   /* 0907 AI 모달 상태 - 끝 */
 
+  /* 0909 등록 알림 지연 표시를 위한 플래그 - 시작 */
+  const [pendingCreateAlert, setPendingCreateAlert] = useState(false);
+  /* 0909 등록 알림 지연 표시를 위한 플래그 - 끝 */
+
   /* 0908 DB 색상 저장 전환 - 시작
      더 이상 decorate로 색 주입하지 않음(서버가 bgcolor 내려줌) */
   const load = async ({ reset = false, cursor = 0, date = "", forceLimit = null } = {}) => {
@@ -77,9 +81,7 @@ export default function HealthDailyLogPage() {
     return () => el && observerRef.current.unobserve(el);
   }, [nextCursor, dateFilter, formOpen]);
 
-  /* 0908 DB 색상 저장 전환 - 시작
-     payload에서 넘어온 색상(cardColor)을 즉시 아이템.bgcolor에만 써서
-     사용자에게 즉시 반영. (localStorage 저장 제거) */
+  /* 0908 DB 색상 저장 전환 - 시작 */
   const pickColorFromPayload = (p) => {
     if (!p) return "";
     const cand =
@@ -100,6 +102,14 @@ export default function HealthDailyLogPage() {
   };
   /* 0908 DB 색상 저장 전환 - 끝 */
 
+  /* 0909 AI 출력 텍스트 정리(--- 제거) - 시작 */
+  const sanitizeAiText = (s) =>
+    (s || "")
+      .replace(/^\s*[-*_]{3,}\s*$/gm, "")   // ---, ___, *** 단독 줄 제거
+      .replace(/\n{3,}/g, "\n\n")           // 빈 줄 2개로 정리
+      .trim();
+  /* 0909 AI 출력 텍스트 정리(--- 제거) - 끝 */
+
   /* 0906 연속목록 노출 + 팔레트 색 적용 + AI 피드백 - 시작 */
   const handleCreate = async (payload) => {
     const res = await apiCreateHealthDailyLog(payload);
@@ -117,9 +127,7 @@ export default function HealthDailyLogPage() {
         wateramount: payload.wateramount,
         exercise: payload.exercise || "-",
         food: (payload.foods && payload.foods.length ? payload.foods.join("\n") : "-"),
-        /* 0908 DB 색상 저장 전환 - 시작 */
         bgcolor: picked || null,
-        /* 0908 DB 색상 저장 전환 - 끝 */
       };
       setItems((prev) => [added, ...prev]);
 
@@ -128,6 +136,12 @@ export default function HealthDailyLogPage() {
       setEditTarget(null);
       load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
 
+      // 0909 등록 알림 시점 조정 - 시작
+      if (payload.aiOn) {
+        setPendingCreateAlert(true);
+      }
+      // 0909 등록 알림 시점 조정 - 끝
+
       // AI 피드백
       if (payload.aiOn) {
         setAiOpen(true);
@@ -135,19 +149,21 @@ export default function HealthDailyLogPage() {
         setAiText("");
         try {
           const txt = await postToAIHealthDailyLog(payload.aiPrompt || "");
-          setAiText(txt || "간단 피드백을 가져오지 못했습니다.");
+          setAiText(sanitizeAiText(txt || "간단 피드백을 가져오지 못했습니다."));
         } catch {
           setAiText("AI 연결에 실패했습니다.");
         } finally {
           setAiLoading(false);
         }
+      } else {
+        // 0909 등록 알림 시점 조정(AI OFF일 때는 즉시) - 시작
+        alert("등록되었습니다.");
+        // 0909 등록 알림 시점 조정(AI OFF일 때는 즉시) - 끝
       }
-
-      alert("등록되었습니다.");
     } else if (res.code === 3) {
       alert("같은 날짜의 건강일지가 이미 있습니다.");
     } else {
-      alert(res.msg || "등록 실패");
+      alert(res.msg || "등록을 실패였습니다.");
     }
   };
   /* 0906 연속목록 노출 + 팔레트 색 적용 + AI 피드백 - 끝 */
@@ -156,12 +172,11 @@ export default function HealthDailyLogPage() {
     const res = await apiUpdateHealthDailyLog(hno, payload);
     if (res.code === 1) {
       await load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
-
       setFormOpen(false);
       setEditTarget(null);
       alert("수정되었습니다.");
     } else {
-      alert("수정 실패");
+      alert("수정을 실패하였습니다.");
     }
   };
 
@@ -173,7 +188,7 @@ export default function HealthDailyLogPage() {
       await load({ reset: true, cursor: 0, date: dateFilter, forceLimit: 12 });
       alert("삭제되었습니다.");
     } else {
-      alert("삭제 실패");
+      alert("삭제를 실패하였습니다.");
     }
   };
 
@@ -194,6 +209,16 @@ export default function HealthDailyLogPage() {
     setFormOpen(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  /* 0909 모달 닫힐 때 등록 알림 처리 - 시작 */
+  const handleAiClose = () => {
+    setAiOpen(false);
+    if (pendingCreateAlert) {
+      alert("등록되었습니다.");
+      setPendingCreateAlert(false);
+    }
+  };
+  /* 0909 모달 닫힐 때 등록 알림 처리 - 끝 */
 
   return (
     <div className={styles.page}>
@@ -217,7 +242,7 @@ export default function HealthDailyLogPage() {
             className={styles.hiddenDate}
           />
           <button className={styles.iconBtn} title="날짜로 검색" onClick={triggerDate}>📆</button>
-          <button className={styles.iconBtn} title="작성하기" onClick={openNewForm}>🖋</button>
+          <button className={styles.iconBtn} title="새 건강일지 작성하기" onClick={openNewForm}>🖋</button>
         </div>
       </div>
 
@@ -228,7 +253,7 @@ export default function HealthDailyLogPage() {
             <div className={styles.empty}>
               <div className={styles.emptyEmoji}>🗒️</div>
               <div className={styles.emptyTitle}>건강일지를 작성해보세요</div>
-              <div className={styles.emptySub}>오늘의 체중, 수면시간, 운동과 식단을 간단히 기록해요.</div>
+              <div className={styles.emptySub}>오늘의 몸무게, 수면 시간, 물 섭취량, 운동과 식단을 간단히 기록해요</div>
             </div>
           )}
 
@@ -270,7 +295,7 @@ export default function HealthDailyLogPage() {
         open={aiOpen}
         loading={aiLoading}
         text={aiText}
-        onClose={() => setAiOpen(false)}
+        onClose={handleAiClose}  /* 0909 등록 알림 시점 조정 */
       />
     </div>
   );

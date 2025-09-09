@@ -34,7 +34,7 @@ export default function HealthDailyLogCard({ item, onEdit, onDelete }) {
       </div>
 
       <div className={styles.row}>
-        <span className={styles.label}>물</span>
+        <span className={styles.label}>물 섭취량</span>
         <span>{item.wateramount ?? "-"} L</span>
       </div>
 
