@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { getSearchResult } from "../../service/authApi";
 import FoodResult from "./FoodResult";
 import Pagination from "../Pagination";
-import { useNavigate } from "react-router-dom";
 import ManufacturerCarousel from "./ManufacturerCarousel";
 import styles from "../../css/FoodSearch.module.css"
 
@@ -31,7 +30,7 @@ export default ({searchTxtSentInFoodDetailPage}) => {
     
     //query를 상태값으로 저장할 변수를 하나 만듬: searchTxt
     //query를 useEffect에 사용시 매번 요청을 하여 시스템 성능저하와 호출량 제한에 걸릴 수 있음
-    const [searchTxt, setSearchTxt] = useState("");
+    const [searchTxt, setSearchTxt] = useState(searchTxtSentInFoodDetailPage || "");
     
     //searchTxt의 결과값을 상태값으로 저장할 변수를 하나 만듬: foodData
     const [foodData, setFoodData] = useState([]);
@@ -43,14 +42,8 @@ export default ({searchTxtSentInFoodDetailPage}) => {
 
     //Manufacturer(img click)
     const [manufacturer,setManufacturer] = useState("영주한우");
-
-    const navigate = useNavigate();
     
     useEffect(() => {
-
-        // console.log("searchTxt: ",searchTxt);
-        // console.log("searchTxtSentInFoodDetailPage: ",searchTxtSentInFoodDetailPage)
-        console.log("foodData: ",foodData);
     
         if((!query || query.trim() === "") && 
         (!searchTxtSentInFoodDetailPage || searchTxtSentInFoodDetailPage.trim() === "")){
@@ -64,7 +57,6 @@ export default ({searchTxtSentInFoodDetailPage}) => {
             {/* 3. response값을 foodData에 넣어줌*/}    
             if(!!searchTxtSentInFoodDetailPage){
                 const responseData = await getSearchResult(searchTxtSentInFoodDetailPage, currentPage);
-                navigate("/food/search", { replace: true, state: { searchTxtSentInDetailPage: "" } });
                 setFoodData(responseData);
             } else {
                 const responseData2 = await getSearchResult(searchTxt, currentPage);

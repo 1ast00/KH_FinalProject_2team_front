@@ -70,12 +70,13 @@
     width: 80%;
     margin: 0 auto;
     margin-top: 50px;
-    padding-top: 3%;
+    /* padding-top: 3%;
     padding-left: 3%;
     padding-right: 3%;
-    padding-bottom: 3%;
+    padding-bottom: 3%; */
     border-radius: 20px;
-    background-color: #ddecd5;
+    border: 2px solid green;
+    background-color: #e3f3db;
 }
 
 .result_list{
@@ -93,7 +94,7 @@
     border-radius: 20px;
     width: 64%;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 .sponsors :global(.slider-container){

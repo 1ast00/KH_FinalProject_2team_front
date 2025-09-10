@@ -11,15 +11,18 @@ export default () => {
 
     const push = useNavStore((state) => state.push);
 
-    const searchTxtSentInFoodDetailPage = location?.state?.searchTxtSentInDetailPage || "";
-    // console.log("location.state.searchTxtSentInDetailPage: ", location?.state?.searchTxtSentInDetailPage);
+    const searchTxtSentInFoodDetailPage = location?.state?.searchTxtSentInDetailPage ?? null;
+    console.log("location.state.searchTxtSentInDetailPage: ", location?.state?.searchTxtSentInDetailPage);
 
     
     useEffect(() => {
-        push(location.pathname, location.state || {});
+    // ✅ state가 있을 때만 push 실행
+    if (location.state) {
+        push(location.pathname, location.state);
+    }
 
-        console.log("location.pathname:",location.pathname);
-        console.log("location.state:",location.state);
+    console.log("location.pathname:", location.pathname);
+    console.log("location.state:", location.state);
     }, [location.pathname, location.state]);
 
     return (
