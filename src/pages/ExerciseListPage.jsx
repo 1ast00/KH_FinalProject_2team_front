@@ -7,22 +7,6 @@ import { getCurrentWeather } from '../service/weatherApi';
 import styles from '../css/ExerciseListPage.module.css';
 import { Link } from 'react-router-dom';
 
-// 날씨 객체를 받아 추천할 운동 타입을 결정하는 함수
-const getExerciseTypeByWeather = (weather) => {
-    if (!weather) return '실외';
-
-    const weatherIconCode = weather.icon.slice(0, 2);
-    const temp = weather.temp;
-
-    if (['09', '10', '11', '13', '50'].includes(weatherIconCode)) {
-        return '실내';
-    }
-    if (temp > 30 || temp < 0) {
-        return '실내';
-    }
-    return '실외';
-};
-
 export default function ExerciseListPage() {
   const [healthData, setHealthData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,6 +58,49 @@ export default function ExerciseListPage() {
     fetchRecommendations();
   }, [weather]);
 
+  // 날씨 객체를 받아 추천할 운동 타입을 결정하는 함수
+const getExerciseTypeByWeather = (weather) => {
+    if (!weather) return '실외';
+
+    const weatherIconCode = weather.icon.slice(0, 2);
+    const temp = weather.temp;
+
+    if (['09', '10', '11', '13', '50'].includes(weatherIconCode)) {
+        return '실내';
+    }
+    if (temp > 30 || temp < 0) {
+        return '실내';
+    }
+    return '실외';
+};
+
+// 날씨 아이콘 코드를 이모지로 변환하는 함수
+const getWeatherEmoji = (iconCode) => {
+  const code = iconCode.slice(0, 2); // '01d' -> '01' 처럼 앞 두 글자만 사용
+  switch (code) {
+    case "01":
+      return "☀️"; // 맑음
+    case "02":
+      return "🌤️"; // 구름 조금
+    case "03":
+      return "☁️"; // 구름 많음
+    case "04":
+      return "🌥️"; // 흐림
+    case "09":
+      return "🌧️"; // 소나기
+    case "10":
+      return "🌦️"; // 비
+    case "11":
+      return "⛈️"; // 천둥번개
+    case "13":
+      return "❄️"; // 눈
+    case "50":
+      return "🌫️"; // 안개
+    default:
+      return "❔"; // 혹시 모를 경우
+  }
+};
+
   // 검색, 정렬 관련 로직
   useEffect(() => {
     const filteredData = healthData.filter(item =>
@@ -114,13 +141,13 @@ export default function ExerciseListPage() {
               <h2 className={styles.recommendationTitle}>🚴🏻‍♀️ 오늘의 추천 운동(WOD)</h2>
               {weather && (
                 <div className={styles.weatherWidget}>
-                  <img
-                    className={styles.weatherIcon}
-                    src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-                    alt={weather.description}
-                  />
                   <div className={styles.weatherInfo}>
-                    <span className={styles.weatherTemp}>{Math.round(weather.temp)}°C</span>
+                    <div className={styles.weatherTopLine}>
+                      <span className={styles.weatherEmojiIcon}>
+                        {getWeatherEmoji(weather.icon)}
+                      </span>
+                      <span className={styles.weatherTemp}>{Math.round(weather.temp)}°C</span>
+                    </div>
                     <span className={styles.weatherDesc}>{weather.city}, {weather.description}</span>
                   </div>
                 </div>
