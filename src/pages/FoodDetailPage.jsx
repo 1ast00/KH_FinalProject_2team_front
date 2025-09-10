@@ -172,10 +172,6 @@ export default () => {
 
     return(
         <div className="total-container">
-            {/* Zustand로 관리 */}
-            <div>
-                <button onClick={goBack}>뒤로 가기</button>
-            </div>
             <div 
             style={{
                 width: "100%",
@@ -189,6 +185,10 @@ export default () => {
                 style={{
                     width: "40%"
                 }}/>
+            </div>
+            {/* Zustand로 관리 */}
+            <div>
+                <button onClick={goBack}><img src="/img/BackButton.png" alt="backbutton"/></button>
             </div>
             {!!nutrientObj?.nutrients?.단백질 && !!nutrientObj?.nutrients?.지방 ? (
                 <div
@@ -294,7 +294,7 @@ export default () => {
             >
                 {/* input + button, input값을 상태값으로 관리하고 FoodSearch에 넘겨주기 */}
                 <input type="text" 
-                placeholder="원하시는 식품을 입력하세요." 
+                placeholder="더 많은 식품들을 검색해보세요." 
                 value={query} 
                 onChange={e=>{setQuery(e.target.value)}}/>
                 <button onClick={handleSearch}><img src="/img/search_icon.png" alt="search_icon"/></button>

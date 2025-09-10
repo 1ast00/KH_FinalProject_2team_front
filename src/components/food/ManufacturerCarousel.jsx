@@ -81,23 +81,40 @@ export default ({searchTxt,searchTxtSentInFoodDetailPage,currentPage,manufacture
         })
     }
 
-    return(
-        <div className="slider-container">
-            <Slider {...settings}>
-            {(!!totalList ) ? 
-            totalList?.data
-            ?.filter((item) => item.manufacture === manufacturer)
-            .map((item)=>(
-                <div key={item.prdlstReportNo}>
-                    <h3><img src={item.imgurl1} onClick={() => handleClick(item)}/></h3>
-                    {/* <h3>{item.prdlstNm}</h3> */}
-                </div> 
-            ))
-            : (
-            <div>
-                <h3>해당하는 제품들이 없습니다</h3>
-            </div>)}
-            </Slider>
-        </div>
-    );
+    const filtered = totalList?.data?.filter((item) => item.manufacture === manufacturer) || [];
+    console.log("filtered: ",totalList?.data?.filter((item) => item.manufacture === manufacturer))
+
+return (
+    <div className="slider-container">
+        <Slider {...settings}>
+            {(() => {
+                if (!totalList?.data) {
+                    return (
+                        <div>
+                            <h3>데이터를 불러오지 못했습니다.</h3>
+                        </div>
+                    );
+                }
+
+                const filtered = totalList.data.filter(item => item.manufacture === manufacturer);
+
+                if (filtered.length === 0) {
+                    return (
+                        <div>
+                            <h3>해당 제조사의 제품이 없습니다.</h3>
+                        </div>
+                    );
+                }
+
+                return filtered.map(item => (
+                    <div key={item.prdlstReportNo}>
+                        <h3>
+                            <img src={item.imgurl1} onClick={() => handleClick(item)} />
+                        </h3>
+                    </div>
+                ));
+            })()}
+        </Slider>
+    </div>
+);
 }
