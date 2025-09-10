@@ -21,10 +21,10 @@
 }
 
 .search_bar{
-    width: 40%;
+    width: 82%;
     height: 40px;
     position: relative;
-    top: 47px;
+    top: 0px;
     margin: 0 auto;
 }
 
@@ -67,9 +67,16 @@
 }
 
 .result{
-    width: 50%;
+    width: 80%;
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 50px;
+    /* padding-top: 3%;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%; */
+    border-radius: 20px;
+    border: 2px solid green;
+    background-color: #e3f3db;
 }
 
 .result_list{
@@ -79,18 +86,23 @@
 }
 
 .result_list img {
-    height: 100px;
+    height: 150px;
 }
 
 .sponsors{
-    border: 2px solid black;
+    border: 2px solid #50ac58;
     border-radius: 20px;
-    width: 40%;
+    width: 64%;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
+}
+
+.sponsors :global(.slider-container){
+    border: none !important;
 }
 
 .sponsors > div > h3 {
+    color: #50ac58;
     position: relative;
     top: 30px;
     left: 5%;
@@ -102,17 +114,16 @@
     top: 60px;
     width: 90%;
     border: none;
-    border-top: 2px solid black;
+    border-top: 2px solid #a1df80;
     margin: 0 auto;
     margin-bottom: 50px;
 }
 
 .sponsors img {
-    /* border: 1px solid rgb(40, 53, 14); */
     display: block;        /* 인라인에서 block으로 변경 */
     margin: 0 auto;        /* flex가 아니라도 중앙 정렬 */
-    max-width: 100%;
-    max-height: 250px;
+    max-width: 70% !important;
+    max-height: 200px;
     object-fit: contain;
 }
 
@@ -125,7 +136,6 @@
 }
 
 .sponsors :global(.slick-container > div) {
-    /* border: 5px solid blue; */
     display: flex !important;
     flex-direction: column;
     justify-content: center;  /* 세로 중앙 */
@@ -135,20 +145,7 @@
     box-sizing: border-box;
 }
 
-/* .sponsors :global(.slick-list) {
-    border: 1px solid cyan;
-} */
-
-/* .sponsors :global(.slick-track) {
-    border: 2px solid greenyellow;
-} */
-
-/* .sponsors :global(.slick-slider){
-    border: 2px solid slateblue;
-} */
-
 .sponsors :global(.slick-slide) {
-    /* border: 2px solid red; */
     display: flex;
     align-items: center; 
     height: 350px;     
@@ -156,7 +153,6 @@
 }
 
 .sponsors :global(.slick-slide > div) {
-    /* border: 5px solid purple; */
 
     display: flex !important;
     flex-direction: column;

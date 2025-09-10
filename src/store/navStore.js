@@ -10,14 +10,19 @@ export const useNavStore = create()(
 
 
         // 현재 페이지 push
-        push: (path, state = {}) => {
-          set((store) => {
-            const last = store.history[store.history.length - 1];
-            if (!last || last.path !== path) {
-              store.history.push({ path, state });
-            }
-          }, false, "nav/push");
-        },
+        push: (path, state = null) => {
+  set((store) => {
+    const last = store.history[store.history.length - 1];
+
+    // 같은 path라면 덮어쓰지 않음
+    if (!last || last.path !== path) {
+      store.history.push({ path, state });
+    } else if (state) {
+      // 같은 path인데 새로운 state가 있으면 업데이트
+      last.state = state;
+    }
+  }, false, "nav/push");
+},
 
         // 뒤로가기
         pop: () => {
@@ -29,7 +34,7 @@ export const useNavStore = create()(
             }, false, "nav/pop");
             return prev;
           }
-          return { path: "/food/search", state: {} };
+          return { path: "/food/search" };
         },
 
         // 전체 초기화

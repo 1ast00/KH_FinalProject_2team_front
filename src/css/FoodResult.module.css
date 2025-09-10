@@ -5,9 +5,10 @@
   justify-content: flex-start; /* 이미지 왼쪽, 텍스트 오른쪽 */
   gap: 20px;                 /* 이미지와 텍스트 사이 간격 */
   border: 2px solid #50ac58;   /* 필요 시 */
+  background-color: white;
   border-radius: 20px;
   padding: 15px;
-  margin-bottom: 20px;
+  margin: 20px;
   box-sizing: border-box;
 }
 

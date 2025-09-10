@@ -1,15 +1,17 @@
 
 .pageContainer{
   position: absolute;
+  margin: 0 auto;
 }
 
 .banner_image{
     position: relative;
     top: 36px;
-    width: 50%;
-    aspect-ratio: 6 / 1;
+    width: 62%;
+    aspect-ratio: 7 / 1;
     overflow: hidden;
     margin: 0 auto;
+    border-radius: 10px;
 }
 
 .banner_image img {

@@ -110,6 +110,7 @@ return (
                     <div key={item.prdlstReportNo}>
                         <h3>
                             <img src={item.imgurl1} onClick={() => handleClick(item)} />
+                            <p>{item.prdlstNm}</p>
                         </h3>
                     </div>
                 ));
