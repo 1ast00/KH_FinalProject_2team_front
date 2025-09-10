@@ -4,6 +4,7 @@ import { reviewsAPI } from "../../../service/boardApi";
 import { Viewer } from "@toast-ui/react-editor";
 import { getUserData } from "../../../util/authUtil";
 import styles from "../../../css/board/BoardReviewDetail.module.css";
+import { createReport } from "../../../service/adminApi"; // 추가: 신고 생성 API
 
 export default function BoardReviewDetail() {
   const navigate = useNavigate();
@@ -83,23 +84,24 @@ export default function BoardReviewDetail() {
     }
   };
 
+  //  리뷰 게시글 신고 -> AdminReport 생성 호출
   const handleDanger = async () => {
     if (!loggedInMno) {
       alert("로그인 후 이용해주세요");
       navigate("/login");
       return;
     }
+    if (!window.confirm("이 게시글을 신고할까요?")) return;
     try {
-      const response = await reviewsAPI.patch(`/danger/${brno}`);
-      if (response.data.code === 1) {
-        alert(response.data.msg);
-        navigate("/board/review"); // 경로 수정
-      } else {
-        alert("신고에 실패했습니다.");
-      }
+      await createReport({
+        targetType: "REVIEW_POST",
+        targetId: Number(brno),
+        reporterMno: loggedInMno,
+      });
+      alert("신고가 접수되었습니다.");
     } catch (error) {
-      console.error("신고 실패", error);
-      alert("신고 실패, 다시 시도해주세요.");
+      console.error(error);
+      alert("신고 접수 중 오류가 발생했습니다.");
     }
   };
 
@@ -171,19 +173,21 @@ export default function BoardReviewDetail() {
     }
   };
 
+  //   리뷰 댓글 신고 -> AdminReport 생성 호출
   const handleCommentReport = async (brcno) => {
     if (!loggedInMno) {
     }
-    if (window.confirm("정말로 이 댓글을 신고하시겠습니까?")) {
-      try {
-        const response = await reviewsAPI.patch(`/comment/danger/${brcno}`);
-        if (response.data.code === 1) {
-          alert(response.data.msg);
-        } else {
-          alert("신고 접수에 실패했습니다.");
-        }
-      } catch (error) {
-      }
+    if (!window.confirm("정말로 이 댓글을 신고하시겠습니까?")) return;
+    try {
+      await createReport({
+        targetType: "REVIEW_COMMENT",
+        targetId: Number(brcno),
+        reporterMno: loggedInMno,
+      });
+      alert("신고가 접수되었습니다.");
+    } catch (error) {
+      console.error(error);
+      alert("신고 접수 중 오류가 발생했습니다.");
     }
   };
 
@@ -264,7 +268,6 @@ export default function BoardReviewDetail() {
             comments.map((comment) => (
               <div key={comment.brcno} className={styles.commentItem}>
                 <div className={styles.commentInfoLine}>
-                  
                   <div className={styles.commentHeader}>
                     <span className={styles.commentAuthor}>
                       {comment.nickname}

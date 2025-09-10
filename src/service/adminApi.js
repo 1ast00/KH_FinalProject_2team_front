@@ -32,14 +32,15 @@ export const patchAdminReviewStatus = (brno, posted) =>
 export const getAdminReviewDetail   = (brno)         => api.get(`/admin/reviews/${brno}`);
 
 /* ----- 신고: 일반 사용자 생성 ----- */
-export const createReport = (payload) => api.post("/reports", payload);
-/*
-payload = {
-  targetType: "MEAL_POST" | "MEAL_COMMENT" | "REVIEW_POST" | "REVIEW_COMMENT",
-  targetId: number,
-  reporterMno: number
-}
-*/
+export const createReport = (payload) => api.post("/reports/create", payload);
+
+// createReport({
+//   targetType: "REVIEW_POST",   // "MEAL_POST" | "MEAL_COMMENT" | "REVIEW_POST" | "REVIEW_COMMENT"
+//   targetId: 123,               // 대상 PK (bmno / bmcno / brno / cno)
+//   reporterMno: 7               // 신고자 MNO
+// }).then(res => {
+//   console.log("생성된 reportId:", res.data);
+// });
 
 /* ----- 신고 관리(관리자) ----- */
 export const getAdminReports        = (params)                  => api.get("/admin/reports", { params });

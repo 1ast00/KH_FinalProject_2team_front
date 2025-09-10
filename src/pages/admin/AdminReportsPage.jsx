@@ -1,3 +1,4 @@
+// src/pages/admin/AdminReportsPage.jsx
 import { useEffect, useState } from "react";
 import styles from "./AdminMembersPage.module.css";
 import {
@@ -33,10 +34,10 @@ export default function AdminReportsPage() {
   const [rows, setRows] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [busy, setBusy] = useState({ id: null, kind: null }); // kind: 'status' | 'resolve' | 'delete'
+  const [busy, setBusy] = useState({ id: null, kind: null }); // 'status' | 'resolve' | 'delete'
   const [detailId, setDetailId] = useState(null);
 
-  const me = getUserData?.(); // {mno,...} (resolve 호출 시 사용)
+  const me = getUserData?.(); // { mno, ... }
 
   const load = async (p = page) => {
     setLoading(true);
@@ -78,7 +79,14 @@ export default function AdminReportsPage() {
     } finally { setBusy({ id: null, kind: null }); }
   };
 
-  const mapStatusBadge = (s) => (s === "PENDING" ? "대기" : s === "DONE" ? "처리" : s);
+  const mapStatusBadge = (s) => {
+  if (!s) return "-";
+  const up = s.toUpperCase();
+  if (up === "PENDING") return "대기";
+  if (up === "DONE" || up === "RESOLVED") return "처리완료";
+  return s;
+};
+
   const mapTypeLabel  = (t) => (TYPE_OPTIONS.find(o => o.value === t)?.label ?? t);
 
   return (
@@ -105,9 +113,9 @@ export default function AdminReportsPage() {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th style={{ width: 80 }}>ID</th>
+              <th style={{ width: 120 }}>회원번호</th>          {/* 신고자 회원번호 */}
               <th style={{ width: 140 }}>유형</th>
-              <th style={{ width: 160 }}>신고자MNO</th>
+              <th style={{ width: 160 }}>신고 회원번호</th>     {/* (리스트 응답에 없으면 '-') */}
               <th style={{ width: 100 }}>상태</th>
               <th style={{ width: 320 }}>액션</th>
             </tr>
@@ -117,9 +125,9 @@ export default function AdminReportsPage() {
               const isBusy = busy.id === r.reportId;
               return (
                 <tr key={r.reportId}>
-                  <td>{r.reportId}</td>
+                  <td>{r.reporterMno ?? "-"}</td>
                   <td>{mapTypeLabel(r.targetType)}</td>
-                  <td>{r.reporterMno}</td>
+                  <td>{r.targetOwnerMno ?? "-"}</td>
                   <td><span className={styles.badge}>{mapStatusBadge(r.status)}</span></td>
                   <td>
                     <div className={styles.actions}>
