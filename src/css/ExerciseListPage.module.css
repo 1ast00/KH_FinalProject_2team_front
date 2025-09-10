@@ -21,12 +21,12 @@
 }
 
 .metExplanation {
-  color: #888; 
-  font-size: 0.9rem; 
+  color: #888;
+  font-size: 0.9rem;
 }
 
 .metHighlight {
-  color: #50AC58; 
+  color: #50AC58;
   font-weight: bold;
 }
 
@@ -35,17 +35,19 @@
   gap: 10px;
 }
 
-.searchInput, .sortSelect {
+.searchInput,
+.sortSelect {
   padding: 10px 12px;
-  border: 1px solid #ddd; 
+  border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  outline: none; 
-  transition: border-color 0.2s ease-in-out; 
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
 }
 
-.searchInput:focus, .sortSelect:focus {
-  border-color: #50AC58; 
+.searchInput:focus,
+.sortSelect:focus {
+  border-color: #50AC58;
 }
 
 .searchInput::placeholder {
@@ -73,7 +75,7 @@
 
 .dataCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 15px #C4EEAE;
+  box-shadow: 0 8px 15px #c4eeae;
 }
 
 .cardTitle {
@@ -87,7 +89,7 @@
 }
 
 .cardInfoLabel {
-  color: #50AC58; 
+  color: #50AC58;
   font-weight: bold;
 }
 
@@ -96,14 +98,14 @@
   color: #888;
 }
 
-.loading, .noDataMessage {
+.loading,
+.noDataMessage {
   text-align: center;
   padding: 50px;
   font-size: 1.2rem;
   color: #666;
 }
 
-/* 추천 운동 섹션 컨테이너 */
 .recommendationContainer {
   background-color: #f0f7ff;
   border-radius: 12px;
@@ -113,7 +115,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* 추천 운동 섹션 제목 */
 .recommendationTitle {
   font-size: 1.6rem;
   color: #0056b3;
@@ -123,58 +124,45 @@
   font-weight: 600;
 }
 
-/* 추천 운동 카드 그리드 */
 .recommendationGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
 }
 
-/* 추천 운동 카드 내부 h3 태그 사이즈 조정 */
 .recommendationGrid .cardTitle {
-    font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
-/* 추천 섹션 헤더 (제목과 날씨 위젯을 나란히 배치) */
 .recommendationHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* 화면이 좁아지면 줄바꿈 */
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 }
 
-/* 추천 섹션 제목의 마진 조정 */
 .recommendationTitle {
-  margin: 0; /* 상하 마진 제거 */
+  margin: 0;
 }
 
-/* 날씨 위젯 컨테이너 */
 .weatherWidget {
   display: flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.6);
-  border-radius: 50px;
-  padding: 4px 12px 4px 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* 날씨 아이콘 */
 .weatherIcon {
   width: 45px;
   height: 45px;
 }
 
-/* 날씨 정보 텍스트 그룹 */
 .weatherInfo {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 5px;
 }
 
-/* 현재 온도 */
 .weatherTemp {
   font-size: 1.2rem;
   font-weight: 600;
@@ -182,9 +170,20 @@
   line-height: 1;
 }
 
-/* 도시 및 날씨 설명 */
 .weatherDesc {
   font-size: 0.8rem;
   color: #555;
-  white-space: nowrap; /* 줄바꿈 방지 */
+  white-space: nowrap;
+}
+
+.weatherEmojiIcon {
+  font-size: 1.5rem;
+  margin-right: 5px;
+  line-height: 1;
+}
+
+.weatherTopLine {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
 }
