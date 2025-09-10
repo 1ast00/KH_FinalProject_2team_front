@@ -159,8 +159,8 @@ export const postToAI = async (prompt) => {
     const response = await authApi.post("/ai/chat", { prompt: prompt });
     return response.data.response;
   } catch (error) {
-    console.error("AI 코치 응답을 가져오는 중 오류 발생:", error);
-    return "죄송합니다, AI 코치와 연결하는 데 문제가 발생했어요.";
+    console.error("AI 플래너 응답을 가져오는 중 오류 발생:", error);
+    return "죄송합니다, AI 플래너와 연결하는 데 문제가 발생했어요.";
   }
 };
 
