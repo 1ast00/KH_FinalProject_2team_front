@@ -23,7 +23,7 @@ export default () => {
     }, [location.pathname, location.state]);
 
     return (
-        <div className="pageContainer">
+        <div>
             <div className={styles.banner_image}>
                 <img src="/img/food_banner.png" />
             </div>

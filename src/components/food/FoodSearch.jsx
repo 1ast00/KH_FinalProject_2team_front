@@ -138,14 +138,6 @@ export default ({searchTxtSentInFoodDetailPage}) => {
 
     return(
         <div className={styles.search_container}>
-            <div className={styles.manufacturer_carousel}>
-                <ManufacturerCarousel 
-                searchTxt={searchTxt} 
-                searchTxtSentInFoodDetailPage={searchTxtSentInFoodDetailPage}
-                currentPage={currentPage}
-                manufacturer={manufacturer}/>
-            </div>
-
             <div className={styles.search_bar}>
                 <input type="text" 
                 placeholder="원하시는 식품을 입력하세요." 
@@ -183,6 +175,13 @@ export default ({searchTxtSentInFoodDetailPage}) => {
                     <p>{"*"} 한국식품안전관리인증원(HACCP)에 등록되어 있지 않은 경우 결과에 나타나지 않을수도 있습니다.</p>
                 </div>
             )}
+            </div>
+            <div className={styles.manufacturer_carousel}>
+                <ManufacturerCarousel 
+                searchTxt={searchTxt} 
+                searchTxtSentInFoodDetailPage={searchTxtSentInFoodDetailPage}
+                currentPage={currentPage}
+                manufacturer={manufacturer}/>
             </div>
             <div className={styles.sponsors}>
                 <div>

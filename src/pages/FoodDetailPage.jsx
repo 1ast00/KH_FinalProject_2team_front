@@ -13,9 +13,7 @@ import FoodThreeMajorNutrientsTable2 from "../components/food/FoodThreeMajorNutr
 import FoodDetailTable2 from "../components/food/FoodDetailTable2";
 import { useEffect, useState } from "react";
 import AISearch from "../components/food/AISearch";
-import { useNavStore } from "../store/navStore"; // 경로 맞게 수정
 
-// import styles from "../../src/css/FoodDetailPage.module.css";
 import "../css/FoodDetailPage.css";
 import { useFoodStore } from "../store/foodStore";
 
@@ -183,12 +181,27 @@ export default () => {
             }}>
                 <img src="/img/food_banner.png" 
                 style={{
-                    width: "40%"
+                    width: "62%",
+                    aspectRatio: "7 /1 "
                 }}/>
             </div>
             {/* Zustand로 관리 */}
             <div>
                 <button onClick={goBack}><img src="/img/BackButton.png" alt="backbutton"/></button>
+                <p>전 페이지로 돌아가기</p>
+            </div>
+            <div>
+                <AISearch item = {state.item}/>
+            </div>
+            <div 
+            className="search-bar"
+            >
+                {/* input + button, input값을 상태값으로 관리하고 FoodSearch에 넘겨주기 */}
+                <input type="text" 
+                placeholder="더 많은 식품들을 검색해보세요." 
+                value={query} 
+                onChange={e=>{setQuery(e.target.value)}}/>
+                <button onClick={handleSearch}><img src="/img/search_icon.png" alt="search_icon"/></button>
             </div>
             {!!nutrientObj?.nutrients?.단백질 && !!nutrientObj?.nutrients?.지방 ? (
                 <div
@@ -289,19 +302,6 @@ export default () => {
                     </div>)}
                 </div>) 
             }
-            <div 
-            className="search-bar"
-            >
-                {/* input + button, input값을 상태값으로 관리하고 FoodSearch에 넘겨주기 */}
-                <input type="text" 
-                placeholder="더 많은 식품들을 검색해보세요." 
-                value={query} 
-                onChange={e=>{setQuery(e.target.value)}}/>
-                <button onClick={handleSearch}><img src="/img/search_icon.png" alt="search_icon"/></button>
-            </div>
-            <div>
-                <AISearch item = {state.item}/>
-            </div>
         </div>
     );
 }
