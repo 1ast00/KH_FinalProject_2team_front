@@ -28,7 +28,7 @@ export default ({currentPage,dataLength,pageSize,onPageChange,searchPerformed,to
         <div className={styles.buttonBar}>
         {/* << 버튼 */}
         {hasPrev && currentPage > 2 && (
-            <button onClick={() => onPageChange(1)} className={styles.butttonsAtBothEnd}>
+            <button onClick={() => onPageChange(1)} className={styles.buttonsAtBothEnd}>
             {"<<"}
         </button>
         )}
@@ -60,7 +60,7 @@ export default ({currentPage,dataLength,pageSize,onPageChange,searchPerformed,to
 
         {/* >> 버튼 */}
         {hasNext && currentPage < lastPage - 1 && (
-            <button onClick={() => onPageChange(lastPage)} className={styles.butttonsAtBothEnd}>
+            <button onClick={() => onPageChange(lastPage)} className={styles.buttonsAtBothEnd}>
             {">>"}
             </button>
         )}

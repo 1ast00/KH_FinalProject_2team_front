@@ -1,30 +1,66 @@
+.exCont{
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.exCont > img {
+  margin-top: 30px;
+  width: 10%;
+  object-fit: contain;
+}
+
 .aiSearch {
   display: flex;
   flex-direction: column;
   justify-content: center; /* 버튼 가운데 */
   align-items: center;
   margin-top: 20px;
-
+  width: 40%;
+  border: 5px solid #514182;
+  border-radius: 20px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding-top: 10px;
+  background-color: #dcd8e9;
 }
 
-.aiSearch button {
-  width: 30%;
-  background: none;
-  border: none;
+.aiSearch > button {
+  border: 5px solid #514182;
+  width: 40%;
+  background: white;
   cursor: pointer;
+  font-weight: 900;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 24px;
+  border-radius: 10px;
+  padding: 5px;
 }
 
-.aiSearch button img {
+.aiSearch > p{
+  font-size: 16px;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.aiSearch p{
-    margin-top: 20px;
-    border: 1px solid black;
-    border-radius: 20px;
+.aiSearch > p:nth-child(2){
+  font-size: 20px;
+  font-weight: 700;
+  color: #12910e;
+}
 
-    background-color: gray;
-    
+.loadingContainer > div{
+  border: 2px solid #514182;
+  background-color: white;
+  font-size: 16px;
+  font-weight: 700px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 5px;
 }

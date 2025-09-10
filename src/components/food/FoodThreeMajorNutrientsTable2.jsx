@@ -4,7 +4,7 @@ export default (nutrientObj) => {
     return(
         <div>
         <div>
-            <p>영양성분 표 (1회 제공량 기준)</p>
+            <h3 className={styles.title}>영양성분 표 (1회 제공량 기준)</h3>
             <table className={styles.table}>
                 <thead>
                     <tr>

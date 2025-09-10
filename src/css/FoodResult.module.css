@@ -4,7 +4,7 @@
   align-items: center;       /* 세로 중앙 */
   justify-content: flex-start; /* 이미지 왼쪽, 텍스트 오른쪽 */
   gap: 20px;                 /* 이미지와 텍스트 사이 간격 */
-  border: 2px solid black;   /* 필요 시 */
+  border: 2px solid #50ac58;   /* 필요 시 */
   border-radius: 20px;
   padding: 15px;
   margin-bottom: 20px;
@@ -24,7 +24,7 @@
 
 .nutrient_container > hr {
     border: none;            /* 기본 선 제거 */
-    border-top: 3px solid black;
+    border-top: 3px solid #6dc82a;
     margin-bottom: 20px;
 }
 
@@ -33,7 +33,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding-bottom: 20px;
+}
+
+.nameAndCalories > h3{
+    color: #3e8145;
 }
 
 .threeNutrients{

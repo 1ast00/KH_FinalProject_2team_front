@@ -10,6 +10,8 @@
 }
 
 .buttonBar > button{
+    background-color: white;
+    border: 1px solid black;
     width: 5%;
     aspect-ratio: 1 / 1;
     border-radius: 5px;
@@ -20,17 +22,12 @@
     cursor: pointer;
 }
 
-.butttonsAtBothEnd{
-    background-color: #A1DF80;
+.buttonsAtBothEnd{
+    background-color: #A1DF80 !important;
     border: none;
 }
 
 .buttonsAround{
-    background-color: #C4EEAE;
+    background-color: #C4EEAE !important;
     border: none;
-}
-
-.currentPage{
-    background-color: white;
-    border: 1px solid black;
 }

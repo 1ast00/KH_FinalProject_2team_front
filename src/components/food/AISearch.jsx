@@ -71,14 +71,21 @@ export default (item) => {
     }
 
     return(
-        <div className={styles.aiSearch}>
+        <div className={styles.exCont}>
+            <img src="/img/AISearch5.png" alt="AI 검색 아이콘"/>
+            <div className={styles.aiSearch}>
             {/* <textarea value={text} onChange={e=>{setText(e.target.value)}}/> */}
-            <button onClick={handlePrompt}><img src="/img/AISearch4.png" alt="AI 검색 아이콘"/></button>
-            {loading && (
-                <div>
-                    <p>⏳ AI가 식단을 분석 중입니다...</p>
-                </div>
-            )}
+            <p> 이 식품을 이용해 식단을 짜고 싶으세요? </p>
+            <p> AI와 상담하세요 </p>
+            <button onClick={handlePrompt}>상담</button>
+            <div className={styles.loadingContainer}>
+                {loading && (
+                    <div>
+                        <p>⏳ AI가 식단을 분석 중입니다...</p>
+                    </div>
+                )}
+            </div>
+        </div>
         </div>
     )
 }

@@ -7,7 +7,7 @@ export default (item) => {
         <div className={styles.container}>
             <img src={item.item.imgurl1}/>
             <img src={item.item.imgurl2}/>
-            <h3>{item.item.prdlstNm}</h3>
+            <h3 className={styles.title}>{item.item.prdlstNm}</h3>
         </div>
         </div>
     );
