@@ -11,18 +11,45 @@ import FoodRawMtrl from "../components/food/FoodRawMtrl";
 import FoodCalories2 from "../components/food/FoodCalories2";
 import FoodThreeMajorNutrientsTable2 from "../components/food/FoodThreeMajorNutrientsTable2";
 import FoodDetailTable2 from "../components/food/FoodDetailTable2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AISearch from "../components/food/AISearch";
+import { useNavStore } from "../store/navStore"; // 경로 맞게 수정
 
 // import styles from "../../src/css/FoodDetailPage.module.css";
 import "../css/FoodDetailPage.css";
+import { useFoodStore } from "../store/foodStore";
 
 
 export default () => {
 
+    //useLocation()
+    //1. FoodSearch에서 { property: "value"}형태로 보내주기
+    //2. FoodDetail.jsx에서 const {property} = useLocation();으로 받기
+    const {state} = useLocation();
+    const navigate = useNavigate();
+
+    const selectedItem = useFoodStore((fs) => fs.selectedItem);
+    const setSelectedItem = useFoodStore((fs) => fs.setSelectedItem);
+
     const [query,setQuery] = useState("");
 
-    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1);
+    };
+
+    useEffect(() => {
+        if (state?.item) {
+            setSelectedItem(state.item);
+        }
+    }, [state?.item, setSelectedItem]);
+
+    const item = selectedItem || state?.item;
+
+    console.log("item:",item);
+
+    if(!item){
+        return <p>상품정보를 불러올 수 없습니다.</p>
+    }
 
     const handleSearch = () => {
         if(!query) return;
@@ -32,12 +59,6 @@ export default () => {
             }
         });
     }
-
-    //useLocation()
-    //1. FoodSearch에서 { property: "value"}형태로 보내주기
-    //2. FoodDetail.jsx에서 const {property} = useLocation();으로 받기
-    const {state} = useLocation();
-    console.log(state);
 
     //nutrient String을 정규식을 이용해 parsing하는 함수 1
     const parseFoodData = (nutrientStr) => {
@@ -143,11 +164,6 @@ export default () => {
         return result;
     }
 
-    //Zustand로 관리
-    // const goBack = () => {
-    //     navigate(-1);
-    // }
-
     //api에서 제공하는 nutrients String 형식이 다르므로 다른 함수들로 parsing함.
     //3개의 정규식으로 대부분의 nutrient 정보를 parsing
     const nutrientObj = state?.item? parseFoodData(state.item.nutrient) : null;
@@ -156,10 +172,10 @@ export default () => {
 
     return(
         <div className="total-container">
-            {/* Zustand로 관리
+            {/* Zustand로 관리 */}
             <div>
                 <button onClick={goBack}>뒤로 가기</button>
-            </div> */}
+            </div>
             <div 
             style={{
                 width: "100%",
