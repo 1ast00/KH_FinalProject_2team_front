@@ -17,6 +17,7 @@ export const getAdminMembers       = (params)        => api.get("/admin/members"
 export const getAdminMemberDetail  = (mno)           => api.get(`/admin/members/${mno}`);
 export const patchAdminMemberRole  = (mno, role)     => api.patch(`/admin/members/${mno}/role`, { role });
 export const deleteAdminMember     = (mno)           => api.delete(`/admin/members/${mno}`);
+export const getMemberCount          = ()              => api.get('/admin/members/count', {withCredentials: false}); 
 
 /* ----- 식단 게시판 관리 ----- */
 export const getAdminMeals              = (params)        => api.get("/admin/meals", { params });
