@@ -9,8 +9,6 @@ import "../../css/Manufacturer.css"
 
 export default ({searchTxt,searchTxtSentInFoodDetailPage,currentPage,manufacturer}) => {
 
-    console.log("manufacturer in ManufacturerCarousel.jsx:",manufacturer);
-
     const settings = {
   dots: false,
   arrows: true,
