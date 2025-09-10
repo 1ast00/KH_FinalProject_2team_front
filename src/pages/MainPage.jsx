@@ -6,6 +6,7 @@ import { getUserData } from "../service/authApi";
 import TodoItem from "../components/TodoItem";
 import { useTodoStore } from "../store/todoStore";
 import RecipeList from "../components/RecipeList";
+import { getMemberCount } from "../service/adminApi";
 
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -22,9 +23,23 @@ export default () => {
   const [isEnd, setIsEnd] = useState(false);
   const {recipeList} = isAuthenticated() ? RecipeList() : { recipeList: [] };
   const [randomRecipes, setRandomRecipes] = useState([]);
+  const [memberCount, setMemberCount] = useState(0);
 
   // icon 3 번 출력
   const icons = [1, 2, 3];
+  
+  // 총 회원 수 불러오는 api
+  useEffect(() => {
+    const fetchMemberCount = async () => {
+        try {
+          const response = await getMemberCount();
+          setMemberCount(response.data);
+        } catch (error) {
+          console.log("fetchMemberCount error:" , error);
+        }
+    };
+    fetchMemberCount();
+  }, []);
   
   // 회원 정보 불러오는 api
   useEffect(() => {
@@ -171,13 +186,13 @@ export default () => {
               <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className={styles.featureCard}>
                   <h3 className={styles.featureTitle}>건강 일지</h3>
-                  <p className={styles.featureText}>현재 <span className={styles.writeMember}>{}</span>명의 회원이 건강 일지를 작성하고 있습니다.</p>
+                  <p className={styles.featureText}>현재 <span className={styles.writeMember}>{memberCount}</span>명의 회원이 건강 일지를 작성하고 있습니다. 참여해 보세요.</p>
                 </div>
               </Link>
               <Link to="/exercise" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className={styles.featureCard}>
                   <h3 className={styles.featureTitle}>추천 운동</h3>
-                  <p className={styles.featureText}>운동의 칼로리를 지금 확인해 보세요.</p>
+                  <p className={styles.featureText}>날씨 기반 추천 운동, 확인해 보세요.</p>
                 </div>
               </Link>
               <Link to="/food/search" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -189,7 +204,7 @@ export default () => {
               <Link to="/Gemini-ai" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className={styles.featureCard}>
                   <h3 className={styles.featureTitle}>다이어트 간단 플랜</h3>
-                  <p className={styles.featureText}>간단한 다이어트 플랜을 받아보세요.</p>
+                  <p className={styles.featureText}>AI 플래너에게 간단한 다이어트 플랜을 받아보세요.</p>
                 </div>
               </Link>
             </div>

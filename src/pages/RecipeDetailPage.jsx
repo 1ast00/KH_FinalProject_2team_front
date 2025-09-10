@@ -79,21 +79,23 @@ export default () => {
                         </div>
                     )}
                 </div>
-            {naverResult && (
+
+                {/* 네이버 검색 결과 */}
+                {naverResult && (
                 <div className={styles.naverResult}>
-                    <h3>네이버 검색 결과</h3>
+                    <h3>관련 자료</h3>
                     {naverResult.items.map((item, index) => (
-                        <div key={index} className={styles.resultItem}>
-                            <a href={item.link} target="_blank" rel="noopener noreferrer">
+                        <a href={item.link} target="_blank" rel="noopener noreferrer">
+                            <div key={index} className={styles.resultItem}>
                                 <h4 dangerouslySetInnerHTML={{ __html: item.title }} />
-                            </a>
-                            <p dangerouslySetInnerHTML={{ __html: item.description }} />
-                        </div>
+                                <p dangerouslySetInnerHTML={{ __html: item.link }} ></p>
+                                <p dangerouslySetInnerHTML={{ __html: item.description }} />
+                            </div>
+                        </a>
                     ))}
                 </div>
             )}
             </div>
-
         </div>
     );
 };
