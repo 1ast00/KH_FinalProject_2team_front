@@ -1,22 +1,26 @@
+// src/pages/admin/AdminPostsPage.jsx
 import { useEffect, useState } from "react";
 import styles from "./AdminMembersPage.module.css";
-import { getAdminMeals } from "../../service/adminApi";
+import { getAdminMeals, patchAdminMealStatus } from "../../service/adminApi";
 import AuthorActivityModal from "./AuthorActivityModal";
 
 export default function AdminPostsPage() {
   const [q, setQ] = useState("");
+  const [status, setStatus] = useState("ALL"); // ALL | POSTED | HIDDEN
   const [page, setPage] = useState(1);
   const size = 10;
 
   const [rows, setRows] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState({ id: null }); // 토글 누른 행만 로딩 표시
+
   const [detailBmno, setDetailBmno] = useState(null);
 
   const load = async (p = page) => {
     setLoading(true);
     try {
-      const { data } = await getAdminMeals({ p, size, q });
+      const { data } = await getAdminMeals({ p, size, q, status });
       setRows(data?.items ?? []);
       setTotalPages(data?.totalPage ?? 1);
       setPage(data?.currentPage ?? p);
@@ -25,16 +29,26 @@ export default function AdminPostsPage() {
     }
   };
 
-  // 검색어만 의존
-  useEffect(() => { load(1); }, [q]);
+  useEffect(() => { load(1); }, [q, status]);
 
   const handleSearch = (e) => { e.preventDefault(); load(1); };
+
+  const onToggle = async (row) => {
+    setBusy({ id: row.bmno });
+    try {
+      const toPosted = row.visible !== "게시"; // 현재가 '게시' 아니면 게시로
+      await patchAdminMealStatus(row.bmno, toPosted);
+      await load(page); // 현재 페이지 새로고침
+    } finally {
+      setBusy({ id: null });
+    }
+  };
 
   return (
     <div className={styles.page}>
       <h2 className={styles.title}>식단 게시판 관리</h2>
 
-      {/* 검색 */}
+      {/* 검색/필터 */}
       <form onSubmit={handleSearch} className={styles.filters}>
         <input
           className={styles.input}
@@ -42,7 +56,16 @@ export default function AdminPostsPage() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
-        <button type="submit" className={styles.btn}>검색</button>
+        <select
+          className={styles.select}
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
+          <option value="ALL">전체</option>
+          <option value="POSTED">게시</option>
+          <option value="HIDDEN">숨김</option>
+        </select>
+        <button type="submit" className={styles.btn} disabled={loading}>검색</button>
       </form>
 
       {/* 테이블 */}
@@ -55,34 +78,44 @@ export default function AdminPostsPage() {
               <th style={{ width: 160 }}>작성자</th>
               <th style={{ width: 140 }}>작성일</th>
               <th style={{ width: 100 }}>상태</th>
-              <th style={{ width: 120 }}>액션</th>
+              <th style={{ width: 160 }}>액션</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.bmno}>
                 <td>{r.bmno}</td>
-                <td>{r.title}</td>
+                <td className={styles.ellipsis}>{r.title}</td>
                 <td>{r.writer}</td>
                 <td>{r.writeDate}</td>
-                <td><span className={styles.badge}>-</span></td>
+                <td>
+                  <span className={styles.badge}>{r.visible ?? "-"}</span>
+                </td>
                 <td>
                   <div className={styles.actions}>
                     <button
                       className={styles.btnGhost}
+                      type="button"
                       onClick={() => setDetailBmno(r.bmno)}
                     >
                       상세
                     </button>
-                    <button className={styles.btn} disabled title="상태 컬럼 없음">토글</button>
+                    <button
+                      className={styles.btn}
+                      type="button"
+                      disabled={busy.id === r.bmno}
+                      onClick={() => onToggle(r)}
+                    >
+                      {busy.id === r.bmno
+                        ? "처리중..."
+                        : (r.visible === "게시" ? "숨김" : "게시")}
+                    </button>
                   </div>
                 </td>
               </tr>
             ))}
-            {rows.length === 0 && !loading && (
-              <tr>
-                <td colSpan={6} className={styles.empty}>데이터가 없습니다.</td>
-              </tr>
+            {!loading && rows.length === 0 && (
+              <tr><td colSpan={6} className={styles.empty}>데이터가 없습니다.</td></tr>
             )}
           </tbody>
         </table>

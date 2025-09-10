@@ -7,15 +7,23 @@ export default function ReviewDetailModal({ brno, onClose }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let alive = true;
     (async () => {
       try {
-        const { data } = await getAdminReviewDetail(brno);
-        setData(data || null);
+        const res = await getAdminReviewDetail(brno);
+        if (alive) setData(res.data || null);
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
     })();
+    return () => { alive = false; };
   }, [brno]);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   const stop = (e) => e.stopPropagation();
 
@@ -35,9 +43,11 @@ export default function ReviewDetailModal({ brno, onClose }) {
             {/* 메타 */}
             <section className={styles.section}>
               <div className={styles.kv}>
-                <div><b>ID</b><span>{data.brno}</span></div>
+                <div><b>회원번호</b><span>{data.brno}</span></div>
                 <div><b>작성자</b><span>{data.writer}</span></div>
                 <div><b>작성일/상태</b><span>{data.writeDate} / {data.status}</span></div>
+                <div><b>신고(글)</b><span>{data.reportPostCount ?? 0}</span></div>
+                <div><b>신고(댓글)</b><span>{data.reportCommentCount ?? 0}</span></div>
               </div>
             </section>
 

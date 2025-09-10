@@ -1,40 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-// 1. API 서비스명 변경: reviewsAPI -> mealsAPI
 import { mealsAPI } from "../../../service/boardApi";
 import { Viewer } from "@toast-ui/react-editor";
 import { getUserData } from "../../../util/authUtil";
-// 2. CSS 모듈명 변경
 import styles from "../../../css/board/BoardMealsDetail.module.css";
+import { createReport } from "../../../service/adminApi"; //  신고 생성 API
 
-// 3. 컴포넌트명 변경
 export default function BoardMealsDetail() {
   const navigate = useNavigate();
-  // 4. 파라미터명 변경: brno -> bmno
   const { bmno } = useParams();
 
-  // 5. 상태 변수명 변경: review -> meal
   const [meal, setMeal] = useState(null);
   const [awesomeCount, setAwesomeCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthor, setIsAuthor] = useState(false);
 
-  // 댓글 관련 상태
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [editingComment, setEditingComment] = useState(null);
 
-  // 로그인 사용자 정보
   const userData = getUserData();
   const loggedInNickname = userData ? userData.nickname : "";
   const loggedInMno = userData ? userData.mno : null;
 
-  // 6. 함수명 및 내부 로직 변경
   const fetchMealDetail = async () => {
     try {
       const response = await mealsAPI.get(`/detail/${bmno}`);
-      const mealData = response.data.meal; // review -> meal
+      const mealData = response.data.meal;
       setMeal(mealData);
       setAwesomeCount(response.data.awesomeCount);
       if (mealData && mealData.mno === loggedInMno) {
@@ -57,7 +50,7 @@ export default function BoardMealsDetail() {
   };
 
   const handleEdit = () => {
-    navigate(`/board/meals/write/${bmno}`, { state: { meal } }); // 경로 및 state 변경
+    navigate(`/board/meals/write/${bmno}`, { state: { meal } });
   };
 
   const handleDelete = async () => {
@@ -66,7 +59,7 @@ export default function BoardMealsDetail() {
         const response = await mealsAPI.delete(`/${bmno}`);
         alert(response.data.msg);
         if (response.data.code === 1) {
-          navigate("/board/meals"); // 경로 변경
+          navigate("/board/meals");
         }
       } catch (error) {
         console.error("게시글 삭제 실패:", error);
@@ -82,7 +75,6 @@ export default function BoardMealsDetail() {
       return;
     }
     try {
-      // payload 키 변경: brno -> bmno
       const response = await mealsAPI.post(`/awesome`, { bmno: bmno });
       setAwesomeCount(response.data.awesomeCount);
       alert(response.data.msg);
@@ -92,25 +84,27 @@ export default function BoardMealsDetail() {
     }
   };
 
+  // 식단 게시글 신고 -> AdminReport 생성 호출
   const handleDanger = async () => {
     if (!loggedInMno) {
       alert("로그인 후 이용해주세요");
       navigate("/login");
       return;
     }
+    if (!window.confirm("이 게시글을 신고할까요?")) return;
     try {
-      const response = await mealsAPI.patch(`/danger/${bmno}`);
-      if (response.data.code === 1) {
-        alert(response.data.msg);
-        navigate("/board/meals");
-      } else {
-        alert("신고에 실패했습니다.");
-      }
+      await createReport({
+        targetType: "MEAL_POST",
+        targetId: Number(bmno),
+        reporterMno: loggedInMno,
+      });
+      alert("신고가 접수되었습니다.");
     } catch (error) {
-      console.error("신고 실패", error);
-      alert("신고 실패, 다시 시도해주세요.");
+      console.error(error);
+      alert("신고 접수 중 오류가 발생했습니다.");
     }
   };
+
   const handleCommentSubmit = async () => {
     if (!loggedInMno) {
     }
@@ -132,7 +126,7 @@ export default function BoardMealsDetail() {
 
   const handleCommentUpdateStart = (comment) => {
     setEditingComment(comment);
-    setCommentText(comment.bmccontent); 
+    setCommentText(comment.bmccontent);
   };
 
   const handleCommentUpdate = async () => {
@@ -140,7 +134,7 @@ export default function BoardMealsDetail() {
     }
     const updatedComment = {
       bmcno: editingComment.bmcno,
-      bmccontent: commentText, 
+      bmccontent: commentText,
     };
     try {
       await mealsAPI.patch("/comment", updatedComment);
@@ -177,26 +171,28 @@ export default function BoardMealsDetail() {
     }
   };
 
+  //  식단 댓글 신고 -> AdminReport 생성 호출
   const handleCommentReport = async (bmcno) => {
     if (!loggedInMno) {
     }
-    if (window.confirm("정말로 이 댓글을 신고하시겠습니까?")) {
-      try {
-        const response = await mealsAPI.patch(`/comment/danger/${bmcno}`);
-        if (response.data.code === 1) {
-          alert(response.data.msg);
-        } else {
-          alert("신고 접수에 실패했습니다.");
-        }
-      } catch (error) {
-      }
+    if (!window.confirm("정말로 이 댓글을 신고하시겠습니까?")) return;
+    try {
+      await createReport({
+        targetType: "MEAL_COMMENT",
+        targetId: Number(bmcno),
+        reporterMno: loggedInMno,
+      });
+      alert("신고가 접수되었습니다.");
+    } catch (error) {
+      console.error(error);
+      alert("신고 접수 중 오류가 발생했습니다.");
     }
   };
 
   useEffect(() => {
-    fetchMealDetail(); // fetchReviewDetail -> fetchMealDetail
+    fetchMealDetail();
     fetchComments();
-  }, [bmno]); // brno -> bmno
+  }, [bmno]);
 
   //렌더링
   if (loading) return <div>로딩 중...</div>;
@@ -279,7 +275,6 @@ export default function BoardMealsDetail() {
                     </span>
                   </div>
                   <div className={styles.commentActions}>
-                    {/* ◀ 1. bmcno로 수정 */}
                     <button onClick={() => toggleCommentAwesome(comment.bmcno)}>
                       <span className={styles.heartIcon}>
                         {comment.awesomeCount > 0 ? "♥" : "♡"}
@@ -294,7 +289,6 @@ export default function BoardMealsDetail() {
                         >
                           수정
                         </button>
-                        {/* ◀ 2. bmcno로 수정 */}
                         <button
                           onClick={() => handleCommentDelete(comment.bmcno)}
                         >
@@ -304,7 +298,6 @@ export default function BoardMealsDetail() {
                     )}
 
                     {loggedInMno && loggedInMno !== comment.mno && (
-                      /* ◀ 3. bmcno로 수정 */
                       <button
                         onClick={() => handleCommentReport(comment.bmcno)}
                       >
